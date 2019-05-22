@@ -1,3 +1,5 @@
+android/*.log
+
 # OSX
 #
 .DS_Store
