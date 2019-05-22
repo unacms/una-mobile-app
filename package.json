@@ -1,0 +1,27 @@
+{
+  "name": "una",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "native-base": "^2.11.0",
+    "react": "16.6.3",
+    "react-native": "^0.58.6",
+    "react-native-onesignal": "^3.2.12",
+    "react-native-webview": "^5.3.0",
+    "react-native-webview-android": "^1.1.17"
+  },
+  "devDependencies": {
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "jest": "24.1.0",
+    "metro-react-native-babel-preset": "0.52.0",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
