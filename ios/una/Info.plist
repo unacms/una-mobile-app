@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>110</string>
+	<string>111</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -38,7 +38,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Make a post with your current location or specify profile location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This shouldn&apos;t happen in this app</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Photos upload</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
