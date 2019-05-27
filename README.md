@@ -56,7 +56,7 @@ To change launcher and icons for iOS and Android apps it's recommended to use sp
 ```bash
 npm install -g yo generator-rn-toolbox
 ```
-Then you can generate launcher images using the following commands from your app folder:
+Then you can generate launcher images using the following commands:
 ```bash
 yo rn-toolbox:assets --splash ./img/background.png --android
 yo rn-toolbox:assets --splash ./img/background.png --ios
