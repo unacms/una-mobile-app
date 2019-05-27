@@ -67,7 +67,7 @@ Icons for iOS app can be generated using the following command:
 yo rn-toolbox:assets --icon ./img/icon.png --ios
 ```
 
-To generate Icons for Android export project (from `/android/` folder) in Android Studio then:
+To generate Icons for Android - export project (from `/android/` folder) in Android Studio then:
 - Right click on the app/res folder, then click on **New** and then click on **Image Asset**
 - In the Icon Type field select **Launcher Icons (Adaptive and Legacy)**
 - In the path field, select `logo_android.png` file which is in `/img/` folder
