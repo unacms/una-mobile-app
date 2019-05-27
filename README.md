@@ -10,7 +10,7 @@ After downloading source code, unpacking it, run:
 ```bash
 npm install 
 ```
-Then you can already try to run Andoid app with (Android emulator must be already running):
+Then you can already try to run Andoid app with the following commands (Android emulator must be already running):
 ```bash
 export ANDROID_HOME=/path/to/android/sdk
 react-native run-android
@@ -22,10 +22,10 @@ react-native run-ios
 
 ## Changing display name and bundle identifier
 
-Lest assume that you want to rename app to **Kookaburra**.   
+Lest assume that you want to rename app to **Kookaburra** and site name is **kookaburra.io**.   
 Then you need to change the following strings:
 ```
-UNA or UNA.IO => Kookaburra
+UNA.IO => Kookaburra
 com.una.android => com.kookaburra.android
 com.una.ios => com.kookaburra.ios
 una.io => kookaburra.io
