@@ -44,9 +44,16 @@ android/app/BUCK
 android/app/build.gradle
 ```
 
-The files below better to not change directly, but change in in XCode instead
-TODO: image here
+In XCode change the following:
 
+![](https://raw.githubusercontent.com/wiki/unaio/una/images/mobile-apps/change-name-ios.png)
+
+It will change the following files (don't edit these files directly):
+```
+ios/una/Info.plist
+ios/una.xcodeproj/project.xcworkspace/xcuserdata/alex.xcuserdatad/UserInterfaceState.xcuserstate
+ios/una.xcodeproj/project.pbxproj
+```
 
 ## Change images to your own
 
