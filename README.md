@@ -1,6 +1,7 @@
 # UNA Mobile Apps
 
-This is source code of UNA mobile apps for iOS and Android based on ReactNative.
+This is source code of UNA mobile apps for iOS and Android based on ReactNative.   
+Mobile apps need to have **Nexus** UNA app installed.
 
 ## Run
 
