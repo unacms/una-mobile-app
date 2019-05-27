@@ -12,8 +12,8 @@ npm install
 ```
 Then you can already try to run Andoid app with (Android emulator must be already running):
 ```bash
-		export ANDROID_HOME=/path/to/android/sdk
-		react-native run-android
+export ANDROID_HOME=/path/to/android/sdk
+react-native run-android
 ```
 or iOS app (on Max OSX only):
 ```
@@ -54,7 +54,7 @@ Change all images to your own in `/img/` folder, leaving the same images dimensi
 
 To change launcher and icons for iOS and Android apps it's recommended to use special script, it can installed using the following command:
 ```bash
-		npm install -g yo generator-rn-toolbox
+npm install -g yo generator-rn-toolbox
 ```
 Then you can generate launcher images using the following commands from your app folder:
 ```bash
