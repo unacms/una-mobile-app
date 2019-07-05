@@ -5,7 +5,7 @@ Mobile apps need to have **Nexus** UNA app installed.
 
 ## Run
 
-You need to have npm, react-native along with Android SDK and/or XCode installed to build apps.
+You need to have [npm](https://www.npmjs.com), [react-native](https://facebook.github.io/react-native/) along with [Android SDK](https://developer.android.com/studio) and/or [XCode](https://developer.apple.com/xcode/) installed to build apps.
 
 After downloading source code, unpacking it, run:
 ```bash
