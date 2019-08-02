@@ -251,13 +251,12 @@ export default class App extends Component<Props> {
     }
     
     onNotificationOpened(openResult) {
-        if (openResult.notification.payload.launchURL && !openResult.notification.isAppInFocus) {
+        if ('undefined' !== typeof(openResult.notification.payload.additionalData) && 'undefined' !== typeof(openResult.notification.payload.additionalData.url) && !openResult.notification.isAppInFocus) {
             this.setState({
-                url: openResult.notification.payload.launchURL,
+                url: openResult.notification.payload.additionalData.url,
                 searchbar: false,
             });
         }
-        console.log('openResult: ', openResult);
     }
     
     onWebViewMessage(event) {
