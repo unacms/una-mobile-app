@@ -222,15 +222,13 @@ export default class App extends Component<Props> {
     javascriptToInject () {
       return ``
     }
-    
-    componentWillMount() {
+
+    componentDidMount() {
         OneSignal.init(ONESIGNALAPPID, {kOSSettingsKeyAutoPrompt : true});
 
         OneSignal.addEventListener('received', this.onNotificationReceived);
         OneSignal.addEventListener('opened', this.onNotificationOpened.bind(this));
-    }
 
-    componentDidMount() {
         if (Platform.OS === 'android') {
             this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
                 this.onBack(); // works best when the goBack is async
@@ -240,10 +238,12 @@ export default class App extends Component<Props> {
     }
     
     componentWillUnmount() {
-        this.backHandler.remove();
-        
         OneSignal.removeEventListener('received', this.onNotificationReceived);        
         OneSignal.removeEventListener('opened', this.onNotificationOpened);
+
+        if (Platform.OS === 'android') {
+            this.backHandler.remove();
+        }
     }
     
     onNotificationReceived(notification) {
@@ -252,10 +252,7 @@ export default class App extends Component<Props> {
     
     onNotificationOpened(openResult) {
         if ('undefined' !== typeof(openResult.notification.payload.additionalData) && 'undefined' !== typeof(openResult.notification.payload.additionalData.url) && !openResult.notification.isAppInFocus) {
-            this.setState({
-                url: openResult.notification.payload.additionalData.url,
-                searchbar: false,
-            });
+            this.injectJavaScript(`window.location = '${openResult.notification.payload.additionalData.url}';`);
         }
     }
     
@@ -307,6 +304,7 @@ export default class App extends Component<Props> {
                     geolocationEnabled={true}
                     builtInZoomControls={false}
                     decelerationRate="normal"
+                    cacheEnabled={true}
                     injectedJavaScript={this.javascriptToInject()}
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
 
@@ -417,15 +415,15 @@ export default class App extends Component<Props> {
                     <View style={styles.drawerImageContainer}>
                         <Image style={styles.drawerImage} source={require('./img/logo-loading.png')} />
                     </View>
-                    <Button iconLeft transparent onPress={this.onDrawerLoginMenu.bind(this)}>
+                    <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerLoginMenu.bind(this)}>
                         <Icon style={styles.drawerButtonIcon} name='ios-key' />
                         <Text>Login</Text>
                     </Button>
-                    <Button iconLeft transparent onPress={this.onDrawerJoinMenu.bind(this)}>
+                    <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerJoinMenu.bind(this)}>
                         <Icon style={styles.drawerButtonIcon} name='ios-add-circle-outline' />
                         <Text>Join</Text>
                     </Button>
-                    <Button iconLeft transparent onPress={this.onDrawerForgotMenu.bind(this)}>
+                    <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerForgotMenu.bind(this)}>
                         <Icon style={styles.drawerButtonIcon} name='ios-lock' />
                         <Text>Forgot Password</Text>
                     </Button>
@@ -471,6 +469,9 @@ const styles = StyleSheet.create({
     drawerImage: {
         height:33.5, 
         width:125,
+    },
+    drawerButton: {
+        justifyContent: 'flex-start',
     },
     drawerButtonIcon: {
         width: 20,
