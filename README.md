@@ -45,7 +45,7 @@ android/app/BUCK
 android/app/build.gradle
 ```
 
-In XCode change the following:
+In XCode change the following (make sure to open `una.xcworkspace`):
 
 ![](https://raw.githubusercontent.com/wiki/unaio/una/images/mobile-apps/change-name-ios.png)
 
