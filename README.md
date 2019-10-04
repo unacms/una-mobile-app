@@ -16,10 +16,10 @@ Then you can already try to run Andoid app with the following commands (Android 
 export ANDROID_HOME=/path/to/android/sdk
 react-native run-android
 ```
-or iOS app (on Max OSX only):
+or iOS app (on Mac OSX only):
 ```
 cd ios; pod install; cd ..
-react-native run-ios
+react-native run-ios --simulator "iPhone 8"
 ```
 
 ## Changing display name and bundle identifier
