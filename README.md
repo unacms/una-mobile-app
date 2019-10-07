@@ -79,7 +79,7 @@ yo rn-toolbox:assets --icon ./img/icon.png --ios
 To generate Icons for Android - export project (from `/android/` folder) in Android Studio then:
 - Right click on the app/res folder, then click on **New** and then click on **Image Asset**
 - In the Icon Type field select **Launcher Icons (Adaptive and Legacy)**
-- In the path field, select `logo_android.png` file which is in `/img/` folder
+- In the path field, select `icon_android.png` file which is in `/img/` folder
 - Once done, click on the **Next** button and then on the **Finish** button
 
 ## 3rd-party guides
