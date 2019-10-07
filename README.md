@@ -5,9 +5,9 @@ Mobile apps need to have **Nexus** UNA app installed.
 
 ## Run
 
-You need to have [npm](https://www.npmjs.com), [react-native](https://facebook.github.io/react-native/) along with [Android SDK](https://developer.android.com/studio) and/or [XCode](https://developer.apple.com/xcode/) along withg [CocoaPods](https://cocoapods.org/) installed to build apps.
+You need to have [npm](https://www.npmjs.com), [react-native](https://facebook.github.io/react-native/) along with [Android SDK](https://developer.android.com/studio) and/or [XCode](https://developer.apple.com/xcode/) installed to build apps.
 
-After downloading source code, unpacking it, then run:
+After downloading source code, unpacking it, run:
 ```bash
 npm install 
 ```
@@ -16,10 +16,9 @@ Then you can already try to run Andoid app with the following commands (Android 
 export ANDROID_HOME=/path/to/android/sdk
 react-native run-android
 ```
-or iOS app (on Mac OSX only):
+or iOS app (on Max OSX only):
 ```
-cd ios; pod install; cd ..
-react-native run-ios --simulator "iPhone 8"
+react-native run-ios
 ```
 
 ## Changing display name and bundle identifier
@@ -46,7 +45,7 @@ android/app/BUCK
 android/app/build.gradle
 ```
 
-In XCode change the following (make sure to open `una.xcworkspace`):
+In XCode change the following:
 
 ![](https://raw.githubusercontent.com/wiki/unaio/una/images/mobile-apps/change-name-ios.png)
 
@@ -79,9 +78,8 @@ yo rn-toolbox:assets --icon ./img/icon.png --ios
 To generate Icons for Android - export project (from `/android/` folder) in Android Studio then:
 - Right click on the app/res folder, then click on **New** and then click on **Image Asset**
 - In the Icon Type field select **Launcher Icons (Adaptive and Legacy)**
-- In the path field, select `icon_android.png` file which is in `/img/` folder
+- In the path field, select `logo_android.png` file which is in `/img/` folder
 - Once done, click on the **Next** button and then on the **Finish** button
 
-## 3rd-party guides
 
-- from [cnayl](https://una.io/page/view-persons-profile?id=18944) - https://punya.co.uk/blog/9-development/16-una-mobile-app-development 
+
