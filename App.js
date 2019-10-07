@@ -4,7 +4,6 @@
  */
 
 import React, { Component } from 'react';
-import getTheme from './native-base-theme/components';
 import OneSignal from 'react-native-onesignal';
 import { WebView } from "react-native-webview";
 import {
@@ -31,7 +30,7 @@ type Props = {};
 const BASE_URL = 'https://una.io/';
 const TEMPLATE = 'protean';
 const TITLE = 'UNA.IO';
-const ONESIGNALAPPID = '';
+const ONESIGNALAPPID = '***REMOVED***';
 
 export default class App extends Component<Props> {
 
