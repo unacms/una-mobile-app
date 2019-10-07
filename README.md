@@ -82,5 +82,6 @@ To generate Icons for Android - export project (from `/android/` folder) in Andr
 - In the path field, select `logo_android.png` file which is in `/img/` folder
 - Once done, click on the **Next** button and then on the **Finish** button
 
+## 3rd-party guides
 
-
+- from [cnayl](https://una.io/page/view-persons-profile?id=18944) - https://punya.co.uk/blog/9-development/16-una-mobile-app-development 
