@@ -5,7 +5,8 @@
 
 import React, { Component } from 'react';
 import OneSignal from 'react-native-onesignal';
-import { WebView } from "react-native-webview";
+import SplashScreen from 'react-native-splash-screen';
+import { WebView } from 'react-native-webview';
 import {
     Platform,
     StyleSheet,
@@ -222,6 +223,10 @@ export default class App extends Component<Props> {
       return ``
     }
 
+    componentDidCatch(error, info) {
+        SplashScreen.hide();
+    }
+
     componentDidMount() {
         OneSignal.init(ONESIGNALAPPID, {kOSSettingsKeyAutoPrompt : true});
 
@@ -234,6 +239,8 @@ export default class App extends Component<Props> {
                 return true;
             });
         }
+
+        SplashScreen.hide();
     }
     
     componentWillUnmount() {

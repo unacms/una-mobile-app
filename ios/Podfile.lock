@@ -186,6 +186,8 @@ PODS:
   - react-native-onesignal (3.4.2):
     - OneSignal (= 2.11.2)
     - React (< 1.0.0, >= 0.13.0)
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-webview (7.4.1):
     - React
   - React-RCTActionSheet (0.61.2):
@@ -243,6 +245,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -293,6 +296,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-onesignal:
     :path: "../node_modules/react-native-onesignal"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -336,6 +341,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8909917ff7d8f21a57e443a866fd8d4560e50c65
   React-jsinspector: 111d7d342b07a904c400592e02a2b958f1098b60
   react-native-onesignal: ede2c185dd3c4c04bdab98f10c92dfe6f9d61c5d
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: 4dbc1d2a4a6b9c5e9e723c62651917aa2b5e579e
   React-RCTActionSheet: 89b037c0fb7d2671607cb645760164e7e0c013f6
   React-RCTAnimation: e3cefa93c38c004c318f7ec04b883eb14b8b8235
@@ -349,6 +355,6 @@ SPEC CHECKSUMS:
   ReactCommon: 5848032ed2f274fcb40f6b9ec24067787c42d479
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 89f3e952c366338307e16c4f98f1c141710419e6
+PODFILE CHECKSUM: 136ef0f3aacb37bea3c24628c44db68758229741
 
 COCOAPODS: 1.8.1

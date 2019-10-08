@@ -38,6 +38,8 @@ target 'una' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'unaTests' do
     inherit! :search_paths
     # Pods for testing
