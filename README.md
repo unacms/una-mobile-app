@@ -31,12 +31,16 @@ UNA.IO => Kookaburra
 com.una.android => com.kookaburra.android
 com.una.ios => com.kookaburra.ios
 una.io => kookaburra.io
+una => kookaburra
 ```
 
 In the following files and some files need to be renamed:
 ```
 App.js
 app.json
+package.json
+
+ios/una/AppDelegate.m
 
 android/app/src/main/res/values/strings.xml
 android/app/src/main/java/com/una/android/MainActivity.java => android/app/src/main/java/com/kookaburra/android/MainActivity.java
@@ -50,12 +54,6 @@ In XCode change the following (make sure to open `una.xcworkspace`):
 
 ![](https://raw.githubusercontent.com/wiki/unaio/una/images/mobile-apps/change-name-ios.png)
 
-It will change the following files (don't edit these files directly):
-```
-ios/una/Info.plist
-ios/una.xcodeproj/project.xcworkspace/xcuserdata/alex.xcuserdatad/UserInterfaceState.xcuserstate
-ios/una.xcodeproj/project.pbxproj
-```
 
 ## Change images to your own
 
@@ -65,24 +63,29 @@ To change launcher and icons for iOS and Android apps it's recommended to use sp
 ```bash
 npm i -D @bam.tech/react-native-make
 ```
-Then you can generate app icons for iOS and Android using the following commands:
+
+Then you can generate app icons for Android using the following command:
 ```bash
-react-native set-icon --platform ios --path ./img/icon.png
 react-native set-icon --platform android --path ./img/icon-android.png
 ```
 
-Splash for iOS app can be generated using the following command:
-```bash
-react-native set-splash --platform ios --path ./img/background.png --resize contain
-```
-
-To generate Splash for Android, some trick is needed (make sure that you replace Kookaburra with your own app name):  
-Change `"name": "Kookaburra"` in `package.json` file to `"name": "Kookaburra/Android"` . 
+To generate splash for Android, some trick is needed (make sure that you replace Kookaburra with your own app name):  
+Change `"name": "kookaburra"` in `package.json` file to `"name": "kookaburra/android"`.   
 Then run the following command:  
 ```bash
 react-native set-splash --platform android --path ./img/background.png --resize contain
 ```
-Then change `"name": "Kookaburra/Android"` back to `"name": "Kookaburra"` in `package.json` file.  
+Then change `"name": "kookaburra/android"` back to `"name": "kookaburra"` in `package.json` file.  
+
+Changing splash and app icon for iOS app requires similar trick:  
+Change `"name": "kookaburra"` in `package.json` file to `"name": "una"`.   
+Then run the following commands:  
+```bash
+react-native set-icon --platform ios --path ./img/icon.png
+react-native set-splash --platform ios --path ./img/background.png --resize contain
+```
+Then change `"name": "una"` back to `"name": "kookaburra"` in `package.json` file.  
+
 
 ## 3rd-party guides
 
