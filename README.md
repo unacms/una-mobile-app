@@ -59,7 +59,7 @@ In XCode change the following (make sure to open `una.xcworkspace`):
 
 Change all images to your own in `/img/` folder, leaving the same images dimensions.  
 
-To change launcher and icons for iOS and Android apps it's recommended to use special script, it can installed using the following command:
+To change launcher and icons for iOS and Android apps it's recommended to use special script, it can be installed using the following command:
 ```bash
 npm i -D @bam.tech/react-native-make
 ```
