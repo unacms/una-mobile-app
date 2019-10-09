@@ -63,24 +63,26 @@ Change all images to your own in `/img/` folder, leaving the same images dimensi
 
 To change launcher and icons for iOS and Android apps it's recommended to use special script, it can installed using the following command:
 ```bash
-npm install -g yo generator-rn-toolbox
+npm i -D @bam.tech/react-native-make
 ```
-Then you can generate launcher images using the following commands:
+Then you can generate app icons for iOS and Android using the following commands:
 ```bash
-yo rn-toolbox:assets --splash ./img/background.png --android
-yo rn-toolbox:assets --splash ./img/background.png --ios
+react-native set-icon --platform ios --path ./img/icon.png
+react-native set-icon --platform android --path ./img/icon-android.png
 ```
 
-Icons for iOS app can be generated using the following command:
+Splash for iOS app can be generated using the following command:
 ```bash
-yo rn-toolbox:assets --icon ./img/icon.png --ios
+react-native set-splash --platform ios --path ./img/background.png --resize contain
 ```
 
-To generate Icons for Android - export project (from `/android/` folder) in Android Studio then:
-- Right click on the app/res folder, then click on **New** and then click on **Image Asset**
-- In the Icon Type field select **Launcher Icons (Adaptive and Legacy)**
-- In the path field, select `icon-android.png` file which is in `/img/` folder
-- Once done, click on the **Next** button and then on the **Finish** button
+To generate Splash for Android, some trick is needed (make sure that you replace Kookaburra with your own app name):  
+Change `"name": "Kookaburra"` in `package.json` file to `"name": "Kookaburra/Android"` . 
+Then run the following command:  
+```bash
+react-native set-splash --platform android --path ./img/background.png --resize contain
+```
+Then change `"name": "Kookaburra/Android"` back to `"name": "Kookaburra"` in `package.json` file.  
 
 ## 3rd-party guides
 
