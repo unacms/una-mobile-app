@@ -40,6 +40,7 @@ App.js
 app.json
 package.json
 
+ios/Podfile
 ios/una/AppDelegate.m
 
 android/app/src/main/res/values/strings.xml
