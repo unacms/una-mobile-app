@@ -11,14 +11,14 @@ import {
     Platform,
     StyleSheet,
     StyleProvider,
-    View,
+    Image,
     Linking,
     BackHandler,
     ActivityIndicator,
     Dimensions,
-    Image,
 } from 'react-native';
 import { 
+    View,
     Container, Content,
     Header, Title, Left, Body, Right, Item, Input,
     Footer, FooterTab, Badge, 
@@ -327,7 +327,7 @@ export default class App extends Component<Props> {
                     <Footer>
                         <FooterTab>
                             <Button vertical onPress={this.onHomeMenu.bind(this)}>
-                                <Icon name="ios-home" />
+                                <Icon name="home" type="FontAwesome5" />
                             </Button>
                         </FooterTab>
                         <FooterTab>
@@ -335,12 +335,12 @@ export default class App extends Component<Props> {
                                 {this.state.data.bubbles['notifications-notifications'] > 0 && 
                                     (<Badge><Text>{this.state.data.bubbles['notifications-notifications']}</Text></Badge>)
                                 }
-                                <Icon name="ios-notifications" />
+                                <Icon name="bell" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>
                         <FooterTab>
                             <Button vertical onPress={this.onAddMenu.bind(this)}>
-                                <Icon name="ios-add-circle-outline" />
+                                <Icon name="plus-circle" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>
                         <FooterTab>
@@ -348,7 +348,7 @@ export default class App extends Component<Props> {
                                 {this.state.data.bubbles['notifications-messenger'] > 0 && 
                                     (<Badge><Text>{this.state.data.bubbles['notifications-messenger']}</Text></Badge>)
                                 }
-                                <Icon name="ios-chatbubbles" />
+                                <Icon name="comments" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>                    
                         <FooterTab>
@@ -356,7 +356,7 @@ export default class App extends Component<Props> {
                                 {this.state.data.bubbles_num > 0 && 
                                     (<Badge><Text>{this.state.data.bubbles_num}</Text></Badge>)
                                 }
-                                <Icon name="ios-person" />
+                                <Icon name="user" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>
                     </Footer>
@@ -384,7 +384,7 @@ export default class App extends Component<Props> {
                 </Body>
                 <Right>
                     <Button transparent>
-                        <Icon name='ios-search' onPress={this.onSearchMenu.bind(this)} />
+                        <Icon name='search' onPress={this.onSearchMenu.bind(this)} />
                     </Button>
                 </Right>
             </Header>
@@ -395,7 +395,7 @@ export default class App extends Component<Props> {
         return (
             <Header searchBar rounded>
               <Item>
-                <Icon name="ios-search" />
+                <Icon name="search" />
                 <Input ref="inputSearch" placeholder="Search" onEndEditing={this.onSearchCancelMenu.bind(this)} onSubmitEditing={this.onSearch.bind(this)} />
               </Item>
               <Button transparent onPress={this.onSearchCancelMenu.bind(this)}>
@@ -422,15 +422,15 @@ export default class App extends Component<Props> {
                         <Image style={styles.drawerImage} source={require('./img/logo-loading.png')} />
                     </View>
                     <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerLoginMenu.bind(this)}>
-                        <Icon style={styles.drawerButtonIcon} name='ios-key' />
+                        <Icon style={styles.drawerButtonIcon} name='key' type="FontAwesome5" solid />
                         <Text>Login</Text>
                     </Button>
                     <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerJoinMenu.bind(this)}>
-                        <Icon style={styles.drawerButtonIcon} name='ios-add-circle-outline' />
+                        <Icon style={styles.drawerButtonIcon} name='plus-circle' type="FontAwesome5" solid />
                         <Text>Join</Text>
                     </Button>
                     <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerForgotMenu.bind(this)}>
-                        <Icon style={styles.drawerButtonIcon} name='ios-lock' />
+                        <Icon style={styles.drawerButtonIcon} name='lock' type="FontAwesome5" solid />
                         <Text>Forgot Password</Text>
                     </Button>
                 </Content>
@@ -481,7 +481,9 @@ const styles = StyleSheet.create({
     },
     drawerButtonIcon: {
         width: 20,
+        fontSize: 20,
         justifyContent: 'center',
+        textAlign: 'center',
     },
 });
 
