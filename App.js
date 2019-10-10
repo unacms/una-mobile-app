@@ -229,6 +229,7 @@ export default class App extends Component<Props> {
 
     componentDidMount() {
         OneSignal.init(ONESIGNALAPPID, {kOSSettingsKeyAutoPrompt : true});
+        OneSignal.inFocusDisplaying(0);
 
         OneSignal.addEventListener('received', this.onNotificationReceived);
         OneSignal.addEventListener('opened', this.onNotificationOpened.bind(this));
