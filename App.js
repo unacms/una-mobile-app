@@ -16,6 +16,7 @@ import {
     BackHandler,
     ActivityIndicator,
     Dimensions,
+    StatusBar,
 } from 'react-native';
 import { 
     View,
@@ -299,6 +300,7 @@ export default class App extends Component<Props> {
     }
     
     render() {
+        StatusBar.setBarStyle(Platform.OS === 'android' ? 'light-content' : 'dark-content', false);
         return (
             <Container>
             <Drawer ref="drawer" content={this.renderDrawer()} onClose={this.drawerClose.bind(this)}>
