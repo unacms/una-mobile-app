@@ -32,7 +32,7 @@ type Props = {};
 const BASE_URL = 'https://una.io/';
 const TEMPLATE = 'protean';
 const TITLE = 'UNA.IO';
-const ONESIGNALAPPID = '***REMOVED***';
+const ONESIGNALAPPID = '';
 
 export default class App extends Component<Props> {
 
