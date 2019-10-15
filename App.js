@@ -201,7 +201,7 @@ export default class App extends Component<Props> {
 
     onWebViewShouldStartLoadWithRequest (event) {
 
-        if (-1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS))) {
+        if (0 != event.url.indexOf('http') || (-1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS)))) {
             Linking.canOpenURL(event.url).then(supported => {
                 if (supported) {
                     Linking.openURL(event.url);
@@ -314,6 +314,8 @@ export default class App extends Component<Props> {
                     builtInZoomControls={false}
                     decelerationRate="normal"
                     cacheEnabled={true}
+                    allowsLinkPreview={true}
+                    hideKeyboardAccessoryView={true}
                     injectedJavaScript={this.javascriptToInject()}
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
 
