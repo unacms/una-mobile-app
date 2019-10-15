@@ -1,4 +1,4 @@
-package com.una.android;
+package com.mysquadrox.android;
 
 import android.app.Application;
 import android.content.Context;

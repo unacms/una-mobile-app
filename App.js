@@ -29,10 +29,10 @@ import {
 
 type Props = {};
 
-const BASE_URL = 'https://una.io/';
-const TEMPLATE = 'protean';
-const TITLE = 'UNA.IO';
-const ONESIGNALAPPID = '';
+const BASE_URL = 'https://mysquad.rocks/';
+const TEMPLATE = 'lucid';
+const TITLE = '#MSR';
+const ONESIGNALAPPID = '564d4263-e008-437a-925c-a9a0f2732054';
 
 export default class App extends Component<Props> {
 

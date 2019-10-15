@@ -128,11 +128,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.una.android"
+        applicationId "com.mysquadrox.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1300
-        versionName "1.3.0"
+        versionCode 600
+        versionName "0.6.0"
     }
     signingConfigs {
         release {

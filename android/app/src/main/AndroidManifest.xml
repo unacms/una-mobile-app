@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.una.android">
+  package="com.mysquadrox.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -19,11 +19,11 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-      <intent-filter android:label="UNA.IO">
+      <intent-filter android:label="MSR">
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
-            <data android:scheme="https" android:host="una.io" />
-            <data android:scheme="http" android:host="una.io" />
+            <data android:scheme="https" android:host="mysquad.rocks" />
+            <data android:scheme="http" android:host="mysquad.rocks" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
