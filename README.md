@@ -57,7 +57,7 @@ In XCode change the following (make sure to open `una.xcworkspace`):
 
 Then rename the following file:
 ```
-ios/kookaburra.xcodeproj/xcshareddata/xcschemes/kookaburra.xcscheme
+ios/kookaburra.xcodeproj/xcshareddata/xcschemes/una.xcscheme => ios/kookaburra.xcodeproj/xcshareddata/xcschemes/kookaburra.xcscheme
 ```
 
 ## Change images to your own
