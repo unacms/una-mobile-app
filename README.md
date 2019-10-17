@@ -42,6 +42,7 @@ package.json
 
 ios/Podfile
 ios/una/AppDelegate.m
+ios/winci.xcodeproj/xcshareddata/xcschemes/una.xcscheme => ios/winci.xcodeproj/xcshareddata/xcschemes/kookaburra.xcscheme
 
 android/app/src/main/res/values/strings.xml
 android/app/src/main/java/com/una/android/MainActivity.java => android/app/src/main/java/com/kookaburra/android/MainActivity.java
