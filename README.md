@@ -42,7 +42,6 @@ package.json
 
 ios/Podfile
 ios/una/AppDelegate.m
-ios/kookaburra.xcodeproj/xcshareddata/xcschemes/una.xcscheme => ios/kookaburra.xcodeproj/xcshareddata/xcschemes/kookaburra.xcscheme
 
 android/app/src/main/res/values/strings.xml
 android/app/src/main/java/com/una/android/MainActivity.java => android/app/src/main/java/com/kookaburra/android/MainActivity.java
@@ -56,6 +55,10 @@ In XCode change the following (make sure to open `una.xcworkspace`):
 
 ![](https://raw.githubusercontent.com/wiki/unaio/una/images/mobile-apps/change-name-ios.png)
 
+Then rename the following file:
+```
+ios/kookaburra.xcodeproj/xcshareddata/xcschemes/kookaburra.xcscheme
+```
 
 ## Change images to your own
 
