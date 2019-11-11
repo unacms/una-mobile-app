@@ -170,6 +170,10 @@ export default class App extends Component<Props> {
     }
 
     onWebViewLoadStart (syntheticEvent) {
+        if (-1 == this.state.url.indexOf(`${BASE_URL}`)) { // loading indicator is supported on original domains only
+            this.onWebViewLoadEnd(syntheticEvent);
+            return;
+        }
         this.loading = true;
         this.setState ({
             loading: this.loading,
@@ -201,7 +205,18 @@ export default class App extends Component<Props> {
 
     onWebViewShouldStartLoadWithRequest (event) {
 
-        if (0 != event.url.indexOf('http') || (-1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS)))) {
+        var aExceptionsUrls = [
+            'redirect_uri=', 'redirect_uri%', 'redirectUri%', // Facebook/LinkedIn Connect and other Connect apps
+            'signin/oauth', 'signin%2Foauth', // Google Connect
+            '/m/oauth2', // Dolphin/UNA Connect
+            'api.twitter.com', // Twitter Connect
+        ];
+        var bExceptionUrl = aExceptionsUrls.some(e => {
+            return -1 !== event.url.indexOf(e);
+        });
+
+        if (0 != event.url.indexOf('http') || (!bExceptionUrl && -1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS)))) {
+
             Linking.canOpenURL(event.url).then(supported => {
                 if (supported) {
                     Linking.openURL(event.url);
