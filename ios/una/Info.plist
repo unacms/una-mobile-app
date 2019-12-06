@@ -45,6 +45,8 @@
 	<string>Make a post with your current location or specify profile location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Videos upload</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
 	<key>OneSignal_disable_badge_clearing</key>
 	<false/>
 	<key>UIAppFonts</key>

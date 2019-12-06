@@ -160,6 +160,12 @@ export default class App extends Component<Props> {
     }
 
     onWebViewNavigationStateChange(navState) {
+
+        if (-1 != navState.url.indexOf('#') && this.state.url == navState.url.substring(0, navState.url.indexOf('#'))) {
+            this.onWebViewLoadEnd();
+            return;   
+        }
+
         this.setState ({
             url: navState.url,
             status: navState.title,
