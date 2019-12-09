@@ -38,13 +38,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Photos upload</string>
+	<string>$(PRODUCT_NAME) would like to take picture to publish it on the site</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This shouldn't happen in this app</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Make a post with your current location or specify profile location</string>
+	<string>Make a post with your current location or save profile location</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Videos upload</string>
+	<string>$(PRODUCT_NAME) would like to record video to publish it on the site</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
 	<key>OneSignal_disable_badge_clearing</key>
