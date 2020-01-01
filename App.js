@@ -304,8 +304,14 @@ export default class App extends Component<Props> {
             });
         }
         
-        if ('undefined' !== typeof(oMsgData['push_tags']))
+        if ('undefined' !== typeof(oMsgData['push_tags'])) {
+            if ('undefined' !== typeof(oMsgData['push_tags']['email'])) {
+                OneSignal.setEmail(oMsgData['push_tags']['email'], oMsgData['push_tags']['email_hash']);
+                delete oMsgData['push_tags']['email'];
+                delete oMsgData['push_tags']['email_hash'];
+            }
             OneSignal.sendTags(oMsgData['push_tags']);
+        }
 
         if ('undefined' !== typeof(oMsgData['stop_loading']) && oMsgData['stop_loading']) {
             this.onWebViewLoadEnd (event);
