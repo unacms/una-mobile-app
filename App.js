@@ -304,9 +304,11 @@ export default class App extends Component<Props> {
             });
         }
         
-        if ('undefined' !== typeof(oMsgData['push_tags'])) {
-            if ('undefined' !== typeof(oMsgData['push_tags']['email'])) {
-                OneSignal.setEmail(oMsgData['push_tags']['email'], oMsgData['push_tags']['email_hash']);
+        if ('undefined' !== typeof(oMsgData['push_tags']) && oMsgData['push_tags'] !== false) {
+            if ('undefined' !== typeof(oMsgData['push_tags']['email']) && oMsgData['push_tags']['email'].length) {
+                OneSignal.setEmail(oMsgData['push_tags']['email'], oMsgData['push_tags']['email_hash'], (sError) => {
+                    console.warn("OneSignal set email error:" + sError);
+                });
                 delete oMsgData['push_tags']['email'];
                 delete oMsgData['push_tags']['email_hash'];
             }
