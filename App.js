@@ -27,6 +27,9 @@ import {
     Drawer,
 } from 'native-base';
 
+import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
+import VideoCall from './VideoCall';
+
 type Props = {};
 
 const BASE_URL = 'https://una.io/';
@@ -50,19 +53,61 @@ export default class App extends Component<Props> {
             data: {},
             searchbar: false,
             key: 1,
+            videoCall: 0,
+            videoCallUri: false,
         };
 
         this.onBack.bind(this);
         this.onMainMenu.bind(this);
+
+        this.onConferenceTerminated = this.onConferenceTerminated.bind(this);
+        this.onConferenceJoined = this.onConferenceJoined.bind(this);
+        this.onConferenceWillJoin = this.onConferenceWillJoin.bind(this);
+    }
+
+    onConferenceTerminated(nativeEvent) {
+        this.endVideoCall();
+    }
+
+    onConferenceJoined(nativeEvent) {
+        // console.log("-------->>>>>> Conference joined event");
+    }
+
+    onConferenceWillJoin(nativeEvent) {
+        // console.log("-------->>>>>> Conference will join event");
+    }
+
+    endVideoCall() {
+        this.setState ({
+            videoCall: 0,
+        });
+        JitsiMeet.endCall();
+    }    
+
+    onVideoCall() {
+        if (this.state.videoCall) {
+            this.endVideoCall();
+            this.setState ({
+                videoCall: 0,
+                videoCallUri: false,
+            });
+        }
+        else {
+            this.setState ({
+                videoCall: 1,
+                videoCallUri: 'bla125qfbqwef',
+            });
+        }
     }
 
     onBack() {
+        this.endVideoCall();
         if (this.state.backButtonEnabled) {
     
             if ('android' === Platform.OS)
                 this.onWebViewLoadStart(); // show loading screen
             
-            // this.refs.webView.goBack();
+            // this.refs.webView1.goBack();
             this.injectJavaScript("window.history.go(-1)");
             return true;
         }
@@ -70,6 +115,7 @@ export default class App extends Component<Props> {
     }
     
     onMainMenu() {
+        this.endVideoCall();
         if (this.state.data.loggedin)
             this.injectJavaScript("bx_mobile_apps_show_main_menu()");
         else
@@ -86,26 +132,31 @@ export default class App extends Component<Props> {
     }
 
     onProfileMenu() {
+        this.endVideoCall();
         this.injectJavaScript("bx_mobile_apps_show_profile_menu()");
         return true;
     }
 
     onAddMenu() {
+        this.endVideoCall();
         this.injectJavaScript("bx_mobile_apps_show_add_menu()");
         return true;
     }
     
     onNotificationsMenu() {
+        this.endVideoCall();
         this.injectJavaScript("bx_mobile_apps_show_notifications_menu()");
         return true;
     }
     
     onMessengerMenu() {
+        this.endVideoCall();
         this.injectJavaScript("bx_mobile_apps_show_messenger_menu()");
         return true;
     }
     
     onHomeMenu() {
+        this.endVideoCall();
 
         if (`${BASE_URL}?skin=${TEMPLATE}` == this.state.url || `${BASE_URL}` == this.state.url || `${BASE_URL}index.php` == this.state.url) {
             this.injectJavaScript("bx_mobile_apps_close_sliding_menus()");
@@ -134,6 +185,7 @@ export default class App extends Component<Props> {
     }
 
     onSearchMenu() {
+        this.endVideoCall();
         this.setState ({
             loading: this.loading,
             searchbar: true,
@@ -196,17 +248,17 @@ export default class App extends Component<Props> {
     }
 
     reload() {
-        this.refs.webView.reload();
+        this.refs.webView1.reload();
     }
 
     postMessage (data) {
         // posts a message to web view
-        this.refs.webView.postMessage(data);
+        this.refs.webView1.postMessage(data);
     }
 
     injectJavaScript (script) {
         // executes JavaScript immediately in web view
-        this.refs.webView.injectJavaScript(script);
+        this.refs.webView1.injectJavaScript(script);
     }
 
     onWebViewShouldStartLoadWithRequest (event) {
@@ -334,10 +386,11 @@ export default class App extends Component<Props> {
             <Container>
             <Drawer ref="drawer" content={this.renderDrawer()} onClose={this.drawerClose.bind(this)}>
                 {this.state.searchbar ? this.renderToolbarSearch() : this.renderToolbar() }
+                {this.state.videoCall && this.state.videoCallUri ? this.renderVideoCall() : (<View />)}
                 <WebView
                     useWebKit={true}
 
-                    ref="webView"
+                    ref="webView1"
                     key={this.state.key}
                     geolocationEnabled={true}
                     builtInZoomControls={false}
@@ -373,6 +426,11 @@ export default class App extends Component<Props> {
                             </Button>
                         </FooterTab>
                         <FooterTab>
+                            <Button vertical onPress={this.onVideoCall.bind(this)}>
+                                <Icon name="video" type="FontAwesome5" solid />
+                            </Button>
+                        </FooterTab>
+                        <FooterTab>
                             <Button vertical onPress={this.onAddMenu.bind(this)}>
                                 <Icon name="plus-circle" type="FontAwesome5" solid />
                             </Button>
@@ -402,6 +460,14 @@ export default class App extends Component<Props> {
                 )}
             </Drawer>
             </Container>
+        );
+    }
+
+    renderVideoCall () {
+        return (
+            <View style={styles.containerVideoCall}>
+                <VideoCall onConferenceTerminated={this.onConferenceTerminated} onConferenceJoined={this.onConferenceJoined} onConferenceWillJoin={this.onConferenceWillJoin} conferenceUri={this.state.videoCallUri} />
+            </View>
         );
     }
 
@@ -474,6 +540,10 @@ export default class App extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+    containerVideoCall: {
+        backgroundColor: '#000',
+        flex: 999999999999,
+    },
     containerWebView: {
         flex: 1,
     },
