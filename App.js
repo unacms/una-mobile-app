@@ -40,6 +40,7 @@ const ONESIGNALAPPID = '';
 export default class App extends Component<Props> {
 
     loading = false;
+    videoCallAudio = false;
 
     constructor(props) {
         super(props);
@@ -63,40 +64,48 @@ export default class App extends Component<Props> {
         this.onConferenceTerminated = this.onConferenceTerminated.bind(this);
         this.onConferenceJoined = this.onConferenceJoined.bind(this);
         this.onConferenceWillJoin = this.onConferenceWillJoin.bind(this);
+
+        this.onVideoCallStart = this.onVideoCallStart.bind(this);
     }
 
-    onConferenceTerminated(nativeEvent) {
-        this.endVideoCall();
+    onConferenceTerminated(e) {
+        this.endVideoCall();        
+        this.injectJavaScript("bx_mobile_apps_video_terminated(" + JSON.stringify(e.nativeEvent) + ")");
     }
 
-    onConferenceJoined(nativeEvent) {
-        // console.log("-------->>>>>> Conference joined event");
+    onConferenceJoined(e) {
+        this.injectJavaScript("bx_mobile_apps_video_joined(" + JSON.stringify(e.nativeEvent) + ")");
     }
 
-    onConferenceWillJoin(nativeEvent) {
-        // console.log("-------->>>>>> Conference will join event");
+    onConferenceWillJoin(e) {
+        this.injectJavaScript("bx_mobile_apps_video_will_join(" + JSON.stringify(e.nativeEvent) + ")");
     }
 
     endVideoCall() {
+        this.videoCallAudio = false;
         this.setState ({
             videoCall: 0,
+            videoCallUri: false,
         });
         JitsiMeet.endCall();
     }    
 
-    onVideoCall() {
-        if (this.state.videoCall) {
-            this.endVideoCall();
-            this.setState ({
-                videoCall: 0,
-                videoCallUri: false,
-            });
-        }
-        else {
+    onVideoCallStart(sUri, bAudioOnly = false) {
+        if (!this.state.videoCall) {
+            this.videoCallAudio = bAudioOnly;
             this.setState ({
                 videoCall: 1,
-                videoCallUri: 'bla125qfbqwef',
+                videoCallUri: sUri,
             });
+        }
+    }
+
+    onVideoCallToggle() {
+        if (this.state.videoCall) {
+            this.endVideoCall();
+        }
+        else {
+            onVideoCallStart('testing-egr58t32g2');
         }
     }
 
@@ -355,7 +364,7 @@ export default class App extends Component<Props> {
                 key: 'undefined' === typeof(this.state.data.loggedin) || this.state.data.loggedin != oMsgData.loggedin ? this.state.key + 1 : this.state.key,
             });
         }
-        
+
         if ('undefined' !== typeof(oMsgData['push_tags']) && oMsgData['push_tags'] !== false) {
             if ('undefined' !== typeof(oMsgData['push_tags']['email']) && oMsgData['push_tags']['email'].length) {
                 OneSignal.setEmail(oMsgData['push_tags']['email'], oMsgData['push_tags']['email_hash'], (sError) => {
@@ -369,6 +378,13 @@ export default class App extends Component<Props> {
 
         if ('undefined' !== typeof(oMsgData['stop_loading']) && oMsgData['stop_loading']) {
             this.onWebViewLoadEnd (event);
+        }
+
+        if ('undefined' !== typeof(oMsgData['video_call_start'])) {
+            this.onVideoCallStart (oMsgData['video_call_start']['uri'], 'undefined' === typeof(oMsgData['video_call_start']['audio']) ? false : oMsgData['video_call_start']['audio']);
+        }
+        if ('undefined' !== typeof(oMsgData['video_call_stop']) && oMsgData['video_call_stop']) {
+            this.endVideoCall ();
         }
     }
 
@@ -426,7 +442,7 @@ export default class App extends Component<Props> {
                             </Button>
                         </FooterTab>
                         <FooterTab>
-                            <Button vertical onPress={this.onVideoCall.bind(this)}>
+                            <Button vertical onPress={this.onVideoCallToggle.bind(this)}>
                                 <Icon name="video" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>
@@ -466,7 +482,7 @@ export default class App extends Component<Props> {
     renderVideoCall () {
         return (
             <View style={styles.containerVideoCall}>
-                <VideoCall onConferenceTerminated={this.onConferenceTerminated} onConferenceJoined={this.onConferenceJoined} onConferenceWillJoin={this.onConferenceWillJoin} conferenceUri={this.state.videoCallUri} />
+                <VideoCall onConferenceTerminated={this.onConferenceTerminated} onConferenceJoined={this.onConferenceJoined} onConferenceWillJoin={this.onConferenceWillJoin} conferenceUri={this.state.videoCallUri} audio={this.videoCallAudio} userInfo={this.state.data.user_info} />
             </View>
         );
     }

@@ -10,9 +10,9 @@ class VideoCall extends React.Component {
     componentDidMount() {
         setTimeout(() => {
             if (this.props.audio)
-                JitsiMeet.audioCall(this.props.conferenceUri);
+                JitsiMeet.audioCall(this.props.conferenceUri, this.props.userInfo);
             else
-                JitsiMeet.call(this.props.conferenceUri);
+                JitsiMeet.call(this.props.conferenceUri, this.props.userInfo);
         }, 1000);
     }
 
@@ -27,6 +27,7 @@ VideoCall.defaultProps = {
     onConferenceTerminated: () => {},
     onConferenceJoined: () => {},
     onConferenceWillJoin: () => {},
+    userInfo: false,
     audio: false,
 };
 
