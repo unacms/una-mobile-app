@@ -105,7 +105,7 @@ export default class App extends Component<Props> {
             this.endVideoCall();
         }
         else {
-            onVideoCallStart('testing-egr58t32g2');
+            this.onVideoCallStart('testing-egr58t32g2');
         }
     }
 
@@ -282,6 +282,9 @@ export default class App extends Component<Props> {
             return -1 !== event.url.indexOf(e);
         });
 
+        if ('about:blank' === event.url)
+            return false;
+
         if (0 != event.url.indexOf('http') || (!bExceptionUrl && -1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS)))) {
 
             Linking.canOpenURL(event.url).then(supported => {
@@ -386,6 +389,12 @@ export default class App extends Component<Props> {
         if ('undefined' !== typeof(oMsgData['video_call_stop']) && oMsgData['video_call_stop']) {
             this.endVideoCall ();
         }
+        if ('undefined' !== typeof(oMsgData['goto_home']) && oMsgData['goto_home']) {
+            this.onHomeMenu ();
+        }
+        if ('undefined' !== typeof(oMsgData['reload']) && oMsgData['reload']) {
+            this.reload ();
+        }
     }
 
     drawerClose () {
@@ -429,8 +438,8 @@ export default class App extends Component<Props> {
                 {this.state.data.loggedin && (
                     <Footer>
                         <FooterTab>
-                            <Button vertical onPress={this.onHomeMenu.bind(this)}>
-                                <Icon name="home" type="FontAwesome5" />
+                            <Button vertical onPress={this.onMainMenu.bind(this)}>
+                                <Icon name="bars" type="FontAwesome5" />
                             </Button>
                         </FooterTab>
                         <FooterTab>
@@ -441,11 +450,13 @@ export default class App extends Component<Props> {
                                 <Icon name="bell" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>
+{/*
                         <FooterTab>
                             <Button vertical onPress={this.onVideoCallToggle.bind(this)}>
                                 <Icon name="video" type="FontAwesome5" solid />
                             </Button>
                         </FooterTab>
+*/}
                         <FooterTab>
                             <Button vertical onPress={this.onAddMenu.bind(this)}>
                                 <Icon name="plus-circle" type="FontAwesome5" solid />
@@ -491,17 +502,25 @@ export default class App extends Component<Props> {
         return (        
             <Header>
                 <Left>
-                    <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={this.onBackAndMainMenu.bind(this)}>
-                        <Icon name={this.state.backButtonEnabled ? 'ios-arrow-back' : 'ios-menu'} />
-                    </Button>
+                    {this.state.data.loggedin ? (
+                        <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={this.onBackAndMainMenu.bind(this)} disabled={this.state.backButtonEnabled ? false : true}>
+                            <Icon name="ios-arrow-back" />
+                        </Button>
+                    ) : (
+                        <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={this.onMainMenu.bind(this)}>
+                            <Icon name='menu' />
+                        </Button>
+                    )}
                 </Left>
                 <Body>            
-                    <Title>{TITLE}</Title>
+                    <Title onPress={this.onHomeMenu.bind(this)}>{TITLE}</Title>
                 </Body>
                 <Right>
-                    <Button transparent>
-                        <Icon name='search' onPress={this.onSearchMenu.bind(this)} />
-                    </Button>
+                    {this.state.data.loggedin && (
+                        <Button transparent>
+                            <Icon name='search' onPress={this.onSearchMenu.bind(this)} />
+                        </Button>
+                    )}
                 </Right>
             </Header>
         );
