@@ -30,6 +30,8 @@ import {
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import VideoCall from './VideoCall';
 
+import { version } from './package.json';
+
 type Props = {};
 
 const BASE_URL = 'https://una.io/';
@@ -305,8 +307,8 @@ export default class App extends Component<Props> {
         return true;
     }
     
-    javascriptToInject () {
-      return ``
+    javascriptToInject () { 
+        return 'glBxNexusApp = ' + JSON.stringify({ver:version});
     }
 
     componentDidCatch(error, info) {
