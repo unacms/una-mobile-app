@@ -27,6 +27,7 @@ import {
     Drawer,
 } from 'native-base';
 
+import { initialMode, useDarkMode, DynamicStyleSheet, DynamicValue, useDynamicStyleSheet, eventEmitter } from 'react-native-dark-mode';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import VideoCall from './VideoCall';
 
@@ -35,6 +36,8 @@ import { version } from './package.json';
 type Props = {};
 
 const BASE_URL = 'https://una.io/';
+const MIX_LIGHT = '12';
+const MIX_DARK = '13';
 const TEMPLATE = 'protean';
 const TITLE = 'UNA.IO';
 const ONESIGNALAPPID = '';
@@ -43,12 +46,13 @@ export default class App extends Component<Props> {
 
     loading = false;
     videoCallAudio = false;
+    mode = initialMode;
 
     constructor(props) {
         super(props);
 
         this.state = {
-            url: `${BASE_URL}?skin=${TEMPLATE}`,
+            url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.mode ? MIX_DARK : MIX_LIGHT}`,
             status: 'No Page Loaded',
             backButtonEnabled: false,
             forwardButtonEnabled: false,
@@ -68,6 +72,15 @@ export default class App extends Component<Props> {
         this.onConferenceWillJoin = this.onConferenceWillJoin.bind(this);
 
         this.onVideoCallStart = this.onVideoCallStart.bind(this);
+
+        eventEmitter.on('currentModeChanged', this.onModeChanged.bind(this));
+    }
+
+    onModeChanged(newMode) {
+        this.mode = newMode;
+        this.setState ({
+            key: this.state.key + 1,
+        });
     }
 
     onConferenceTerminated(e) {
@@ -168,12 +181,11 @@ export default class App extends Component<Props> {
     
     onHomeMenu() {
         this.endVideoCall();
-
-        if (`${BASE_URL}?skin=${TEMPLATE}` == this.state.url || `${BASE_URL}` == this.state.url || `${BASE_URL}index.php` == this.state.url) {
+        if (`${BASE_URL}` == this.state.url || this.state.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.state.url) {
             this.injectJavaScript("bx_mobile_apps_close_sliding_menus()");
         } else {
             this.setState ({
-                url: `${BASE_URL}?skin=${TEMPLATE}`,
+                url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.mode ? MIX_DARK : MIX_LIGHT}`,
                 searchbar: false,
                 key: this.state.key + 1,
             });
@@ -408,12 +420,7 @@ export default class App extends Component<Props> {
     }
     
     render() {
-        StatusBar.setBarStyle(Platform.OS === 'android' ? 'light-content' : 'dark-content', false);
-        return (
-            <Container>
-            <Drawer ref="drawer" content={this.renderDrawer()} onClose={this.drawerClose.bind(this)}>
-                {this.state.searchbar ? this.renderToolbarSearch() : this.renderToolbar() }
-                {this.state.videoCall && this.state.videoCallUri ? this.renderVideoCall() : (<View />)}
+        var sWebview = (
                 <WebView
                     useWebKit={true}
 
@@ -427,172 +434,213 @@ export default class App extends Component<Props> {
                     hideKeyboardAccessoryView={true}
                     injectedJavaScript={this.javascriptToInject()}
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
-
                     onNavigationStateChange={this.onWebViewNavigationStateChange.bind(this)}
-                    style={styles.containerWebView}
-                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}`}}
+                    style={{flex: 1}}
+                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.mode ? MIX_DARK : MIX_LIGHT}`}}
                     userAgent={"UNAMobileApp/Mobile (" + Platform.OS + ")"}
                     onMessage={this.onWebViewMessage.bind(this)}
                     allowFileAccess={true}
                     onLoad={this.onWebViewLoadEnd.bind(this)}
                     onLoadStart={this.onWebViewLoadStart.bind(this)}
                 />
-                {this.state.data.loggedin && (
-                    <Footer>
-                        <FooterTab>
-                            <Button vertical onPress={this.onMainMenu.bind(this)}>
-                                <Icon name="bars" type="FontAwesome5" />
-                            </Button>
-                        </FooterTab>
-                        <FooterTab>
-                            <Button vertical onPress={this.onNotificationsMenu.bind(this)} badge={this.state.data.bubbles['notifications-notifications'] > 0 ? true : false}>
-                                {this.state.data.bubbles['notifications-notifications'] > 0 && 
-                                    (<Badge><Text>{this.state.data.bubbles['notifications-notifications']}</Text></Badge>)
-                                }
-                                <Icon name="bell" type="FontAwesome5" solid />
-                            </Button>
-                        </FooterTab>
-{/*
-                        <FooterTab>
-                            <Button vertical onPress={this.onVideoCallToggle.bind(this)}>
-                                <Icon name="video" type="FontAwesome5" solid />
-                            </Button>
-                        </FooterTab>
-*/}
-                        <FooterTab>
-                            <Button vertical onPress={this.onAddMenu.bind(this)}>
-                                <Icon name="plus-circle" type="FontAwesome5" solid />
-                            </Button>
-                        </FooterTab>
-                        <FooterTab>
-                            <Button vertical onPress={this.onMessengerMenu.bind(this)} badge={this.state.data.bubbles['notifications-messenger'] > 0 ? true : false}>
-                                {this.state.data.bubbles['notifications-messenger'] > 0 && 
-                                    (<Badge><Text>{this.state.data.bubbles['notifications-messenger']}</Text></Badge>)
-                                }
-                                <Icon name="comments" type="FontAwesome5" solid />
-                            </Button>
-                        </FooterTab>                    
-                        <FooterTab>
-                            <Button vertical onPress={this.onProfileMenu.bind(this)} badge={this.state.data.bubbles_num > 0 ? true : false}>
-                                {this.state.data.bubbles_num > 0 && 
-                                    (<Badge><Text>{this.state.data.bubbles_num}</Text></Badge>)
-                                }
-                                <Icon name="user" type="FontAwesome5" solid />
-                            </Button>
-                        </FooterTab>
-                    </Footer>
-                )}
-                {this.state.loading && (
-                    <View style={styles.viewLoading2}>
-                        <ActivityIndicator size="large" color="#fff" />
-                    </View>
-                )}
-            </Drawer>
-            </Container>
         );
-    }
-
-    renderVideoCall () {
-        return (
-            <View style={styles.containerVideoCall}>
-                <VideoCall onConferenceTerminated={this.onConferenceTerminated} onConferenceJoined={this.onConferenceJoined} onConferenceWillJoin={this.onConferenceWillJoin} conferenceUri={this.state.videoCallUri} audio={this.videoCallAudio} userInfo={this.state.data.user_info} />
-            </View>
-        );
-    }
-
-    renderToolbar () {
-        return (        
-            <Header>
-                <Left>
-                    {this.state.data.loggedin ? (
-                        <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={this.onBackAndMainMenu.bind(this)} disabled={this.state.backButtonEnabled ? false : true}>
-                            <Icon name="ios-arrow-back" />
-                        </Button>
-                    ) : (
-                        <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={this.onMainMenu.bind(this)}>
-                            <Icon name='menu' />
-                        </Button>
-                    )}
-                </Left>
-                <Body>            
-                    <Title onPress={this.onHomeMenu.bind(this)}>{TITLE}</Title>
-                </Body>
-                <Right>
-                    {this.state.data.loggedin && (
-                        <Button transparent>
-                            <Icon name='search' onPress={this.onSearchMenu.bind(this)} />
-                        </Button>
-                    )}
-                </Right>
-            </Header>
-        );
-    }
-    
-    renderToolbarSearch () {
-        return (
-            <Header searchBar rounded>
-              <Item>
-                <Icon name="search" />
-                <Input ref="inputSearch" placeholder="Search" onEndEditing={this.onSearchCancelMenu.bind(this)} onSubmitEditing={this.onSearch.bind(this)} />
-              </Item>
-              <Button transparent onPress={this.onSearchCancelMenu.bind(this)}>
-                <Text>Cancel</Text>
-              </Button>
-            </Header>
-        );
-    }
-
-    renderLoadingView () {
-        return (
-            <View style={styles.viewLoading}>
-                <Image source={require('./img/logo-loading.png')} />
-                <Text>Loading...</Text>
-            </View>
-        );
-    }
-
-    renderDrawer () {
         return (
             <Container>
-                <Content>
-                    <View style={styles.drawerImageContainer}>
-                        <Image style={styles.drawerImage} source={require('./img/logo-loading.png')} />
-                    </View>
-                    <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerLoginMenu.bind(this)}>
-                        <Icon style={styles.drawerButtonIcon} name='key' type="FontAwesome5" solid />
-                        <Text>Login</Text>
-                    </Button>
-                    <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerJoinMenu.bind(this)}>
-                        <Icon style={styles.drawerButtonIcon} name='plus-circle' type="FontAwesome5" solid />
-                        <Text>Join</Text>
-                    </Button>
-                    <Button style={styles.drawerButton} iconLeft transparent onPress={this.onDrawerForgotMenu.bind(this)}>
-                        <Icon style={styles.drawerButtonIcon} name='lock' type="FontAwesome5" solid />
-                        <Text>Forgot Password</Text>
-                    </Button>
-                </Content>
+            <Drawer ref="drawer" content={<UnaDrawer onLogin={this.onDrawerLoginMenu.bind(this)} onJoin={this.onDrawerJoinMenu.bind(this)} onForotPassword={this.onDrawerForgotMenu.bind(this)} onClose={this.drawerClose.bind(this)} />} onClose={this.drawerClose.bind(this)}>
+            <UnaApp 
+                webview={sWebview}
+                state={this.state}
+                videoCallAudio={this.videoCallAudio}
+                onSearch={this.onSearch.bind(this)}
+                onSearchCancelMenu={this.onSearchCancelMenu.bind(this)}
+                onMainMenu={this.onMainMenu.bind(this)}
+                onHomeMenu={this.onHomeMenu.bind(this)}
+                onAddMenu={this.onAddMenu.bind(this)}
+                onSearchMenu={this.onSearchMenu.bind(this)}
+                onNotificationsMenu={this.onNotificationsMenu.bind(this)}
+                onMessengerMenu={this.onMessengerMenu.bind(this)}
+                onProfileMenu={this.onProfileMenu.bind(this)}
+                onVideoCallToggle={this.onVideoCallToggle.bind(this)}
+                onConferenceTerminated={this.onConferenceTerminated}
+                onConferenceJoined={this.onConferenceJoined}
+                onConferenceWillJoin={this.onConferenceWillJoin} />
+            </Drawer>
             </Container>
         );
     }
 }
 
-const styles = StyleSheet.create({
+function UnaApp(o) {
+        const styles = useDynamicStyleSheet(dynamicStyles);
+
+        const isDarkMode = useDarkMode();
+        var sBarStyle = 'dark-content';
+        if (Platform.OS === 'android' || isDarkMode)
+            sBarStyle = 'light-content';
+        StatusBar.setBarStyle(sBarStyle, false); 
+
+        return (<Container>
+
+                {o.state.searchbar ? (
+                    <UnaToolbarSearch onSearch={o.onSearch} onSearchCancel={o.onSearchCancelMenu} />
+                ) : (
+                    <UnaToolbar loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} />
+                ) }
+
+                {o.state.videoCall && o.state.videoCallUri ? (
+                    <View style={styles.containerVideoCall}><VideoCall onConferenceTerminated={o.onConferenceTerminated} onConferenceJoined={o.onConferenceJoined} onConferenceWillJoin={o.onConferenceWillJoin} conferenceUri={o.state.videoCallUri} audio={o.videoCallAudio} userInfo={o.state.data.user_info} /></View>
+                ) : (
+                    <View />
+                )}
+
+                {o.webview}
+
+                {o.state.data.loggedin && (
+                    <UnaFooter bubblesNum={o.state.data.bubbles_num} bubbles={o.state.data.bubbles} onMainMenu={o.onMainMenu} onNotificationsMenu={o.onNotificationsMenu} onVideoCallToggle={o.onVideoCallToggle} onAddMenu={o.onAddMenu} onMessengerMenu={o.onMessengerMenu} onProfileMenu={o.onProfileMenu} />
+                )}
+
+                {o.state.loading && (
+                    <View style={styles.viewLoading2}>
+                        <ActivityIndicator size="large" color="#fff" />
+                    </View>
+                )}
+
+                </Container>
+        );
+}
+
+function UnaFooter(o) {
+    const styles = useDynamicStyleSheet(dynamicStyles)
+    return (
+        <Footer style={styles.footer}>
+            <FooterTab>
+                <Button vertical onPress={o.onMainMenu}>
+                    <Icon name="bars" type="FontAwesome5" />
+                </Button>
+            </FooterTab>
+            <FooterTab>
+                <Button vertical onPress={o.onNotificationsMenu} badge={o.bubbles['notifications-notifications'] > 0 ? true : false}>
+                    {o.bubbles['notifications-notifications'] > 0 && 
+                        (<Badge><Text>{o.bubbles['notifications-notifications']}</Text></Badge>)
+                    }
+                    <Icon name="bell" type="FontAwesome5" solid />
+                </Button>
+            </FooterTab>
+{/*
+            <FooterTab>
+                <Button vertical onPress={o.onVideoCallToggle}>
+                    <Icon name="video" type="FontAwesome5" solid />
+                </Button>
+            </FooterTab>
+*/}
+            <FooterTab>
+                <Button vertical onPress={o.onAddMenu}>
+                    <Icon name="plus-circle" type="FontAwesome5" solid />
+                </Button>
+            </FooterTab>
+            <FooterTab>
+                <Button vertical onPress={o.onMessengerMenu} badge={o.bubbles['notifications-messenger'] > 0 ? true : false}>
+                    {o.bubbles['notifications-messenger'] > 0 && 
+                        (<Badge><Text>{o.bubbles['notifications-messenger']}</Text></Badge>)
+                    }
+                    <Icon name="comments" type="FontAwesome5" solid />
+                </Button>
+            </FooterTab>                    
+            <FooterTab>
+                <Button vertical onPress={o.onProfileMenu} badge={o.bubblesNum > 0 ? true : false}>
+                    {o.bubblesNum > 0 && 
+                        (<Badge><Text>{o.bubblesNum}</Text></Badge>)
+                    }
+                    <Icon name="user" type="FontAwesome5" solid />
+                </Button>
+            </FooterTab>
+        </Footer>
+    );
+}
+
+function UnaToolbar(o) {
+    const styles = useDynamicStyleSheet(dynamicStyles)
+    return (
+        <Header style={styles.header}>
+            <Left>
+                {o.loggedin ? (
+                    <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onBackAndMainMenu} disabled={!o.backButtonEnabled}>
+                        <Icon name="ios-arrow-back" />
+                    </Button>
+                ) : (
+                    <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onMainMenu}>
+                        <Icon name='menu' />
+                    </Button>
+                )}
+            </Left>
+            <Body>            
+                <Title style={styles.headerTitle} onPress={o.onHomeMenu}>{TITLE}</Title>
+            </Body>
+            <Right>
+                {o.loggedin && (
+                    <Button transparent>
+                        <Icon name='search' onPress={o.onSearchMenu} />
+                    </Button>
+                )}
+            </Right>
+        </Header>
+    );
+}
+
+function UnaToolbarSearch(o) {
+    const styles = useDynamicStyleSheet(dynamicStyles)
+    return (
+        <Header style={styles.header} searchBar rounded>
+          <Item>
+            <Icon name="search" />
+            <Input placeholder="Search" onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSeach} />
+          </Item>
+          <Button transparent onPress={o.onSearchCancel}>
+            <Text>Cancel</Text>
+          </Button>
+        </Header>
+    );
+}
+
+function UnaDrawer(o) {
+    const styles = useDynamicStyleSheet(dynamicStyles)
+    return (
+        <Container>
+            <Content>
+                <View style={styles.drawerImageContainer}>
+                    <Image style={styles.drawerImage} source={require('./img/logo-loading.png')} />
+                </View>
+                <Button style={styles.drawerButton} iconLeft transparent onPress={o.onLogin}>
+                    <Icon style={styles.drawerButtonIcon} name='key' type="FontAwesome5" solid />
+                    <Text>Login</Text>
+                </Button>
+                <Button style={styles.drawerButton} iconLeft transparent onPress={o.onJoin}>
+                    <Icon style={styles.drawerButtonIcon} name='plus-circle' type="FontAwesome5" solid />
+                    <Text>Join</Text>
+                </Button>
+                <Button style={styles.drawerButton} iconLeft transparent onPress={o.onForotPassword}>
+                    <Icon style={styles.drawerButtonIcon} name='lock' type="FontAwesome5" solid />
+                    <Text>Forgot Password</Text>
+                </Button>
+            </Content>
+        </Container>
+  );
+}
+
+const dynamicStyles = new DynamicStyleSheet({
+    header: {
+        backgroundColor: new DynamicValue('#eee', '#333'),
+    },
+    headerTitle: {
+        color: new DynamicValue('#333', '#eee'),
+    },
+    footer: {
+        backgroundColor: new DynamicValue('#eee', '#333'),
+    },
+
     containerVideoCall: {
         backgroundColor: '#000',
         flex: 999999999999,
-    },
-    containerWebView: {
-        flex: 1,
-    },
-    viewLoading: {
-        position: 'absolute', 
-        top: 0, 
-        left: 0, 
-        right: 0, 
-        bottom: 0, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        backgroundColor: '#FFF',
     },
     viewLoading2: {
         position: 'absolute',
