@@ -131,8 +131,8 @@ export default class App extends Component<Props> {
             if ('android' === Platform.OS)
                 this.onWebViewLoadStart(); // show loading screen
             
-            // this.refs.webView1.goBack();
-            this.injectJavaScript("window.history.go(-1)");
+            this.refs.webView1.goBack();
+            // this.injectJavaScript("window.history.go(-1)");
             return true;
         }
         return false;
@@ -454,6 +454,7 @@ export default class App extends Component<Props> {
                 onSearch={this.onSearch.bind(this)}
                 onSearchCancelMenu={this.onSearchCancelMenu.bind(this)}
                 onMainMenu={this.onMainMenu.bind(this)}
+                onBackAndMainMenu={this.onBackAndMainMenu.bind(this)}
                 onHomeMenu={this.onHomeMenu.bind(this)}
                 onAddMenu={this.onAddMenu.bind(this)}
                 onSearchMenu={this.onSearchMenu.bind(this)}
@@ -484,7 +485,7 @@ function UnaApp(o) {
                 {o.state.searchbar ? (
                     <UnaToolbarSearch onSearch={o.onSearch} onSearchCancel={o.onSearchCancelMenu} />
                 ) : (
-                    <UnaToolbar loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} />
+                    <UnaToolbar loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} onBackAndMainMenu={o.onBackAndMainMenu} />
                 ) }
 
                 {o.state.videoCall && o.state.videoCallUri ? (
@@ -564,9 +565,11 @@ function UnaToolbar(o) {
         <Header style={styles.header}>
             <Left>
                 {o.loggedin ? (
-                    <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onBackAndMainMenu} disabled={!o.backButtonEnabled}>
+                    o.backButtonEnabled && 
+                        (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onBackAndMainMenu}>
                         <Icon name="ios-arrow-back" />
-                    </Button>
+                        </Button>)
+                    
                 ) : (
                     <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onMainMenu}>
                         <Icon name='menu' />
