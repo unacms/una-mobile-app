@@ -576,7 +576,7 @@ function UnaToolbar(o) {
                     </Button>
                 )}
             </Left>
-            <Body>            
+            <Body>
                 <Title style={styles.headerTitle} onPress={o.onHomeMenu}>{TITLE}</Title>
             </Body>
             <Right>
@@ -633,6 +633,7 @@ function UnaDrawer(o) {
 const dynamicStyles = new DynamicStyleSheet({
     header: {
         backgroundColor: new DynamicValue('#eee', '#333'),
+        height: 46, paddingTop:0, // tmp fix - https://github.com/GeekyAnts/NativeBase/issues/3095
     },
     headerTitle: {
         color: new DynamicValue('#333', '#eee'),
