@@ -477,9 +477,11 @@ function UnaApp(o) {
 
         const isDarkMode = useDarkMode();
         var sBarStyle = 'dark-content';
-        if (Platform.OS === 'android' || isDarkMode)
+        if (Platform.OS === 'android' || isDarkMode) {
             sBarStyle = 'light-content';
-        StatusBar.setBarStyle(sBarStyle, false); 
+            StatusBar.setBackgroundColor('#076fd3');
+        }
+        StatusBar.setBarStyle(sBarStyle, false);         
 
         return (<Container>
 
@@ -515,45 +517,45 @@ function UnaFooter(o) {
     const styles = useDynamicStyleSheet(dynamicStyles)
     return (
         <Footer style={styles.footer}>
-            <FooterTab>
+            <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onMainMenu}>
-                    <Icon name="bars" type="FontAwesome5" />
+                    <Icon style={styles.footerIcon} name="bars" type="FontAwesome5" />
                 </Button>
             </FooterTab>
-            <FooterTab>
+            <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onNotificationsMenu} badge={o.bubbles['notifications-notifications'] > 0 ? true : false}>
                     {o.bubbles['notifications-notifications'] > 0 && 
                         (<Badge><Text>{o.bubbles['notifications-notifications']}</Text></Badge>)
                     }
-                    <Icon name="bell" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="bell" type="FontAwesome5" solid />
                 </Button>
             </FooterTab>
 {/*
-            <FooterTab>
+            <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onVideoCallToggle}>
-                    <Icon name="video" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="video" type="FontAwesome5" solid />
                 </Button>
             </FooterTab>
 */}
-            <FooterTab>
+            <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onAddMenu}>
-                    <Icon name="plus-circle" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="plus-circle" type="FontAwesome5" solid />
                 </Button>
             </FooterTab>
-            <FooterTab>
+            <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onMessengerMenu} badge={o.bubbles['notifications-messenger'] > 0 ? true : false}>
                     {o.bubbles['notifications-messenger'] > 0 && 
                         (<Badge><Text>{o.bubbles['notifications-messenger']}</Text></Badge>)
                     }
-                    <Icon name="comments" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="comments" type="FontAwesome5" solid />
                 </Button>
             </FooterTab>                    
-            <FooterTab>
+            <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onProfileMenu} badge={o.bubblesNum > 0 ? true : false}>
                     {o.bubblesNum > 0 && 
                         (<Badge><Text>{o.bubblesNum}</Text></Badge>)
                     }
-                    <Icon name="user" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="user" type="FontAwesome5" solid />
                 </Button>
             </FooterTab>
         </Footer>
@@ -566,8 +568,8 @@ function UnaToolbar(o) {
         <Header style={styles.header}>
             <Left>
                 {o.loggedin ? (
-                    o.backButtonEnabled && 
-                        (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onBackAndMainMenu}>
+                    (o.backButtonEnabled || Platform.OS === 'android') && 
+                        (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent disabled={!o.backButtonEnabled} onPress={o.onBackAndMainMenu}>
                         <Icon name="ios-arrow-back" />
                         </Button>)
                     
@@ -616,15 +618,15 @@ function UnaDrawer(o) {
                 </View>
                 <Button style={styles.drawerButton} iconLeft transparent onPress={o.onLogin}>
                     <Icon style={styles.drawerButtonIcon} name='key' type="FontAwesome5" solid />
-                    <Text>Login</Text>
+                    <Text style={styles.drawerButtonText}>Login</Text>
                 </Button>
                 <Button style={styles.drawerButton} iconLeft transparent onPress={o.onJoin}>
                     <Icon style={styles.drawerButtonIcon} name='plus-circle' type="FontAwesome5" solid />
-                    <Text>Join</Text>
+                    <Text style={styles.drawerButtonText}>Join</Text>
                 </Button>
                 <Button style={styles.drawerButton} iconLeft transparent onPress={o.onForotPassword}>
                     <Icon style={styles.drawerButtonIcon} name='lock' type="FontAwesome5" solid />
-                    <Text>Forgot Password</Text>
+                    <Text style={styles.drawerButtonText}>Forgot Password</Text>
                 </Button>
             </Content>
         </Container>
@@ -633,14 +635,20 @@ function UnaDrawer(o) {
 
 const dynamicStyles = new DynamicStyleSheet({
     header: {
-        backgroundColor: new DynamicValue('#eee', '#333'),
+        backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
         height: 46, paddingTop:0, // tmp fix - https://github.com/GeekyAnts/NativeBase/issues/3095
     },
     headerTitle: {
-        color: new DynamicValue('#333', '#eee'),
+        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#333', '#eee'),
     },
     footer: {
-        backgroundColor: new DynamicValue('#eee', '#333'),
+        backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
+    },
+    footerTab: {
+        backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
+    },
+    footerIcon: {
+        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#333', '#eee'),
     },
 
     containerVideoCall: {
@@ -678,6 +686,10 @@ const dynamicStyles = new DynamicStyleSheet({
         fontSize: 20,
         justifyContent: 'center',
         textAlign: 'center',
+        color: '#1890ff',
     },
+    drawerButtonText: {
+        color: '#1890ff',
+    }
 });
 

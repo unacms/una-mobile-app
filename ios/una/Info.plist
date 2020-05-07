@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to take picture to publish it on the site or use for video chat</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This shouldn't happen in this app</string>
+	<string>This shouldn&apos;t happen in this app</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Make a post with your current location or save profile location</string>
 	<key>NSMicrophoneUsageDescription</key>
