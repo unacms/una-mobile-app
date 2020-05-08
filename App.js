@@ -71,9 +71,7 @@ export default class App extends Component<Props> {
         this.onConferenceJoined = this.onConferenceJoined.bind(this);
         this.onConferenceWillJoin = this.onConferenceWillJoin.bind(this);
 
-        this.onVideoCallStart = this.onVideoCallStart.bind(this);
-
-        eventEmitter.on('currentModeChanged', this.onModeChanged.bind(this));
+        this.onVideoCallStart = this.onVideoCallStart.bind(this);        
     }
 
     onModeChanged(newMode) {
@@ -327,6 +325,10 @@ export default class App extends Component<Props> {
         SplashScreen.hide();
     }
 
+    componentWillMount() {
+        eventEmitter.on('currentModeChanged', this.onModeChanged.bind(this));
+    }
+
     componentDidMount() {
         OneSignal.init(ONESIGNALAPPID, {kOSSettingsKeyAutoPrompt : true});
         OneSignal.inFocusDisplaying(0);
@@ -345,6 +347,8 @@ export default class App extends Component<Props> {
     }
     
     componentWillUnmount() {
+        eventEmitter.removeListener('currentModeChanged', this.onModeChanged);
+
         OneSignal.removeEventListener('received', this.onNotificationReceived);        
         OneSignal.removeEventListener('opened', this.onNotificationOpened);
 
@@ -477,10 +481,10 @@ function UnaApp(o) {
 
         const isDarkMode = useDarkMode();
         var sBarStyle = 'dark-content';
-        if (Platform.OS === 'android' || isDarkMode) {
-            sBarStyle = 'light-content';
+        if (Platform.OS === 'android' || isDarkMode)
+            sBarStyle = 'light-content';            
+        if (Platform.OS === 'android')
             StatusBar.setBackgroundColor('#076fd3');
-        }
         StatusBar.setBarStyle(sBarStyle, false);         
 
         return (<Container>
@@ -488,7 +492,7 @@ function UnaApp(o) {
                 {o.state.searchbar ? (
                     <UnaToolbarSearch onSearch={o.onSearch} onSearchCancel={o.onSearchCancelMenu} />
                 ) : (
-                    <UnaToolbar loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} onBackAndMainMenu={o.onBackAndMainMenu} />
+                    <UnaToolbar loading={o.state.loading} loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} onBackAndMainMenu={o.onBackAndMainMenu} />
                 ) }
 
                 {o.state.videoCall && o.state.videoCallUri ? (
@@ -501,12 +505,6 @@ function UnaApp(o) {
 
                 {o.state.data.loggedin && (
                     <UnaFooter bubblesNum={o.state.data.bubbles_num} bubbles={o.state.data.bubbles} onMainMenu={o.onMainMenu} onNotificationsMenu={o.onNotificationsMenu} onVideoCallToggle={o.onVideoCallToggle} onAddMenu={o.onAddMenu} onMessengerMenu={o.onMessengerMenu} onProfileMenu={o.onProfileMenu} />
-                )}
-
-                {o.state.loading && (
-                    <View style={styles.viewLoading2}>
-                        <ActivityIndicator size="large" color="#fff" />
-                    </View>
                 )}
 
                 </Container>
@@ -567,7 +565,10 @@ function UnaToolbar(o) {
     return (
         <Header style={styles.header}>
             <Left>
-                {o.loggedin ? (
+            {o.loading ? (
+                <ActivityIndicator size="small" style={styles.loadingIndicator} />
+            ):(
+                o.loggedin ? (
                     (o.backButtonEnabled || Platform.OS === 'android') && 
                         (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent disabled={!o.backButtonEnabled} onPress={o.onBackAndMainMenu}>
                         <Icon name="ios-arrow-back" />
@@ -577,7 +578,8 @@ function UnaToolbar(o) {
                     <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onMainMenu}>
                         <Icon name='menu' />
                     </Button>
-                )}
+                )
+            )}
             </Left>
             <Body>
                 <Title style={styles.headerTitle} onPress={o.onHomeMenu}>{TITLE}</Title>
@@ -655,13 +657,10 @@ const dynamicStyles = new DynamicStyleSheet({
         backgroundColor: '#000',
         flex: 999999999999,
     },
-    viewLoading2: {
-        position: 'absolute',
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#00000066',
+
+    loadingIndicator: {
+        marginLeft: 5,
+        marginTop: 5,
     },
     buttonLeftTopAndroid: {
     },
