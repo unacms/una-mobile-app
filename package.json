@@ -12,12 +12,12 @@
   "dependencies": {
     "native-base": "^2.13.12",
     "react": "16.11.0",
-    "react-native": "0.62.1",
+    "react-native": "0.62.2",
     "react-native-dark-mode": "^0.2.2",
     "react-native-jitsi-meet": "^2.1.1",
-    "react-native-onesignal": "^3.7.1",
+    "react-native-onesignal": "^3.7.3",
     "react-native-splash-screen": "^3.2.0",
-    "react-native-webview": "^9.1.1"
+    "react-native-webview": "^9.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

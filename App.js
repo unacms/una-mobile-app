@@ -399,7 +399,7 @@ export default class App extends Component<Props> {
         }
 
         if ('undefined' !== typeof(oMsgData['stop_loading']) && oMsgData['stop_loading']) {
-            this.onWebViewLoadEnd (event);
+            // this.onWebViewLoadEnd (event);
         }
 
         if ('undefined' !== typeof(oMsgData['video_call_start'])) {
@@ -641,7 +641,7 @@ const dynamicStyles = new DynamicStyleSheet({
         height: 46, paddingTop:0, // tmp fix - https://github.com/GeekyAnts/NativeBase/issues/3095
     },
     headerTitle: {
-        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#333', '#eee'),
+        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#333', '#ccc'),
     },
     footer: {
         backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
@@ -650,7 +650,7 @@ const dynamicStyles = new DynamicStyleSheet({
         backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
     },
     footerIcon: {
-        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#333', '#eee'),
+        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#555', '#ccc'),
     },
 
     containerVideoCall: {
