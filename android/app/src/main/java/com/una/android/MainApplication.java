@@ -5,9 +5,6 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -36,11 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected String getJSMainModuleName() {
           return "index";
-        }
-
-        @Override
-        protected @Nullable String getBundleAssetName() {
-          return "app.bundle";
         }
       };
 
