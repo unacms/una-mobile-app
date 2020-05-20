@@ -74,22 +74,16 @@ Then you can generate app icons for Android using the following command:
 react-native set-icon --platform android --path ./img/icon-android.png
 ```
 
-To generate splash for Android, some trick is needed (make sure that you replace Kookaburra with your own app name):  
-Change `"name": "kookaburra"` in `package.json` file to `"name": "kookaburra/android"`.   
-Then run the following command:  
+To generate splash for Android:  
 ```bash
 react-native set-splash --platform android --path ./img/background.png --resize contain
 ```
-Then change `"name": "kookaburra/android"` back to `"name": "kookaburra"` in `package.json` file.  
 
-Changing splash and app icon for iOS app requires similar trick:  
-Change `"name": "kookaburra"` in `package.json` file to `"name": "una"`.   
-Then run the following commands:  
+Changing splash and app icon for iOS:  
 ```bash
 react-native set-icon --platform ios --path ./img/icon.png
 react-native set-splash --platform ios --path ./img/background.png --resize contain
 ```
-Then change `"name": "una"` back to `"name": "kookaburra"` in `package.json` file.  
 
 
 ## 3rd-party guides
