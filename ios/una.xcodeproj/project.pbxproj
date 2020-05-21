@@ -791,6 +791,7 @@
 				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
 				CURRENT_PROJECT_VERSION = 1405;
 				DEVELOPMENT_TEAM = 235MTP3MJ2;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.4.0;
