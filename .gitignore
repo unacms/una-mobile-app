@@ -29,6 +29,7 @@ build/
 local.properties
 *.iml
 hs_err_pid*.log
+java_pid*.hprof
 
 # node.js
 #
