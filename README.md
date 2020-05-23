@@ -5,7 +5,7 @@ Mobile apps need to have **Nexus** UNA app installed.
 
 ## Run
 
-You need to have [npm](https://www.npmjs.com), [react-native](https://facebook.github.io/react-native/) along with [Android SDK](https://developer.android.com/studio) and/or [XCode](https://developer.apple.com/xcode/) along withg [CocoaPods](https://cocoapods.org/) installed to build apps.
+You need to have [npm](https://www.npmjs.com), [Android SDK](https://developer.android.com/studio) and/or [XCode](https://developer.apple.com/xcode/) along withg [CocoaPods](https://cocoapods.org/) installed to build apps.
 
 After downloading source code, unpacking it, then run:
 ```bash
@@ -14,12 +14,12 @@ npm install
 Then you can already try to run Andoid app with the following commands (Android emulator must be already running):
 ```bash
 export ANDROID_HOME=/path/to/android/sdk
-react-native run-android
+npx react-native run-android
 ```
 or iOS app (on Mac OSX only):
 ```
 cd ios; pod install; cd ..
-react-native run-ios
+npx react-native run-ios
 ```
 
 ## Changing display name and bundle identifier
@@ -71,18 +71,18 @@ npm i -D @bam.tech/react-native-make
 
 Then you can generate app icons for Android using the following command:
 ```bash
-react-native set-icon --platform android --path ./img/icon-android.png
+npx react-native set-icon --platform android --path ./img/icon-android.png
 ```
 
 To generate splash for Android:  
 ```bash
-react-native set-splash --platform android --path ./img/background.png --resize contain
+npx react-native set-splash --platform android --path ./img/background.png --resize contain
 ```
 
 Changing splash and app icon for iOS:  
 ```bash
-react-native set-icon --platform ios --path ./img/icon.png
-react-native set-splash --platform ios --path ./img/background.png --resize contain
+npx react-native set-icon --platform ios --path ./img/icon.png
+npx react-native set-splash --platform ios --path ./img/background.png --resize contain
 ```
 
 
