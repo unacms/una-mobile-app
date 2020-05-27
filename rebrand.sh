@@ -47,7 +47,7 @@ mv ./android/app/src/main/java/com/${p2} ./android/app/src/main/java/com/${PACKA
 
 
 ${SED} -r -i "s%package=\"([a-z0-9\.]+)\"%package=\"${PACKAGE}\"%g" ./android/app/src/main/AndroidManifest.xml
-${SED} -r -i "s%android:label=\"(.*?)\"%android:label=\"${TITLE}\"%g" ./android/app/src/main/AndroidManifest.xml
+${SED} -r -i "s%intent-filter android:label=\"(.*?)\"%intent-filter android:label=\"${TITLE}\"%g" ./android/app/src/main/AndroidManifest.xml
 ${SED} -r -i "s%android:host=\"(.*?)\"%android:host=\"${DOMAIN}\"%g" ./android/app/src/main/AndroidManifest.xml
 
 
