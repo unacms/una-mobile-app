@@ -69,22 +69,19 @@ To change launcher and icons for iOS and Android apps it's recommended to use sp
 npm i -D @bam.tech/react-native-make
 ```
 
-Then you can generate app icons for Android using the following command:
+Then you can generate app icons and splash for Android using the following command:
 ```bash
 npx react-native set-icon --platform android --path ./img/icon-android.png
-```
-
-To generate splash for Android:  
-```bash
 npx react-native set-splash --platform android --path ./img/background.png --resize contain
 ```
 
-Changing splash and app icon for iOS:  
+Before generating splash and app icon of iOS app rename `ios/una` folder to `ios/kookaburra`:
 ```bash
 npx react-native set-icon --platform ios --path ./img/icon.png
 npx react-native set-splash --platform ios --path ./img/background.png --resize contain
 ```
-
+After images are generated rename it back `ios/kookaburra` to `ios/una`.
+Then open `kookaburra.xcworkspace` in XCode and add `SplashScreen.storyboard` file to the project to use it as splash.
 
 ## 3rd-party guides
 
