@@ -601,7 +601,7 @@ function UnaToolbarSearch(o) {
         <Header style={styles.header} searchBar rounded>
           <Item>
             <Icon name="search" />
-            <Input placeholder="Search" onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSeach} />
+            <Input placeholder="Search" onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSearch} />
           </Item>
           <Button transparent onPress={o.onSearchCancel}>
             <Text>Cancel</Text>
