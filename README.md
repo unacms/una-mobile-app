@@ -24,6 +24,8 @@ npx react-native run-ios
 
 ## Changing display name and bundle identifier
 
+There is `rebrand.sh` script to help with below changes, just change variables in the beginning of the file and run it.
+
 Lest assume that you want to rename app to **Kookaburra** and site name is **kookaburra.io**.   
 Then you need to change the following strings:
 ```
