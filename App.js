@@ -515,11 +515,13 @@ function UnaFooter(o) {
     const styles = useDynamicStyleSheet(dynamicStyles)
     return (
         <Footer style={styles.footer}>
-            <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onMainMenu}>
-                    <Icon style={styles.footerIcon} name="bars" type="FontAwesome5" />
-                </Button>
-            </FooterTab>
+            {!('decorous' == TEMPLATE && Platform.isPad) &&
+                (<FooterTab style={styles.footerTab}>
+                    <Button vertical onPress={o.onMainMenu}>
+                        <Icon style={styles.footerIcon} name="bars" type="FontAwesome5" />
+                    </Button>
+                </FooterTab>)
+            }
             <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onNotificationsMenu} badge={o.bubbles['notifications-notifications'] > 0 ? true : false}>
                     {o.bubbles['notifications-notifications'] > 0 && 
