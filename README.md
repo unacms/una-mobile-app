@@ -5,7 +5,7 @@ Mobile apps need to have **Nexus** UNA app installed.
 
 ## Run
 
-You need to have [Node.js](https://nodejs.org/), [Android SDK](https://developer.android.com/studio) and/or [XCode](https://developer.apple.com/xcode/) along withg [CocoaPods](https://cocoapods.org/) installed to build apps.
+You need to have [Node.js](https://nodejs.org/), [Android SDK](https://developer.android.com/studio) for Android Apps and [XCode](https://developer.apple.com/xcode/) for iOS apps along withg [CocoaPods](https://cocoapods.org/) installed to build apps.
 
 After downloading source code, unpacking it, then run:
 ```bash
