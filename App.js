@@ -17,6 +17,7 @@ import {
     ActivityIndicator,
     Dimensions,
     StatusBar,
+    Alert,
 } from 'react-native';
 import { 
     View,
@@ -27,6 +28,13 @@ import {
     Drawer,
 } from 'native-base';
 
+import RNIap, {
+  purchaseErrorListener,
+  purchaseUpdatedListener,
+  type ProductPurchase,
+  type PurchaseError
+} from 'react-native-iap';
+
 import { initialMode, useDarkMode, DynamicStyleSheet, DynamicValue, useDynamicStyleSheet, eventEmitter } from 'react-native-dark-mode';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import VideoCall from './VideoCall';
@@ -35,18 +43,22 @@ import { version } from './package.json';
 
 type Props = {};
 
-const BASE_URL = 'https://una.io/';
-const MIX_LIGHT = '12';
-const MIX_DARK = '13';
-const TEMPLATE = 'protean';
-const TITLE = 'UNA.IO';
-const ONESIGNALAPPID = '';
+const BASE_URL = 'https://una.io/'; // site URL
+const MIX_LIGHT = '12'; // template styles mix for light mode
+const MIX_DARK = '13'; // template styles mix for dark mode
+const TEMPLATE = 'protean'; // template name
+const TITLE = 'UNA.IO'; // app title
+const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
+const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
 
 export default class App extends Component<Props> {
 
     loading = false;
     videoCallAudio = false;
     mode = initialMode;
+    purchaseUpdateSubscription = null;
+    purchaseErrorSubscription = null;
+    products = {};
 
     constructor(props) {
         super(props);
@@ -74,11 +86,33 @@ export default class App extends Component<Props> {
         this.onVideoCallStart = this.onVideoCallStart.bind(this);        
     }
 
-    onModeChanged(newMode) {
+    onModeChanged(newMode){
         this.mode = newMode;
         this.setState ({
             key: this.state.key + 1,
         });
+    }
+
+    async onRequestPurchase (sku: string) {
+        if ('ios' === Platform.OS)
+            RNIap.clearTransactionIOS();
+        try {
+            await RNIap.requestPurchase(sku, false);
+        } catch (err) {
+            console.warn(err.code, err.message);
+            Alert.alert(err.message);
+        }
+    }
+
+    async onRequestSubscription (sku: string) {
+        if ('ios' === Platform.OS)
+            RNIap.clearTransactionIOS();
+        try {            
+            await RNIap.requestSubscription(sku);
+        } catch (err) {
+            console.warn(err.code, err.message);
+            Alert.alert(err.message);
+        }
     }
 
     onConferenceTerminated(e) {
@@ -329,7 +363,7 @@ export default class App extends Component<Props> {
         eventEmitter.on('currentModeChanged', this.onModeChanged.bind(this));
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         OneSignal.init(ONESIGNALAPPID, {kOSSettingsKeyAutoPrompt : true});
         OneSignal.inFocusDisplaying(0);
 
@@ -344,6 +378,54 @@ export default class App extends Component<Props> {
         }
 
         SplashScreen.hide();
+
+        if (PAYMENTS_CALLBACK != '') {
+            var _self = this;
+            try {
+                await RNIap.initConnection();
+                const sProducts = await fetch(BASE_URL + 'modules/?r=oauth2/com/get_products_names&module=system&class=BaseServices');
+                _self.products = await sProducts.json();
+                await RNIap.getSubscriptions(Object.keys(_self.products));
+                await RNIap.getProducts(Object.keys(_self.products));
+            } catch(err) {
+                console.warn(err);
+            }
+
+            purchaseUpdateSubscription = purchaseUpdatedListener(async (oPurchaseData: ProductPurchase) => {
+                console.log('purchaseUpdatedListener', oPurchaseData);
+
+                if ('undefined' !== typeof(oPurchaseData.transactionId) && _self.state.data.loggedin != 0) {
+                    var sProductName = 'undefined' !== typeof(oPurchaseData.productId) ? oPurchaseData.productId : null;
+                    var sTxId = 'undefined' !== typeof(oPurchaseData.transactionId) ? oPurchaseData.transactionId : '';
+                    var sTxIdOriginal = 'undefined' !== typeof(oPurchaseData.originalTransactionIdentifierIOS) ? oPurchaseData.originalTransactionIdentifierIOS : '';
+
+                    await fetch(PAYMENTS_CALLBACK, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'User-Agent': "UNAMobileApp/Mobile (" + Platform.OS + ")",
+                        },
+                        body: JSON.stringify({
+                            notification_type: 'INITIAL_BUY_CUSTOM',
+                            module: 'undefined' !== typeof(_self.products[sProductName]) ? _self.products[sProductName] : null,
+                            product: sProductName,
+                            count: 1,
+                            original_transaction: sTxIdOriginal,
+                            transaction: sTxId,
+                            profile_id: _self.state.data.loggedin ? _self.state.data.user_info.id : 0,
+                            original_data: oPurchaseData,
+                        })
+                    });
+    
+                    if ('ios' === Platform.OS)
+                        RNIap.finishTransactionIOS(sTxId);
+                }
+            });
+            purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
+                console.log('purchaseErrorListener', error);
+            }); 
+        }
     }
     
     componentWillUnmount() {
@@ -351,6 +433,15 @@ export default class App extends Component<Props> {
 
         OneSignal.removeEventListener('received', this.onNotificationReceived);        
         OneSignal.removeEventListener('opened', this.onNotificationOpened);
+
+        if (this.purchaseUpdateSubscription) {
+            this.purchaseUpdateSubscription.remove();
+            this.purchaseUpdateSubscription = null;
+        }
+        if (this.purchaseErrorSubscription) {
+            this.purchaseErrorSubscription.remove();
+            this.purchaseErrorSubscription = null;
+        }
 
         if (Platform.OS === 'android') {
             this.backHandler.remove();
@@ -408,6 +499,14 @@ export default class App extends Component<Props> {
         if ('undefined' !== typeof(oMsgData['video_call_stop']) && oMsgData['video_call_stop']) {
             this.endVideoCall ();
         }
+
+        if ('undefined' !== typeof(oMsgData['request_purchase']) && oMsgData['request_purchase']) {
+            this.onRequestPurchase (oMsgData['request_purchase']);
+        }
+        if ('undefined' !== typeof(oMsgData['request_subscription']) && oMsgData['request_subscription']) {
+            this.onRequestSubscription (oMsgData['request_subscription']);
+        }
+
         if ('undefined' !== typeof(oMsgData['goto_home']) && oMsgData['goto_home']) {
             this.onHomeMenu ();
         }
@@ -467,6 +566,8 @@ export default class App extends Component<Props> {
                 onMessengerMenu={this.onMessengerMenu.bind(this)}
                 onProfileMenu={this.onProfileMenu.bind(this)}
                 onVideoCallToggle={this.onVideoCallToggle.bind(this)}
+                onRequestSubscription={this.onRequestSubscription} 
+                onRequestPurchase={this.onRequestPurchase} 
                 onConferenceTerminated={this.onConferenceTerminated}
                 onConferenceJoined={this.onConferenceJoined}
                 onConferenceWillJoin={this.onConferenceWillJoin} />
@@ -504,7 +605,7 @@ function UnaApp(o) {
                 {o.webview}
 
                 {o.state.data.loggedin && (
-                    <UnaFooter bubblesNum={o.state.data.bubbles_num} bubbles={o.state.data.bubbles} onMainMenu={o.onMainMenu} onNotificationsMenu={o.onNotificationsMenu} onVideoCallToggle={o.onVideoCallToggle} onAddMenu={o.onAddMenu} onMessengerMenu={o.onMessengerMenu} onProfileMenu={o.onProfileMenu} />
+                    <UnaFooter bubblesNum={o.state.data.bubbles_num} bubbles={o.state.data.bubbles} onMainMenu={o.onMainMenu} onNotificationsMenu={o.onNotificationsMenu} onVideoCallToggle={o.onVideoCallToggle} onRequestPurchase={o.onRequestPurchase} onRequestSubscription={o.onRequestSubscription} onAddMenu={o.onAddMenu} onMessengerMenu={o.onMessengerMenu} onProfileMenu={o.onProfileMenu} />
                 )}
 
                 </Container>
@@ -583,7 +684,7 @@ function UnaToolbar(o) {
                 )
             )}
             </Left>
-            <Body>
+            <Body style={Platform.OS === 'android' && {flexDirection: 'row', justifyContent: 'flex-start'}}>
                 <Title style={styles.headerTitle} onPress={o.onHomeMenu}>{TITLE}</Title>
             </Body>
             <Right>

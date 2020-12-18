@@ -39,6 +39,9 @@
 		E0D59055301843CC9814F379 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1B68D8B04A04539A20D70FE /* Roboto.ttf */; };
 		E71F5582DD036D39895B4CF7 /* libPods-una.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37BD084A5A6D3EA9652736F4 /* libPods-una.a */; };
 		E997B8610E8FE0B417C6279C /* libPods-una-unaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E516E4D0B01D0D957C9829 /* libPods-una-unaTests.a */; };
+		FA21B161257FA6B900E0BF68 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA21B160257FA6B900E0BF68 /* StoreKit.framework */; };
+		FA21B1672583755300E0BF68 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA21B1662583755300E0BF68 /* SplashScreen.storyboard */; };
+		FA21B1682583755300E0BF68 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA21B1662583755300E0BF68 /* SplashScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +107,8 @@
 		F27F5945B35A48D38AB626F9 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		F2BBC9217F857021596B12A2 /* libPods-una-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-una-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5A2D7DEDE81460EACAF2602 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		FA21B160257FA6B900E0BF68 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		FA21B1662583755300E0BF68 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		FAFFDF72246EA89300F78556 /* una.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = una.entitlements; path = una/una.entitlements; sourceTree = "<group>"; };
 		FBDD1932E2DF906FFEE3F913 /* Pods-una-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-una-tvOS.release.xcconfig"; path = "Target Support Files/Pods-una-tvOS/Pods-una-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +127,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E71F5582DD036D39895B4CF7 /* libPods-una.a in Frameworks */,
+				FA21B161257FA6B900E0BF68 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +170,7 @@
 		13B07FAE1A68108700A75B9A /* una */ = {
 			isa = PBXGroup;
 			children = (
+				FA21B1662583755300E0BF68 /* SplashScreen.storyboard */,
 				FAFFDF72246EA89300F78556 /* una.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -179,6 +186,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA21B160257FA6B900E0BF68 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				37BD084A5A6D3EA9652736F4 /* libPods-una.a */,
@@ -416,6 +424,7 @@
 				5DCD7E52A59F4569938E3FB7 /* FontAwesome.ttf in Resources */,
 				A473796212FE4B72857D13B7 /* FontAwesome5_Brands.ttf in Resources */,
 				B81DB4918CB64E7EA48634B5 /* FontAwesome5_Regular.ttf in Resources */,
+				FA21B1672583755300E0BF68 /* SplashScreen.storyboard in Resources */,
 				6659C1EBBA694C9FA2816285 /* FontAwesome5_Solid.ttf in Resources */,
 				6504BB5429DD4CE2B3DFD02D /* Fontisto.ttf in Resources */,
 				222400D7EBA04F2C96DB08BE /* Foundation.ttf in Resources */,
@@ -436,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
+				FA21B1682583755300E0BF68 /* SplashScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,7 +768,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
-				CURRENT_PROJECT_VERSION = 1410;
+				CURRENT_PROJECT_VERSION = 1500;
 				DEVELOPMENT_TEAM = 235MTP3MJ2;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -767,7 +777,7 @@
 				);
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -789,12 +799,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
-				CURRENT_PROJECT_VERSION = 1410;
+				CURRENT_PROJECT_VERSION = 1500;
 				DEVELOPMENT_TEAM = 235MTP3MJ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

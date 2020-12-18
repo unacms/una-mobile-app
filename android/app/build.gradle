@@ -134,8 +134,8 @@ android {
         applicationId "com.una.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1410
-        versionName "1.4.1"
+        versionCode 1500
+        versionName "1.5.0"
     }
     signingConfigs {
         release {
