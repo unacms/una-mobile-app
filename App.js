@@ -283,6 +283,7 @@ export default class App extends Component<Props> {
     }
 
     onWebViewLoadStart (syntheticEvent) {
+
         if (-1 == this.state.url.indexOf(`${BASE_URL}`)) { // loading indicator is supported on original domains only
             this.onWebViewLoadEnd(syntheticEvent);
             return;
@@ -295,6 +296,7 @@ export default class App extends Component<Props> {
     }
     
     onWebViewLoadEnd (syntheticEvent) {
+
         this.loading = false;
         this.setState ({
             loading: this.loading,
@@ -459,6 +461,7 @@ export default class App extends Component<Props> {
     }
     
     onWebViewMessage(event) {
+
         let oMsgData;
         try {
             oMsgData = JSON.parse(event.nativeEvent.data);
@@ -624,9 +627,9 @@ function UnaFooter(o) {
                 </FooterTab>)
             }
             <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onNotificationsMenu} badge={o.bubbles['notifications-notifications'] > 0 ? true : false}>
-                    {o.bubbles['notifications-notifications'] > 0 && 
-                        (<Badge><Text>{o.bubbles['notifications-notifications']}</Text></Badge>)
+                <Button vertical onPress={o.onNotificationsMenu} badge={o.bubbles['notifications-preview'] > 0 ? true : false}>
+                    {o.bubbles['notifications-preview'] > 0 && 
+                        (<Badge><Text>{o.bubbles['notifications-preview']}</Text></Badge>)
                     }
                     <Icon style={styles.footerIcon} name="bell" type="FontAwesome5" solid />
                 </Button>
@@ -652,9 +655,9 @@ function UnaFooter(o) {
                 </Button>
             </FooterTab>                    
             <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onProfileMenu} badge={o.bubblesNum > 0 ? true : false}>
-                    {o.bubblesNum > 0 && 
-                        (<Badge><Text>{o.bubblesNum}</Text></Badge>)
+                <Button vertical onPress={o.onProfileMenu} badge={o.bubbles['account'] > 0 ? true : false}>
+                    {o.bubbles['account'] > 0 && 
+                        (<Badge><Text>{o.bubbles['account']}</Text></Badge>)
                     }
                     <Icon style={styles.footerIcon} name="user" type="FontAwesome5" solid />
                 </Button>
