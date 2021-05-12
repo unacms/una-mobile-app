@@ -413,8 +413,13 @@ export default class App extends Component<Props> {
 
         if (Platform.OS === 'android') {
             this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-                this.onBack(); // works best when the goBack is async
-                return true;
+                if (this.state.backButtonEnabled) {
+                    this.onBack(); // works best when the goBack is async
+                    return true;
+                }
+                else {
+                    return false;
+                }
             });
         }
 
