@@ -361,16 +361,55 @@ export default class App extends Component<Props> {
         SplashScreen.hide();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         eventEmitter.on('currentModeChanged', this.onModeChanged.bind(this));
     }
 
     async componentDidMount() {
-        OneSignal.init(ONESIGNALAPPID, {kOSSettingsKeyAutoPrompt : true});
-        OneSignal.inFocusDisplaying(0);
+        OneSignal.setLogLevel(6, 0);
+        OneSignal.setAppId(ONESIGNALAPPID);
+        // OneSignal.inFocusDisplaying(0);
+        OneSignal.promptForPushNotificationsWithUserResponse(response => {
+            console.log("OneSignal Prompt response:", response);
+        });
+        OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+            console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+            let notification = notificationReceivedEvent.getNotification();
+            console.log("OneSignal notification: ", notification);
+            const data = notification.additionalData;
+            console.log("OneSignal additionalData: ", data);
+            const button1 = {
+                text: "Cancel",
+                onPress: () => { 
+                    notificationReceivedEvent.complete(); 
+                },
+                style: "cancel"
+            };
+            const button2 = { 
+                text: "Complete", 
+                onPress: () => { 
+                    notificationReceivedEvent.complete(notification); 
+                }
+            };
+            Alert.alert("Complete notification?", "Test", [button1, button2], { 
+                cancelable: true 
+            });
+        });
 
-        OneSignal.addEventListener('received', this.onNotificationReceived);
-        OneSignal.addEventListener('opened', this.onNotificationOpened.bind(this));
+        OneSignal.setNotificationOpenedHandler(notification => {
+
+            // TODO:
+            // if ('undefined' !== typeof(openResult.notification.payload.additionalData) && 'undefined' !== typeof(openResult.notification.payload.additionalData.url) && !openResult.notification.isAppInFocus) {
+            //     this.injectJavaScript(`window.location = '${openResult.notification.payload.additionalData.url}';`);
+            // }
+
+            console.log("OneSignal: notification opened:", notification);
+        });
+
+        const deviceState = await OneSignal.getDeviceState();
+        this.setState({
+            isSubscribed : deviceState.isSubscribed
+        });
 
         if (Platform.OS === 'android') {
             this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -433,9 +472,6 @@ export default class App extends Component<Props> {
     componentWillUnmount() {
         eventEmitter.removeListener('currentModeChanged', this.onModeChanged);
 
-        OneSignal.removeEventListener('received', this.onNotificationReceived);        
-        OneSignal.removeEventListener('opened', this.onNotificationOpened);
-
         if (this.purchaseUpdateSubscription) {
             this.purchaseUpdateSubscription.remove();
             this.purchaseUpdateSubscription = null;
@@ -449,17 +485,7 @@ export default class App extends Component<Props> {
             this.backHandler.remove();
         }
     }
-    
-    onNotificationReceived(notification) {
-        console.log("Notification received: ", notification);
-    }
-    
-    onNotificationOpened(openResult) {
-        if ('undefined' !== typeof(openResult.notification.payload.additionalData) && 'undefined' !== typeof(openResult.notification.payload.additionalData.url) && !openResult.notification.isAppInFocus) {
-            this.injectJavaScript(`window.location = '${openResult.notification.payload.additionalData.url}';`);
-        }
-    }
-    
+        
     onWebViewMessage(event) {
 
         let oMsgData;
