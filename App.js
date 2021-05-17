@@ -711,7 +711,7 @@ function UnaToolbar(o) {
         <Header style={styles.header}>
             <Left>
             {o.loading ? (
-                <ActivityIndicator size="small" style={styles.loadingIndicator} />
+                <ActivityIndicator size="small" color={Platform.OS === 'android' ? '#fff' : '#333'} style={styles.loadingIndicator} />
             ):(
                 o.loggedin ? (
                     (o.backButtonEnabled || Platform.OS === 'android') && 
