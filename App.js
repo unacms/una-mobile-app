@@ -38,6 +38,7 @@ import RNIap, {
 import { initialMode, useDarkMode, DynamicStyleSheet, DynamicValue, useDynamicStyleSheet, eventEmitter } from 'react-native-dark-mode';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import VideoCall from './VideoCall';
+import ErrorPage from './ErrorPage';
 
 import { version } from './package.json';
 
@@ -302,6 +303,12 @@ export default class App extends Component<Props> {
             loading: this.loading,
             searchbar: false,
         });
+    }
+
+    onWebViewRenderError () {
+        return (
+            <ErrorPage onReload={() => (this.reload())}></ErrorPage>
+        );
     }
 
     reload() {
@@ -580,6 +587,7 @@ export default class App extends Component<Props> {
                     allowFileAccess={true}
                     onLoad={this.onWebViewLoadEnd.bind(this)}
                     onLoadStart={this.onWebViewLoadStart.bind(this)}
+                    renderError={this.onWebViewRenderError.bind(this)}
                 />
         );
         return (
