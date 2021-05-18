@@ -16,8 +16,8 @@ import {
     BackHandler,
     ActivityIndicator,
     Dimensions,
-    StatusBar,
     Alert,
+    Appearance,
 } from 'react-native';
 import { 
     View,
@@ -35,10 +35,10 @@ import RNIap, {
   type PurchaseError
 } from 'react-native-iap';
 
-import { initialMode, useDarkMode, DynamicStyleSheet, DynamicValue, useDynamicStyleSheet, eventEmitter } from 'react-native-dark-mode';
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import VideoCall from './VideoCall';
 import ErrorPage from './ErrorPage';
+import { themeDark, themeLight, useTheme } from './Theme';
 
 import { version } from './package.json';
 
@@ -56,7 +56,6 @@ export default class App extends Component<Props> {
 
     loading = false;
     videoCallAudio = false;
-    mode = initialMode;
     purchaseUpdateSubscription = null;
     purchaseErrorSubscription = null;
     products = {};
@@ -64,8 +63,10 @@ export default class App extends Component<Props> {
     constructor(props) {
         super(props);
 
+        var colorScheme = Appearance.getColorScheme();
+
         this.state = {
-            url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.mode ? MIX_DARK : MIX_LIGHT}`,
+            url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === colorScheme ? MIX_DARK : MIX_LIGHT}`,
             status: 'No Page Loaded',
             backButtonEnabled: false,
             forwardButtonEnabled: false,
@@ -85,13 +86,6 @@ export default class App extends Component<Props> {
         this.onConferenceWillJoin = this.onConferenceWillJoin.bind(this);
 
         this.onVideoCallStart = this.onVideoCallStart.bind(this);        
-    }
-
-    onModeChanged(newMode){
-        this.mode = newMode;
-        this.setState ({
-            key: this.state.key + 1,
-        });
     }
 
     async onRequestPurchase (sku: string) {
@@ -217,8 +211,9 @@ export default class App extends Component<Props> {
         if (`${BASE_URL}` == this.state.url || this.state.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.state.url) {
             this.injectJavaScript("bx_mobile_apps_close_sliding_menus()");
         } else {
+            var colorScheme = Appearance.getColorScheme();
             this.setState ({
-                url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.mode ? MIX_DARK : MIX_LIGHT}`,
+                url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == colorScheme ? MIX_DARK : MIX_LIGHT}`,
                 searchbar: false,
                 key: this.state.key + 1,
             });
@@ -368,11 +363,14 @@ export default class App extends Component<Props> {
         SplashScreen.hide();
     }
 
-    UNSAFE_componentWillMount() {
-        eventEmitter.on('currentModeChanged', this.onModeChanged.bind(this));
-    }
-
     async componentDidMount() {
+
+        Appearance.addChangeListener(({ colorScheme }) => {
+            this.setState ({
+                key: this.state.key + 1,
+            });
+        });
+
         OneSignal.setLogLevel(6, 0);
         OneSignal.setAppId(ONESIGNALAPPID);
         // OneSignal.inFocusDisplaying(0);
@@ -428,9 +426,7 @@ export default class App extends Component<Props> {
                     return false;
                 }
             });
-        }
-
-        SplashScreen.hide();
+        }        
 
         if (PAYMENTS_CALLBACK != '') {
             var _self = this;
@@ -479,10 +475,11 @@ export default class App extends Component<Props> {
                 console.log('purchaseErrorListener', error);
             }); 
         }
+
+        SplashScreen.hide();
     }
     
     componentWillUnmount() {
-        eventEmitter.removeListener('currentModeChanged', this.onModeChanged);
 
         if (this.purchaseUpdateSubscription) {
             this.purchaseUpdateSubscription.remove();
@@ -565,6 +562,7 @@ export default class App extends Component<Props> {
     }
     
     render() {
+        var colorScheme = Appearance.getColorScheme();
         var sWebview = (
                 <WebView
                     useWebKit={true}
@@ -581,7 +579,7 @@ export default class App extends Component<Props> {
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
                     onNavigationStateChange={this.onWebViewNavigationStateChange.bind(this)}
                     style={{flex: 1}}
-                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.mode ? MIX_DARK : MIX_LIGHT}`}}
+                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == colorScheme ? MIX_DARK : MIX_LIGHT}`}}
                     userAgent={"UNAMobileApp/Mobile (" + Platform.OS + ")"}
                     onMessage={this.onWebViewMessage.bind(this)}
                     allowFileAccess={true}
@@ -591,7 +589,7 @@ export default class App extends Component<Props> {
                 />
         );
         return (
-            <Container>
+            <Container> 
             <Drawer ref="drawer" content={<UnaDrawer onLogin={this.onDrawerLoginMenu.bind(this)} onJoin={this.onDrawerJoinMenu.bind(this)} onForotPassword={this.onDrawerForgotMenu.bind(this)} onClose={this.drawerClose.bind(this)} />} onClose={this.drawerClose.bind(this)}>
             <UnaApp 
                 webview={sWebview}
@@ -620,16 +618,6 @@ export default class App extends Component<Props> {
 }
 
 function UnaApp(o) {
-        const styles = useDynamicStyleSheet(dynamicStyles);
-
-        const isDarkMode = useDarkMode();
-        var sBarStyle = 'dark-content';
-        if (Platform.OS === 'android' || isDarkMode)
-            sBarStyle = 'light-content';            
-        if (Platform.OS === 'android')
-            StatusBar.setBackgroundColor('#076fd3');
-        StatusBar.setBarStyle(sBarStyle, false);         
-
         return (<Container>
 
                 {o.state.searchbar ? (
@@ -655,7 +643,6 @@ function UnaApp(o) {
 }
 
 function UnaFooter(o) {
-    const styles = useDynamicStyleSheet(dynamicStyles)
     return (
         <Footer style={styles.footer}>
             {!('decorous' == TEMPLATE && Platform.isPad) &&
@@ -706,22 +693,22 @@ function UnaFooter(o) {
 }
 
 function UnaToolbar(o) {
-    const styles = useDynamicStyleSheet(dynamicStyles)
+    var colorScheme = Appearance.getColorScheme();
     return (
-        <Header style={styles.header}>
+        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header}>
             <Left>
             {o.loading ? (
-                <ActivityIndicator size="small" color={Platform.OS === 'android' ? '#fff' : '#333'} style={styles.loadingIndicator} />
+                <ActivityIndicator size="small" color={useTheme('colors.activityIndicator')} style={styles.loadingIndicator} />
             ):(
                 o.loggedin ? (
                     (o.backButtonEnabled || Platform.OS === 'android') && 
                         (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent disabled={!o.backButtonEnabled} onPress={o.onBackAndMainMenu}>
-                        <Icon name="ios-arrow-back" />
+                        <Icon name="ios-arrow-back" style={styles.headerIcon} />
                         </Button>)
                     
                 ) : (
                     <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onMainMenu}>
-                        <Icon name='menu' />
+                        <Icon name='menu' style={styles.headerIcon} />
                     </Button>
                 )
             )}
@@ -732,7 +719,7 @@ function UnaToolbar(o) {
             <Right>
                 {o.loggedin && (
                     <Button transparent>
-                        <Icon name='search' onPress={o.onSearchMenu} />
+                        <Icon name='search' onPress={o.onSearchMenu} style={styles.headerIcon} />
                     </Button>
                 )}
             </Right>
@@ -741,24 +728,23 @@ function UnaToolbar(o) {
 }
 
 function UnaToolbarSearch(o) {
-    const styles = useDynamicStyleSheet(dynamicStyles)
+    var colorScheme = Appearance.getColorScheme();
     return (
-        <Header style={styles.header} searchBar rounded>
+        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header} searchBar rounded>
           <Item>
             <Icon name="search" />
             <Input placeholder="Search" onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSearch} />
           </Item>
           <Button transparent onPress={o.onSearchCancel}>
-            <Text>Cancel</Text>
+            <Text style={styles.headerIcon}>Cancel</Text>
           </Button>
         </Header>
     );
 }
 
 function UnaDrawer(o) {
-    const styles = useDynamicStyleSheet(dynamicStyles)
     return (
-        <Container>
+        <Container style={styles.drawerContainer}>
             <Content>
                 <View style={styles.drawerImageContainer}>
                     <Image style={styles.drawerImage} source={require('./img/logo-loading.png')} />
@@ -780,22 +766,29 @@ function UnaDrawer(o) {
   );
 }
 
-const dynamicStyles = new DynamicStyleSheet({
+const styles = new StyleSheet.create({
+    container: {
+        backgroundColor: useTheme('colors.background'),
+        flex: 1
+    },
     header: {
-        backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
+        backgroundColor: useTheme('colors.primary'),
         height: 46, paddingTop:0, // tmp fix - https://github.com/GeekyAnts/NativeBase/issues/3095
     },
     headerTitle: {
-        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#333', '#ccc'),
+        color: useTheme('colors.textOnPrimary'),
+    },
+    headerIcon: {
+        color: useTheme('colors.textOnPrimary'),
     },
     footer: {
-        backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
+        backgroundColor: useTheme('colors.primary'),
     },
     footerTab: {
-        backgroundColor: Platform.OS === 'android' ? '#1890ff' : new DynamicValue('#eee', '#333'),
+        backgroundColor: useTheme('colors.primary'),
     },
     footerIcon: {
-        color: Platform.OS === 'android' ? '#fff' : new DynamicValue('#555', '#ccc'),
+        color: useTheme('colors.textOnPrimary'),
     },
 
     containerVideoCall: {
@@ -812,11 +805,14 @@ const dynamicStyles = new DynamicStyleSheet({
     buttonLeftTopIos: {
         marginLeft: 5,
     },
+    drawerContainer: {
+        backgroundColor: useTheme('colors.drawerBackground'),
+    },
     drawerImageContainer: {
         height:100, 
         justifyContent: 'center', 
         alignItems: 'center', 
-        backgroundColor: '#FFF',
+        backgroundColor: useTheme('colors.drawerBackground'),
     },
     drawerImage: {
         height:33.5, 
@@ -830,10 +826,9 @@ const dynamicStyles = new DynamicStyleSheet({
         fontSize: 20,
         justifyContent: 'center',
         textAlign: 'center',
-        color: '#1890ff',
+        color: useTheme('colors.drawerText'),
     },
     drawerButtonText: {
-        color: '#1890ff',
+        color: useTheme('colors.drawerText'),
     }
 });
-
