@@ -21,7 +21,6 @@
 		48864C33F3F6428FAEA9B90F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5D25468CD514584B8A253DC /* AntDesign.ttf */; };
 		539330BD70B2457FB71823E8 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBA298A36302449DA5978BE8 /* FontAwesome5_Brands.ttf */; };
 		6DCC3E31C5074512B0969A99 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 304E6F90B775430190F08A2C /* FontAwesome.ttf */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		979D95C577E94B5C83E442DF /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE87210DF7E942979AA01AFF /* Zocial.ttf */; };
 		A64E5C43989C449C87B3E992 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1D105B191634EADA97A2822 /* Roboto_medium.ttf */; };
 		AF0A6D770CCF45749864D66D /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D773CACC1F6A4750A773775A /* Entypo.ttf */; };
@@ -34,6 +33,7 @@
 		E4FD850C3CCF4EF3B01288E2 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 286785AFB2844391A5398B7A /* rubicon-icon-font.ttf */; };
 		F2D844BD3B6E412299413454 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 319102371E9949C18EFA3AB9 /* Foundation.ttf */; };
 		FA47E920264B5D3B00E80276 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA47E91F264B5D3B00E80276 /* SplashScreen.storyboard */; };
+		FA529A04265A360800A94CAB /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA529A03265A360800A94CAB /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +68,6 @@
 		4D3E739CB2EC4D898E5AB7FF /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		616B3C14C0F3E18A66248E37 /* Pods-una-unaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-una-unaTests.debug.xcconfig"; path = "Target Support Files/Pods-una-unaTests/Pods-una-unaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7872C937269E49C3B598453A /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = una/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A6E44ED05BE341ADAD2741FC /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/native-base/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		A9C82A02061146DC83B93C10 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		C1D105B191634EADA97A2822 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
@@ -82,6 +81,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EDC09AA1BED7446B9BC5F42C /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		FA47E91F264B5D3B00E80276 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
+		FA529A02265A360800A94CAB /* una.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = una.entitlements; path = una/una.entitlements; sourceTree = "<group>"; };
+		FA529A03265A360800A94CAB /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		FBA298A36302449DA5978BE8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		FF6F312D13C04C58A94B7A55 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				170B301DEA149FCA46570483 /* libPods-una.a in Frameworks */,
+				FA529A04265A360800A94CAB /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,11 +128,11 @@
 		13B07FAE1A68108700A75B9A /* una */ = {
 			isa = PBXGroup;
 			children = (
+				FA529A02265A360800A94CAB /* una.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				FA47E91F264B5D3B00E80276 /* SplashScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -166,6 +168,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA529A03265A360800A94CAB /* NetworkExtension.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				426F74E851FC9ECFF5328756 /* libPods-una.a */,
 				C4EF45311BECF84FDEDF1C9D /* libPods-una-unaTests.a */,
@@ -310,7 +313,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				48864C33F3F6428FAEA9B90F /* AntDesign.ttf in Resources */,
 				AF0A6D770CCF45749864D66D /* Entypo.ttf in Resources */,
@@ -571,7 +573,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1500;
+				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
+				CURRENT_PROJECT_VERSION = 1501;
+				DEVELOPMENT_TEAM = 235MTP3MJ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -588,6 +592,7 @@
 				PRODUCT_NAME = una;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -598,7 +603,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1500;
+				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
+				CURRENT_PROJECT_VERSION = 1501;
+				DEVELOPMENT_TEAM = 235MTP3MJ2;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -613,6 +621,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.una.ios;
 				PRODUCT_NAME = una;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
