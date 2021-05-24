@@ -76,6 +76,7 @@ export default class App extends Component<Props> {
             key: 1,
             videoCall: 0,
             videoCallUri: false,
+            colorScheme: colorScheme,
         };
 
         this.onBack.bind(this);
@@ -211,9 +212,8 @@ export default class App extends Component<Props> {
         if (`${BASE_URL}` == this.state.url || this.state.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.state.url) {
             this.injectJavaScript("bx_mobile_apps_close_sliding_menus()");
         } else {
-            var colorScheme = Appearance.getColorScheme();
             this.setState ({
-                url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == colorScheme ? MIX_DARK : MIX_LIGHT}`,
+                url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.state.colorScheme ? MIX_DARK : MIX_LIGHT}`,
                 searchbar: false,
                 key: this.state.key + 1,
             });
@@ -365,10 +365,17 @@ export default class App extends Component<Props> {
 
     async componentDidMount() {
 
-        Appearance.addChangeListener(({ colorScheme }) => {
-            this.setState ({
-                key: this.state.key + 1,
-            });
+        Appearance.addChangeListener(({ colorScheme }) => { // not working in Android :(
+            var s = Appearance.getColorScheme(); // colorScheme param is working incorrect in iOS13, so we need to get it explicitly
+            if (s != this.state.colorScheme) {
+                var sUrl = this.state.url;
+                var sUri = `skin=${TEMPLATE}&mix=${'dark' === s ? MIX_DARK : MIX_LIGHT}`;
+                sUrl += (-1 === sUrl.indexOf('?') ? '?' : '&') + sUri;
+                this.setState ({
+                    colorScheme: s,
+                    url: sUrl,
+                });
+            }
         });
 
         OneSignal.setLogLevel(6, 0);
@@ -561,8 +568,7 @@ export default class App extends Component<Props> {
         this.refs.drawer._root.open()
     }
     
-    render() {
-        var colorScheme = Appearance.getColorScheme();
+    render() {        
         var sWebview = (
                 <WebView
                     useWebKit={true}
@@ -579,7 +585,7 @@ export default class App extends Component<Props> {
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
                     onNavigationStateChange={this.onWebViewNavigationStateChange.bind(this)}
                     style={{flex: 1}}
-                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == colorScheme ? MIX_DARK : MIX_LIGHT}`}}
+                    source={{uri: this.state.url }}
                     userAgent={"UNAMobileApp/Mobile (" + Platform.OS + ")"}
                     onMessage={this.onWebViewMessage.bind(this)}
                     allowFileAccess={true}
@@ -693,7 +699,6 @@ function UnaFooter(o) {
 }
 
 function UnaToolbar(o) {
-    var colorScheme = Appearance.getColorScheme();
     return (
         <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header}>
             <Left>
@@ -713,7 +718,10 @@ function UnaToolbar(o) {
                 )
             )}
             </Left>
+{/*
             <Body style={Platform.OS === 'android' && {flexDirection: 'row', justifyContent: 'flex-start'}}>
+*/}
+            <Body>
                 <Title style={styles.headerTitle} onPress={o.onHomeMenu}>{TITLE}</Title>
             </Body>
             <Right>
@@ -728,7 +736,6 @@ function UnaToolbar(o) {
 }
 
 function UnaToolbarSearch(o) {
-    var colorScheme = Appearance.getColorScheme();
     return (
         <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header} searchBar rounded>
           <Item>
