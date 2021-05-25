@@ -17,6 +17,8 @@
     "react-native-jitsi-meet": "^2.1.1",
     "react-native-onesignal": "^4.0.8",
     "react-native-splash-screen": "^3.2.0",
+    "react-native-svg": "^12.1.1",
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-webview": "^11.4.4"
   },
   "devDependencies": {

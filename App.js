@@ -40,6 +40,8 @@ import VideoCall from './VideoCall';
 import ErrorPage from './ErrorPage';
 import { themeDark, themeLight, useTheme } from './Theme';
 
+import Logo from "./img/logo.svg";
+
 import { version } from './package.json';
 
 type Props = {};
@@ -48,7 +50,7 @@ const BASE_URL = 'https://una.io/'; // site URL
 const MIX_LIGHT = '12'; // template styles mix for light mode
 const MIX_DARK = '13'; // template styles mix for dark mode
 const TEMPLATE = 'protean'; // template name
-const TITLE = 'UNA.IO'; // app title
+const TITLE = 'UNA.IO | Community Management System'; // homepage title
 const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
 const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
 
@@ -67,7 +69,7 @@ export default class App extends Component<Props> {
 
         this.state = {
             url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === colorScheme ? MIX_DARK : MIX_LIGHT}`,
-            status: 'No Page Loaded',
+            status: '',
             backButtonEnabled: false,
             forwardButtonEnabled: false,
             loading: this.loading,
@@ -209,11 +211,12 @@ export default class App extends Component<Props> {
     
     onHomeMenu() {
         this.endVideoCall();
-        if (`${BASE_URL}` == this.state.url || this.state.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.state.url) {
+        if (`${BASE_URL}` == this.state.url || this.state.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.state.url) {        
             this.injectJavaScript("bx_mobile_apps_close_sliding_menus()");
         } else {
             this.setState ({
                 url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' == this.state.colorScheme ? MIX_DARK : MIX_LIGHT}`,
+                status: '',
                 searchbar: false,
                 key: this.state.key + 1,
             });
@@ -354,7 +357,7 @@ export default class App extends Component<Props> {
 
         return true;
     }
-    
+  
     javascriptToInject () { 
         return 'glBxNexusApp = ' + JSON.stringify({ver:version});
     }
@@ -568,7 +571,7 @@ export default class App extends Component<Props> {
         this.refs.drawer._root.open()
     }
     
-    render() {        
+    render() {
         var sWebview = (
                 <WebView
                     useWebKit={true}
@@ -584,7 +587,7 @@ export default class App extends Component<Props> {
                     injectedJavaScript={this.javascriptToInject()}
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
                     onNavigationStateChange={this.onWebViewNavigationStateChange.bind(this)}
-                    style={{flex: 1}}
+                    style={styles.webview}
                     source={{uri: this.state.url }}
                     userAgent={"UNAMobileApp/Mobile (" + Platform.OS + ")"}
                     onMessage={this.onWebViewMessage.bind(this)}
@@ -592,6 +595,8 @@ export default class App extends Component<Props> {
                     onLoad={this.onWebViewLoadEnd.bind(this)}
                     onLoadStart={this.onWebViewLoadStart.bind(this)}
                     renderError={this.onWebViewRenderError.bind(this)}
+                    startInLoadingState={true}
+                    renderLoading={() => <View style={styles.webviewFirstLoad} />}
                 />
         );
         return (
@@ -629,7 +634,7 @@ function UnaApp(o) {
                 {o.state.searchbar ? (
                     <UnaToolbarSearch onSearch={o.onSearch} onSearchCancel={o.onSearchCancelMenu} />
                 ) : (
-                    <UnaToolbar loading={o.state.loading} loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} onBackAndMainMenu={o.onBackAndMainMenu} />
+                    <UnaToolbar loading={o.state.loading} loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} onBackAndMainMenu={o.onBackAndMainMenu} title={o.state.status} url={o.state.url} />
                 ) }
 
                 {o.state.videoCall && o.state.videoCallUri ? (
@@ -654,7 +659,7 @@ function UnaFooter(o) {
             {!('decorous' == TEMPLATE && Platform.isPad) &&
                 (<FooterTab style={styles.footerTab}>
                     <Button vertical onPress={o.onMainMenu}>
-                        <Icon style={styles.footerIcon} name="bars" type="FontAwesome5" />
+                        <Icon style={styles.footerIcon} name="menu-outline" type="Ionicons" />
                     </Button>
                 </FooterTab>)
             }
@@ -663,19 +668,19 @@ function UnaFooter(o) {
                     {o.bubbles['notifications-preview'] > 0 && 
                         (<Badge><Text>{o.bubbles['notifications-preview']}</Text></Badge>)
                     }
-                    <Icon style={styles.footerIcon} name="bell" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="notifications-outline" type="Ionicons" solid />
                 </Button>
             </FooterTab>
 {/*
             <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onVideoCallToggle}>
-                    <Icon style={styles.footerIcon} name="video" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="videocam-outline" type="Ionicons" solid />
                 </Button>
             </FooterTab>
 */}
             <FooterTab style={styles.footerTab}>
                 <Button vertical onPress={o.onAddMenu}>
-                    <Icon style={styles.footerIcon} name="plus-circle" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="add-circle-outline" type="Ionicons" solid />
                 </Button>
             </FooterTab>
             <FooterTab style={styles.footerTab}>
@@ -683,7 +688,7 @@ function UnaFooter(o) {
                     {o.bubbles['notifications-messenger'] > 0 && 
                         (<Badge><Text>{o.bubbles['notifications-messenger']}</Text></Badge>)
                     }
-                    <Icon style={styles.footerIcon} name="comments" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="chatbubbles-outline" type="Ionicons" solid />
                 </Button>
             </FooterTab>                    
             <FooterTab style={styles.footerTab}>
@@ -691,7 +696,7 @@ function UnaFooter(o) {
                     {o.bubbles['account'] > 0 && 
                         (<Badge><Text>{o.bubbles['account']}</Text></Badge>)
                     }
-                    <Icon style={styles.footerIcon} name="user" type="FontAwesome5" solid />
+                    <Icon style={styles.footerIcon} name="person-circle-outline" type="Ionicons" solid />
                 </Button>
             </FooterTab>
         </Footer>
@@ -708,26 +713,27 @@ function UnaToolbar(o) {
                 o.loggedin ? (
                     (o.backButtonEnabled || Platform.OS === 'android') && 
                         (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent disabled={!o.backButtonEnabled} onPress={o.onBackAndMainMenu}>
-                        <Icon name="ios-arrow-back" style={styles.headerIcon} />
+                        <Icon name="arrow-back-outline" type="Ionicons" style={styles.headerIcon} />
                         </Button>)
                     
                 ) : (
                     <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onMainMenu}>
-                        <Icon name='menu' style={styles.headerIcon} />
+                        <Icon name="menu-outline" type="Ionicons" style={styles.headerIcon} />
                     </Button>
                 )
             )}
             </Left>
-{/*
-            <Body style={Platform.OS === 'android' && {flexDirection: 'row', justifyContent: 'flex-start'}}>
-*/}
             <Body>
-                <Title style={styles.headerTitle} onPress={o.onHomeMenu}>{TITLE}</Title>
+                {!o.title || TITLE == o.title || o.loading ? (
+                    <Logo width={99} height={28} />
+                ) : (
+                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.headerTitle}>{o.title}</Text>
+                )}
             </Body>
             <Right>
                 {o.loggedin && (
                     <Button transparent>
-                        <Icon name='search' onPress={o.onSearchMenu} style={styles.headerIcon} />
+                        <Icon name='search-outline' type="Ionicons" onPress={o.onSearchMenu} style={styles.headerIcon} />
                     </Button>
                 )}
             </Right>
@@ -737,13 +743,12 @@ function UnaToolbar(o) {
 
 function UnaToolbarSearch(o) {
     return (
-        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header} searchBar rounded>
-          <Item>
-            <Icon name="search" />
-            <Input placeholder="Search" onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSearch} />
+        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header} searchBar rounded noShadow>
+          <Item style={styles.searchInputItem}>
+            <Input placeholder="Search..." onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSearch} style={styles.searchInput} placeholderTextColor={useTheme('colors.searchInputPlaceholderText')} />
           </Item>
           <Button transparent onPress={o.onSearchCancel}>
-            <Text style={styles.headerIcon}>Cancel</Text>
+            <Icon name='close-outline' type="Ionicons" style={styles.headerIcon} />
           </Button>
         </Header>
     );
@@ -754,18 +759,18 @@ function UnaDrawer(o) {
         <Container style={styles.drawerContainer}>
             <Content>
                 <View style={styles.drawerImageContainer}>
-                    <Image style={styles.drawerImage} source={require('./img/logo-loading.png')} />
+                    <Image style={styles.drawerImage} source={require('./img/logo-drawer.png')} />
                 </View>
                 <Button style={styles.drawerButton} iconLeft transparent onPress={o.onLogin}>
-                    <Icon style={styles.drawerButtonIcon} name='key' type="FontAwesome5" solid />
+                    <Icon style={styles.drawerButtonIcon} name='key-outline' type="Ionicons" solid />
                     <Text style={styles.drawerButtonText}>Login</Text>
                 </Button>
                 <Button style={styles.drawerButton} iconLeft transparent onPress={o.onJoin}>
-                    <Icon style={styles.drawerButtonIcon} name='plus-circle' type="FontAwesome5" solid />
+                    <Icon style={styles.drawerButtonIcon} name='add-circle-outline' type="Ionicons" solid />
                     <Text style={styles.drawerButtonText}>Join</Text>
                 </Button>
                 <Button style={styles.drawerButton} iconLeft transparent onPress={o.onForotPassword}>
-                    <Icon style={styles.drawerButtonIcon} name='lock' type="FontAwesome5" solid />
+                    <Icon style={styles.drawerButtonIcon} name='lock-closed-outline' type="Ionicons" solid />
                     <Text style={styles.drawerButtonText}>Forgot Password</Text>
                 </Button>
             </Content>
@@ -778,29 +783,61 @@ const styles = new StyleSheet.create({
         backgroundColor: useTheme('colors.background'),
         flex: 1
     },
+    webview: {
+        flex: 1,
+        backgroundColor: 'transparent',
+    },
+    webviewFirstLoad: {
+        flex: 9999999999,
+        backgroundColor: useTheme('colors.background'),
+    },
     header: {
         backgroundColor: useTheme('colors.primary'),
         height: 46, paddingTop:0, // tmp fix - https://github.com/GeekyAnts/NativeBase/issues/3095
+        borderBottomWidth: 0.5,
+        borderBottomColor: useTheme('colors.toolbarBorder'),
     },
     headerTitle: {
         color: useTheme('colors.textOnPrimary'),
+        fontSize: 22,
+    },
+    headerImage: {
+        width: 104,
+        height: 28,
     },
     headerIcon: {
         color: useTheme('colors.textOnPrimary'),
+        fontSize: 28,
+    },
+    searchInputItem: {
+        borderColor: useTheme('colors.searchInputBorder'),
+        borderRightWidth: 1,
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderBottomWidth: 1,
+        backgroundColor: useTheme('colors.searchInputBackground'),
+    },
+    searchInput: {
+        color: useTheme('colors.searchInputText'), 
+        paddingLeft: 15, 
+        paddingRight: 15
     },
     footer: {
         backgroundColor: useTheme('colors.primary'),
+        borderTopWidth: 0.5,
+        borderTopColor: useTheme('colors.toolbarBorder'),
     },
     footerTab: {
         backgroundColor: useTheme('colors.primary'),
     },
     footerIcon: {
         color: useTheme('colors.textOnPrimary'),
+        fontSize: 28,
     },
 
     containerVideoCall: {
         backgroundColor: '#000',
-        flex: 999999999999,
+        flex: 9999999999,
     },
 
     loadingIndicator: {
@@ -810,7 +847,6 @@ const styles = new StyleSheet.create({
     buttonLeftTopAndroid: {
     },
     buttonLeftTopIos: {
-        marginLeft: 5,
     },
     drawerContainer: {
         backgroundColor: useTheme('colors.drawerBackground'),
@@ -837,5 +873,5 @@ const styles = new StyleSheet.create({
     },
     drawerButtonText: {
         color: useTheme('colors.drawerText'),
-    }
+    },
 });
