@@ -40,8 +40,6 @@ import VideoCall from './VideoCall';
 import ErrorPage from './ErrorPage';
 import { themeDark, themeLight, useTheme } from './Theme';
 
-import Logo from "./img/logo.svg";
-
 import { version } from './package.json';
 
 type Props = {};
@@ -725,7 +723,7 @@ function UnaToolbar(o) {
             </Left>
             <Body>
                 {!o.title || TITLE == o.title || o.loading ? (
-                    <Logo width={99} height={28} />
+                    <Image style={styles.headerImage} source={require('./img/logo.png')} />
                 ) : (
                     <Text numberOfLines={1} ellipsizeMode="tail" style={styles.headerTitle}>{o.title}</Text>
                 )}
@@ -802,7 +800,7 @@ const styles = new StyleSheet.create({
         fontSize: 22,
     },
     headerImage: {
-        width: 104,
+        width: 99,
         height: 28,
     },
     headerIcon: {
