@@ -13,18 +13,18 @@
     "native-base": "^2.15.2",
     "react": "17.0.1",
     "react-native": "0.64.1",
-    "react-native-iap": "^6.0.5",
+    "react-native-iap": "^6.0.6",
     "react-native-jitsi-meet": "^2.1.1",
-    "react-native-onesignal": "^4.0.8",
+    "react-native-onesignal": "^4.1.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.1",
     "react-native-svg-transformer": "^0.14.3",
-    "react-native-webview": "^11.4.4"
+    "react-native-webview": "^11.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.14.3",
     "@babel/runtime": "^7.12.5",
-    "@bam.tech/react-native-make": "^3.0.0",
+    "@bam.tech/react-native-make": "^3.0.3",
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.6.3",
     "eslint": "7.14.0",
