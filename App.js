@@ -399,42 +399,19 @@ export default class App extends Component<Props> {
 
         OneSignal.setLogLevel(6, 0);
         OneSignal.setAppId(ONESIGNALAPPID);
-        // OneSignal.inFocusDisplaying(0);
         OneSignal.promptForPushNotificationsWithUserResponse(response => {
             console.log("OneSignal Prompt response:", response);
         });
         OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-            console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
-            let notification = notificationReceivedEvent.getNotification();
-            console.log("OneSignal notification: ", notification);
-            const data = notification.additionalData;
-            console.log("OneSignal additionalData: ", data);
-            const button1 = {
-                text: "Cancel",
-                onPress: () => { 
-                    notificationReceivedEvent.complete(); 
-                },
-                style: "cancel"
-            };
-            const button2 = { 
-                text: "Complete", 
-                onPress: () => { 
-                    notificationReceivedEvent.complete(notification); 
-                }
-            };
-            Alert.alert("Complete notification?", "Test", [button1, button2], { 
-                cancelable: true 
-            });
+            console.log("OneSignal: notification in foreground:", notificationReceivedEvent);
         });
 
-        OneSignal.setNotificationOpenedHandler(notification => {
+        OneSignal.setNotificationOpenedHandler(openResult => {
+            console.log("OneSignal: notification opened:", openResult);
 
-            // TODO:
-            // if ('undefined' !== typeof(openResult.notification.payload.additionalData) && 'undefined' !== typeof(openResult.notification.payload.additionalData.url) && !openResult.notification.isAppInFocus) {
-            //     this.injectJavaScript(`window.location = '${openResult.notification.payload.additionalData.url}';`);
-            // }
-
-            console.log("OneSignal: notification opened:", notification);
+            if ('undefined' !== typeof(openResult.notification.additionalData) && 'undefined' !== typeof(openResult.notification.additionalData.url)) {
+                this.injectJavaScript(`window.location = '${openResult.notification.additionalData.url}';`);
+            }            
         });
 
         const deviceState = await OneSignal.getDeviceState();
