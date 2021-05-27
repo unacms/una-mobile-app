@@ -654,7 +654,7 @@ function UnaFooter(o) {
             {!('decorous' == TEMPLATE && Platform.isPad) &&
                 (<FooterTab style={styles.footerTab}>
                     <Button vertical onPress={o.onMainMenu}>
-                        <Icon style={styles.footerIcon} name="menu-outline" type="Ionicons" />
+                        <Icon style={styles.footerIcon} name="apps-outline" type="Ionicons" />
                     </Button>
                 </FooterTab>)
             }
