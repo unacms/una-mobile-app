@@ -594,7 +594,7 @@ export default class App extends Component<Props> {
                     onLoadStart={this.onWebViewLoadStart.bind(this)}
                     renderError={this.onWebViewRenderError.bind(this)}
                     startInLoadingState={true}
-                    renderLoading={() => <View style={styles.webviewFirstLoad} />}
+                    renderLoading={() => <View style={styles.webviewFirstLoad}><ActivityIndicator size="large" color={useTheme('colors.activityIndicator')} style={styles.webviewFirstLoadIndicator} /></View>}
                 />
         );
         return (
@@ -788,6 +788,10 @@ const styles = new StyleSheet.create({
     webviewFirstLoad: {
         flex: 9999999999,
         backgroundColor: useTheme('colors.background'),
+        justifyContent: 'center', 
+        alignItems: 'center',
+    },
+    webviewFirstLoadIndicator: {
     },
     header: {
         backgroundColor: useTheme('colors.primary'),

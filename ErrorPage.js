@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Container, Text, Icon, Button } from 'native-base';
+import { themeDark, themeLight, useTheme } from './Theme';
 
 class ErrorPage extends React.Component {
     constructor(props) {
@@ -24,16 +25,17 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center', 
         justifyContent: 'center', 
-        flex: 999999999999
+        flex: 9999999999,
+        backgroundColor: useTheme('colors.background'),
     },
     icon: {
         fontSize: 100, 
-        color: '#666',
+        color: useTheme('colors.text'),
     },
     text: {
-        color: '#666',
+        color: useTheme('colors.text'),
         marginTop: 20, 
-        marginBottom: 20
+        marginBottom: 20,
     },
     buttonContainer: {
         justifyContent: 'center', 
