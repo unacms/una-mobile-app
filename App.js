@@ -798,7 +798,8 @@ const styles = new StyleSheet.create({
     },
     headerTitle: {
         color: useTheme('colors.textOnPrimary'),
-        fontSize: 22,
+        fontSize: 18,
+        fontWeight: 'bold',
     },
     headerImage: {
         width: 99,
