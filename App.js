@@ -18,6 +18,7 @@ import {
     Dimensions,
     Alert,
     Appearance,
+    PermissionsAndroid,
 } from 'react-native';
 import { 
     View,
@@ -51,6 +52,23 @@ const TEMPLATE = 'protean'; // template name
 const TITLE = 'UNA.IO | Community Management System'; // homepage title
 const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
 const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
+
+const requestPermissions = async () => {
+    try {
+        const oGranted = await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        ]);
+        
+        for (const [sKey, sValue] of Object.entries(oGranted)) {
+            console.log(`Permission - ${sKey}: ${sValue}`);
+        }
+    } catch (err) {
+        console.warn(err);
+    }
+};
 
 export default class App extends Component<Props> {
 
@@ -483,6 +501,8 @@ export default class App extends Component<Props> {
                 console.log('purchaseErrorListener', error);
             }); 
         }
+
+        requestPermissions();
 
         SplashScreen.hide();
     }
