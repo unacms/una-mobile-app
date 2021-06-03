@@ -46,9 +46,9 @@ import { version } from './package.json';
 type Props = {};
 
 const BASE_URL = 'https://una.io/'; // site URL
-const MIX_LIGHT = '12'; // template styles mix for light mode
-const MIX_DARK = '13'; // template styles mix for dark mode
-const TEMPLATE = 'protean'; // template name
+const MIX_LIGHT = '15'; // template styles mix for light mode
+const MIX_DARK = '17'; // template styles mix for dark mode
+const TEMPLATE = 'lucid'; // template name
 const TITLE = 'UNA.IO | Community Management System'; // homepage title
 const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
 const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
@@ -479,7 +479,8 @@ export default class App extends Component<Props> {
             }); 
         }
 
-        requestPermissions();
+        if (Platform.OS === 'android')
+            requestPermissions();
 
         SplashScreen.hide();
     }
@@ -858,7 +859,7 @@ const styles = new StyleSheet.create({
         backgroundColor: useTheme('colors.drawerBackground'),
     },
     drawerImage: {
-        height:33.5, 
+        height:35.3,
         width:125,
     },
     drawerButton: {
