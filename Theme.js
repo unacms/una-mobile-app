@@ -3,7 +3,7 @@ import {Appearance} from 'react-native';
 
 const themeDark = {
     dark: true,
-    iosBarStyle: 'light-content',
+    barStyle: 'light-content',
     colors: {
         primary: '#111827',
         textOnPrimary: '#6B7280',
@@ -22,7 +22,7 @@ const themeDark = {
 };
 const themeLight = {
     dark: false,
-    iosBarStyle: 'dark-content',
+    barStyle: 'dark-content',
     colors: {
         primary: '#fff',
         textOnPrimary: '#6B7280',

@@ -700,8 +700,8 @@ function UnaFooter(o) {
 }
 
 function UnaToolbar(o) {
-    return (
-        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header}>
+    return #(
+        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('barStyle')} barStyle={useTheme('barStyle')} style={styles.header}>
             <Left>
             {o.loading ? (
                 <ActivityIndicator size="small" color={useTheme('colors.activityIndicator')} style={styles.loadingIndicator} />
@@ -739,7 +739,7 @@ function UnaToolbar(o) {
 
 function UnaToolbarSearch(o) {
     return (
-        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('iosBarStyle')} style={styles.header} searchBar rounded noShadow>
+        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('barStyle')} barStyle={useTheme('barStyle')} style={styles.header} searchBar rounded noShadow>
           <Item style={styles.searchInputItem}>
             <Input placeholder="Search..." onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSearch} style={styles.searchInput} placeholderTextColor={useTheme('colors.searchInputPlaceholderText')} />
           </Item>
