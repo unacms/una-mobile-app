@@ -700,7 +700,7 @@ function UnaFooter(o) {
 }
 
 function UnaToolbar(o) {
-    return #(
+    return (
         <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('barStyle')} barStyle={useTheme('barStyle')} style={styles.header}>
             <Left>
             {o.loading ? (
