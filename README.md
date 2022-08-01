@@ -84,8 +84,3 @@ npx react-native set-splash --platform ios --path ./img/background.png --resize 
 ```
 After images are generated rename it back `ios/kookaburra` to `ios/una`.
 Then open `kookaburra.xcworkspace` in XCode and add `SplashScreen.storyboard` file to the project to use it as splash.
-
-## 3rd-party guides
-
-- https://punya.co.uk/blog/9-development/16-una-mobile-app-development from [cnayl](https://una.io/page/view-persons-profile?id=18944)
-
