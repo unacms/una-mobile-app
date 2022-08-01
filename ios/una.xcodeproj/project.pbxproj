@@ -32,6 +32,7 @@
 		E0864CC19A424FCE8385A5A5 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A4D001F2BF741FBA70A4AAE /* SimpleLineIcons.ttf */; };
 		E4FD850C3CCF4EF3B01288E2 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 286785AFB2844391A5398B7A /* rubicon-icon-font.ttf */; };
 		F2D844BD3B6E412299413454 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 319102371E9949C18EFA3AB9 /* Foundation.ttf */; };
+		FA0C2F1C2892963700F4DE01 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0C2F1B2892963700F4DE01 /* libswiftWebKit.tbd */; };
 		FA47E920264B5D3B00E80276 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA47E91F264B5D3B00E80276 /* SplashScreen.storyboard */; };
 		FA529A04265A360800A94CAB /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA529A03265A360800A94CAB /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 		DE87210DF7E942979AA01AFF /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EDC09AA1BED7446B9BC5F42C /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		FA0C2F1B2892963700F4DE01 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		FA47E91F264B5D3B00E80276 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		FA529A02265A360800A94CAB /* una.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = una.entitlements; path = una/una.entitlements; sourceTree = "<group>"; };
 		FA529A03265A360800A94CAB /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -100,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0C2F1C2892963700F4DE01 /* libswiftWebKit.tbd in Frameworks */,
 				170B301DEA149FCA46570483 /* libPods-una.a in Frameworks */,
 				FA529A04265A360800A94CAB /* NetworkExtension.framework in Frameworks */,
 			);
@@ -168,6 +171,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA0C2F1B2892963700F4DE01 /* libswiftWebKit.tbd */,
 				FA529A03265A360800A94CAB /* NetworkExtension.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				426F74E851FC9ECFF5328756 /* libPods-una.a */,
@@ -574,13 +578,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
-				CURRENT_PROJECT_VERSION = 1506;
+				CURRENT_PROJECT_VERSION = 1507;
 				DEVELOPMENT_TEAM = 235MTP3MJ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
 				);
 				MARKETING_VERSION = 1.5.0;
 				OTHER_LDFLAGS = (
@@ -604,13 +612,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = una/una.entitlements;
-				CURRENT_PROJECT_VERSION = 1506;
+				CURRENT_PROJECT_VERSION = 1507;
 				DEVELOPMENT_TEAM = 235MTP3MJ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = una/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
 				);
 				MARKETING_VERSION = 1.5.0;
 				OTHER_LDFLAGS = (
