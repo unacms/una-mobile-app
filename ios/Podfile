@@ -12,6 +12,10 @@ target 'una' do
     :hermes_enabled => false
   )
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'unaTests' do
     inherit! :complete
     # Pods for testing
@@ -26,4 +30,8 @@ target 'una' do
   post_install do |installer|
     react_native_post_install(installer)
   end
+end
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignalXCFramework', '>= 3.0', '< 4.0'
 end

@@ -10,13 +10,13 @@ class ErrorPage extends React.Component {
     }
     render() {
         return (
-            <Container style={styles.container}>
+            <View style={styles.container}>
                 <Icon style={styles.icon} name="frown" type="FontAwesome5" />
                 <Text style={styles.text}>Ops, something went wrong...</Text>
                 <View style={styles.buttonContainer}>
                     <Button onPress={this.props.onReload}><Text>Retry</Text></Button>
                 </View>
-            </Container>
+            </View>
         );
     }
 }

@@ -7,17 +7,17 @@ const themeDark = {
     colors: {
         primary: '#111827',
         textOnPrimary: '#6B7280',
+        textOnPrimaryDisabled: '#111',
         background: '#000000',
         toolbarBorder: '#1F2937',
-        text: '#6B7280',
-        drawerBackground: '#f3f4f5',
+        drawerBackground: '#F3F4F6',
         drawerText: '#1890ff',
+        drawerBorder: '#A3A4A5',
         statusBar: '#000000',
         activityIndicator: '#6B7280',
         searchInputBackground: '#000000',
         searchInputBorder: '#1F2937',
-        searchInputText: '#6B7280',
-        searchInputPlaceholderText: '#8F9BB3',
+        searchInputText: '#CFDBF3',
     }
 };
 const themeLight = {
@@ -26,17 +26,17 @@ const themeLight = {
     colors: {
         primary: '#fff',
         textOnPrimary: '#6B7280',
+        textOnPrimaryDisabled: '#eee',
         background: '#F3F4F6',
         toolbarBorder: '#E4E9F2',
-        text: '#6B7280',
         drawerBackground: '#F3F4F6',
-        drawerText: '#6B7280',
+        drawerText: '#1890ff',
+        drawerBorder: '#A3A4A5',
         statusBar: '#fff',
         activityIndicator: '#6B7280',
         searchInputBackground: '#F7F9FC',
         searchInputBorder: '#E4E9F2',
         searchInputText: '#6B7280',
-        searchInputPlaceholderText: '#8F9BB3',
     }
 };
 

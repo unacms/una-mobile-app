@@ -1,6 +1,9 @@
 /**
  * Copyright (c) UNA, Inc - https://una.io
  * MIT License - https://opensource.org/licenses/MIT
+ *
+ * @format
+ * @flow strict-local
  */
 
 import React, { Component } from 'react';
@@ -10,25 +13,40 @@ import { WebView } from 'react-native-webview';
 import {
     Platform,
     StyleSheet,
-    StyleProvider,
-    Image,
     Linking,
     BackHandler,
     ActivityIndicator,
-    Dimensions,
     Alert,
     Appearance,
     PermissionsAndroid,
+    NativeModules,
 } from 'react-native';
-import { 
+import {
+    Link,
+    Text,
+    HStack,
+    Center,
+    Heading,
+    Switch,
+    useColorMode,
+    NativeBaseProvider,
+    VStack,
+    Box,
     View,
-    Container, Content,
-    Header, Title, Left, Body, Right, Item, Input,
-    Footer, FooterTab, Badge, 
-    Text, Icon, Button,
     Drawer,
+    Image,
+    Button,
+    Input,
+    Icon,
+    IconButton,
+    Pressable,
+    StatusBar,
+    SearchIcon,
 } from 'native-base';
+import NativeBaseIcon from './src/components/NativeBaseIcon';
+import { Path, G } from "react-native-svg";
 
+/*
 import RNIap, {
   purchaseErrorListener,
   purchaseUpdatedListener,
@@ -38,7 +56,9 @@ import RNIap, {
 
 import JitsiMeet, { JitsiMeetView } from 'react-native-jitsi-meet';
 import VideoCall from './VideoCall';
+*/
 import ErrorPage from './ErrorPage';
+import * as Icons from './Icons';
 import { themeDark, themeLight, useTheme } from './Theme';
 
 import { version } from './package.json';
@@ -46,9 +66,9 @@ import { version } from './package.json';
 type Props = {};
 
 const BASE_URL = 'https://una.io/'; // site URL
-const MIX_LIGHT = '15'; // template styles mix for light mode
-const MIX_DARK = '17'; // template styles mix for dark mode
-const TEMPLATE = 'lucid'; // template name
+const MIX_LIGHT = '0'; // template styles mix for light mode
+const MIX_DARK = '0'; // template styles mix for dark mode
+const TEMPLATE = 'protean'; // template name
 const TITLE = 'UNA.IO | Community Management System'; // homepage title
 const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
 const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
@@ -77,14 +97,15 @@ export default class App extends Component<Props> {
     purchaseUpdateSubscription = null;
     purchaseErrorSubscription = null;
     products = {};
+    url = '';
 
     constructor(props) {
         super(props);
 
         var colorScheme = Appearance.getColorScheme();
+        this.url = `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === colorScheme ? MIX_DARK : MIX_LIGHT}`;
 
         this.state = {
-            url: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === colorScheme ? MIX_DARK : MIX_LIGHT}`,
             status: '',
             backButtonEnabled: false,
             forwardButtonEnabled: false,
@@ -95,18 +116,29 @@ export default class App extends Component<Props> {
             videoCall: 0,
             videoCallUri: false,
             colorScheme: colorScheme,
+            drawerOpen: false,
         };
 
-        this.onBack.bind(this);
-        this.onMainMenu.bind(this);
+        this.onBack = this.onBack.bind(this);
+        this.onMainMenu = this.onMainMenu.bind(this);
+        this.onBackAndMainMenu = this.onBackAndMainMenu.bind(this);
+        this.onSearchMenu = this.onSearchMenu.bind(this);
+        this.onNotificationsMenu = this.onNotificationsMenu.bind(this);
+        this.onAddMenu = this.onAddMenu.bind(this);
+        this.onMessengerMenu = this.onMessengerMenu.bind(this);
+        this.onProfileMenu = this.onProfileMenu.bind(this);
+        this.onSearchCancelMenu = this.onSearchCancelMenu.bind(this);
+        this.onSearch = this.onSearch.bind(this);
 
         this.onConferenceTerminated = this.onConferenceTerminated.bind(this);
         this.onConferenceJoined = this.onConferenceJoined.bind(this);
         this.onConferenceWillJoin = this.onConferenceWillJoin.bind(this);
 
-        this.onVideoCallStart = this.onVideoCallStart.bind(this);        
-    }
+        this.onVideoCallStart = this.onVideoCallStart.bind(this);
 
+        this.onDrawerToggle = this.onDrawerToggle.bind(this);
+    }
+/*
     async onRequestPurchase (sku: string) {
         if ('ios' === Platform.OS)
             RNIap.clearTransactionIOS();
@@ -128,7 +160,7 @@ export default class App extends Component<Props> {
             Alert.alert(err.message);
         }
     }
-
+*/
     onConferenceTerminated(e) {
         this.endVideoCall();        
         this.injectJavaScript("bx_mobile_apps_video_terminated(" + JSON.stringify(e.nativeEvent) + ")");
@@ -148,7 +180,7 @@ export default class App extends Component<Props> {
             videoCall: 0,
             videoCallUri: false,
         });
-        JitsiMeet.endCall();
+        //JitsiMeet.endCall();
     }    
 
     onVideoCallStart(sUri, bAudioOnly = false) {
@@ -227,7 +259,7 @@ export default class App extends Component<Props> {
     
     onHomeMenu() {
         this.endVideoCall();
-        if (`${BASE_URL}` == this.state.url || this.state.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.state.url) {        
+        if (`${BASE_URL}` == this.url || this.url.startsWith(`${BASE_URL}?skin=${TEMPLATE}`) || `${BASE_URL}index.php` == this.url) {        
             this.injectJavaScript("bx_mobile_apps_close_sliding_menus()");
         } else {
             this.setState ({
@@ -283,13 +315,13 @@ export default class App extends Component<Props> {
 
     onWebViewNavigationStateChange(navState) {
 
-        if (-1 != navState.url.indexOf('#') && this.state.url == navState.url.substring(0, navState.url.indexOf('#'))) {
+        if (-1 != navState.url.indexOf('#') && this.url == navState.url.substring(0, navState.url.indexOf('#'))) {
             this.onWebViewLoadEnd();
             return;   
         }
 
+        this.url = navState.url;
         this.setState ({
-            url: navState.url,
             status: navState.title,
             backButtonEnabled: navState.canGoBack,
             forwardButtonEnabled: navState.canGoForward,
@@ -298,11 +330,13 @@ export default class App extends Component<Props> {
     }
 
     onWebViewLoadStart (syntheticEvent) {
+        var sUrl = 'undefined' !== typeof(syntheticEvent) && 'undefined' !== typeof(syntheticEvent['nativeEvent']) && 'undefined' !== typeof(syntheticEvent['nativeEvent']['url']) ? syntheticEvent.nativeEvent.url : false;
 
-        if (-1 == this.state.url.indexOf(`${BASE_URL}`)) { // loading indicator is supported on original domains only
+        if (sUrl && -1 == sUrl.indexOf(`${BASE_URL}`)) { // loading indicator is supported on original domains only
             this.onWebViewLoadEnd(syntheticEvent);
             return;
         }
+
         this.loading = true;
         this.setState ({
             loading: this.loading,
@@ -387,7 +421,7 @@ export default class App extends Component<Props> {
         Appearance.addChangeListener(({ colorScheme }) => { // not working in Android :(
             var s = Appearance.getColorScheme(); // colorScheme param is working incorrect in iOS13, so we need to get it explicitly
             if (s != this.state.colorScheme) {
-                var sUrl = this.state.url;
+                var sUrl = this.url;
                 var sUri = `skin=${TEMPLATE}&mix=${'dark' === s ? MIX_DARK : MIX_LIGHT}`;
                 sUrl += (-1 === sUrl.indexOf('?') ? '?' : '&') + sUri;
                 this.setState ({
@@ -430,7 +464,7 @@ export default class App extends Component<Props> {
                 }
             });
         }        
-
+/*
         if (PAYMENTS_CALLBACK != '') {
             var _self = this;
             try {
@@ -478,7 +512,7 @@ export default class App extends Component<Props> {
                 console.log('purchaseErrorListener', error);
             }); 
         }
-
+*/
         if (Platform.OS === 'android')
             requestPermissions();
 
@@ -522,6 +556,12 @@ export default class App extends Component<Props> {
         }
 
         if ('undefined' !== typeof(oMsgData['push_tags']) && oMsgData['push_tags'] !== false) {
+
+            if ('undefined' !== typeof(oMsgData['push_tags']['user']) && oMsgData['push_tags']['user'].length) {
+                console.log('User ID: ' + JSON.stringify(oMsgData['push_tags']['user']));
+                OneSignal.setExternalUserId(oMsgData['push_tags']['user']);
+            }
+
             if ('undefined' !== typeof(oMsgData['push_tags']['email']) && oMsgData['push_tags']['email'].length) {
                 OneSignal.setEmail(oMsgData['push_tags']['email'], oMsgData['push_tags']['email_hash'], (sError) => {
                     if ('undefined' !== typeof(sError))
@@ -560,13 +600,20 @@ export default class App extends Component<Props> {
     }
 
     drawerClose () {
-        this.refs.drawer._root.close()
+        this.setState ({drawerOpen: false});
     }
     
     drawerOpen () {
-        this.refs.drawer._root.open()
+        this.setState ({drawerOpen: true});
     }
-    
+
+    onDrawerToggle () {
+        if ('undefined' === typeof(this.state.drawerOpen) || !this.state.drawerOpen)
+            this.setState ({drawerOpen: true});
+        else
+            this.setState ({drawerOpen: false});
+    }
+
     render() {
         var sWebview = (
                 <WebView
@@ -584,7 +631,7 @@ export default class App extends Component<Props> {
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
                     onNavigationStateChange={this.onWebViewNavigationStateChange.bind(this)}
                     style={styles.webview}
-                    source={{uri: this.state.url }}
+                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === this.state.colorScheme ? MIX_DARK : MIX_LIGHT}` }}
                     userAgent={"UNAMobileApp/Mobile (" + Platform.OS + ")"}
                     onMessage={this.onWebViewMessage.bind(this)}
                     allowFileAccess={true}
@@ -592,213 +639,166 @@ export default class App extends Component<Props> {
                     onLoadStart={this.onWebViewLoadStart.bind(this)}
                     renderError={this.onWebViewRenderError.bind(this)}
                     startInLoadingState={true}
-                    renderLoading={() => <View style={styles.webviewFirstLoad}><ActivityIndicator size="large" color={useTheme('colors.activityIndicator')} style={styles.webviewFirstLoadIndicator} /></View>}
+                    renderLoading={() => <View style={styles.webviewFirstLoad} bg={useTheme('colors.background')}><ActivityIndicator size="large" color={useTheme('colors.activityIndicator')} style={styles.webviewFirstLoadIndicator} /></View>}
                 />
         );
+
         return (
-            <Container> 
-            <Drawer ref="drawer" content={<UnaDrawer onLogin={this.onDrawerLoginMenu.bind(this)} onJoin={this.onDrawerJoinMenu.bind(this)} onForotPassword={this.onDrawerForgotMenu.bind(this)} onClose={this.drawerClose.bind(this)} />} onClose={this.drawerClose.bind(this)}>
-            <UnaApp 
-                webview={sWebview}
-                state={this.state}
-                videoCallAudio={this.videoCallAudio}
-                onSearch={this.onSearch.bind(this)}
-                onSearchCancelMenu={this.onSearchCancelMenu.bind(this)}
-                onMainMenu={this.onMainMenu.bind(this)}
-                onBackAndMainMenu={this.onBackAndMainMenu.bind(this)}
-                onHomeMenu={this.onHomeMenu.bind(this)}
-                onAddMenu={this.onAddMenu.bind(this)}
-                onSearchMenu={this.onSearchMenu.bind(this)}
-                onNotificationsMenu={this.onNotificationsMenu.bind(this)}
-                onMessengerMenu={this.onMessengerMenu.bind(this)}
-                onProfileMenu={this.onProfileMenu.bind(this)}
-                onVideoCallToggle={this.onVideoCallToggle.bind(this)}
-                onRequestSubscription={this.onRequestSubscription} 
-                onRequestPurchase={this.onRequestPurchase} 
-                onConferenceTerminated={this.onConferenceTerminated}
-                onConferenceJoined={this.onConferenceJoined}
-                onConferenceWillJoin={this.onConferenceWillJoin} />
-            </Drawer>
-            </Container>
-        );
-    }
-}
-
-function UnaApp(o) {
-        return (<Container>
-
-                {o.state.searchbar ? (
-                    <UnaToolbarSearch onSearch={o.onSearch} onSearchCancel={o.onSearchCancelMenu} />
+            <NativeBaseProvider> 
+                {this.state.searchbar ? (
+                    <UnaToolbarSearch onSearch={this.onSearch} onSearchCancel={this.onSearchCancelMenu} />
                 ) : (
-                    <UnaToolbar loading={o.state.loading} loggedin={o.state.data.loggedin} backButtonEnabled={o.state.backButtonEnabled} onMainMenu={o.onMainMenu} onHomeMenu={o.onHomeMenu} onSearchMenu={o.onSearchMenu} onBackAndMainMenu={o.onBackAndMainMenu} title={o.state.status} url={o.state.url} />
+                    <UnaToolbar loading={this.state.loading} loggedin={this.state.data.loggedin} backButtonEnabled={this.state.backButtonEnabled} onMainMenu={this.onMainMenu} onHomeMenu={this.onHomeMenu} onSearchMenu={this.onSearchMenu} onBackAndMainMenu={this.onBackAndMainMenu} onBack={this.onBack} onDrawerToggle={this.onDrawerToggle} title={this.state.status} />
                 ) }
 
-                {o.state.videoCall && o.state.videoCallUri ? (
-                    <View style={styles.containerVideoCall}><VideoCall onConferenceTerminated={o.onConferenceTerminated} onConferenceJoined={o.onConferenceJoined} onConferenceWillJoin={o.onConferenceWillJoin} conferenceUri={o.state.videoCallUri} audio={o.videoCallAudio} userInfo={o.state.data.user_info} /></View>
+                {this.state.videoCall && this.state.videoCallUri ? (
+                    <View style={styles.containerVideoCall}><VideoCall onConferenceTerminated={this.onConferenceTerminated} onConferenceJoined={this.onConferenceJoined} onConferenceWillJoin={this.onConferenceWillJoin} conferenceUri={this.state.videoCallUri} audio={this.videoCallAudio} userInfo={this.state.data.user_info} /></View>
                 ) : (
                     <View />
                 )}
 
-                {o.webview}
+                {sWebview}
 
-                {o.state.data.loggedin && (
-                    <UnaFooter bubblesNum={o.state.data.bubbles_num} bubbles={o.state.data.bubbles} onMainMenu={o.onMainMenu} onNotificationsMenu={o.onNotificationsMenu} onVideoCallToggle={o.onVideoCallToggle} onRequestPurchase={o.onRequestPurchase} onRequestSubscription={o.onRequestSubscription} onAddMenu={o.onAddMenu} onMessengerMenu={o.onMessengerMenu} onProfileMenu={o.onProfileMenu} />
+                { this.state.drawerOpen ? <UnaDrawer onLogin={this.onDrawerLoginMenu.bind(this)} onJoin={this.onDrawerJoinMenu.bind(this)} onForotPassword={this.onDrawerForgotMenu.bind(this)} onClose={this.drawerClose.bind(this)} /> : <View /> }
+
+                {this.state.data.loggedin && (
+                    <UnaFooter bubblesNum={this.state.data.bubbles_num} bubbles={this.state.data.bubbles} onMainMenu={this.onMainMenu} onNotificationsMenu={this.onNotificationsMenu} onVideoCallToggle={this.onVideoCallToggle} onRequestPurchase={this.onRequestPurchase} onRequestSubscription={this.onRequestSubscription} onAddMenu={this.onAddMenu} onMessengerMenu={this.onMessengerMenu} onProfileMenu={this.onProfileMenu} />
                 )}
-
-                </Container>
+            </NativeBaseProvider>
         );
+    }
 }
 
 function UnaFooter(o) {
+
     return (
-        <Footer style={styles.footer}>
-            {!('decorous' == TEMPLATE && Platform.isPad) &&
-                (<FooterTab style={styles.footerTab}>
-                    <Button vertical onPress={o.onMainMenu}>
-                        <Icon style={styles.footerIcon} name="apps-outline" type="Ionicons" />
-                    </Button>
-                </FooterTab>)
-            }
-            <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onNotificationsMenu} badge={o.bubbles['notifications-preview'] > 0 ? true : false}>
-                    {o.bubbles['notifications-preview'] > 0 && 
-                        (<Badge><Text>{o.bubbles['notifications-preview']}</Text></Badge>)
-                    }
-                    <Icon style={styles.footerIcon} name="notifications-outline" type="Ionicons" solid />
-                </Button>
-            </FooterTab>
+            <HStack bg={useTheme('colors.primary')} borderColor={useTheme('colors.toolbarBorder')} alignItems="center" safeAreaBottom style={styles.footer}>
+                {!('decorous' == TEMPLATE && Platform.isPad) &&
+                    (<Pressable py="3" flex={1} style={styles.footerTab}>
+                        <IconButton icon={<Icons.Apps size="xl" style={styles.footerIcon} color={useTheme('colors.textOnPrimary')} />} onPress={o.onMainMenu} />
+                    </Pressable>)
+                }
+                <Pressable py="3" flex={1} style={styles.footerTab}>
+                    <IconButton icon={<Icons.Bell size="xl"style={styles.footerIcon} color={useTheme('colors.textOnPrimary')} />} onPress={o.onNotificationsMenu} />
+                    {o.bubbles['notifications-preview'] > 0 && (<Badge num={o.bubbles['notifications-preview']} />)}
+                </Pressable>
 {/*
-            <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onVideoCallToggle}>
-                    <Icon style={styles.footerIcon} name="videocam-outline" type="Ionicons" solid />
-                </Button>
-            </FooterTab>
+                <Pressable py="3" flex={1} style={styles.footerTab}>
+                    <Center><IconButton icon={<Icons.Video size="xl" style={styles.footerIcon} color={useTheme('colors.textOnPrimary')} />} onPress={o.onVideoCallToggle} /></Center>
+                </Pressable>
 */}
-            <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onAddMenu}>
-                    <Icon style={styles.footerIcon} name="add-circle-outline" type="Ionicons" solid />
-                </Button>
-            </FooterTab>
-            <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onMessengerMenu} badge={o.bubbles['notifications-messenger'] > 0 ? true : false}>
-                    {o.bubbles['notifications-messenger'] > 0 && 
-                        (<Badge><Text>{o.bubbles['notifications-messenger']}</Text></Badge>)
-                    }
-                    <Icon style={styles.footerIcon} name="chatbubbles-outline" type="Ionicons" solid />
-                </Button>
-            </FooterTab>                    
-            <FooterTab style={styles.footerTab}>
-                <Button vertical onPress={o.onProfileMenu} badge={o.bubbles['account'] > 0 ? true : false}>
-                    {o.bubbles['account'] > 0 && 
-                        (<Badge><Text>{o.bubbles['account']}</Text></Badge>)
-                    }
-                    <Icon style={styles.footerIcon} name="person-circle-outline" type="Ionicons" solid />
-                </Button>
-            </FooterTab>
-        </Footer>
+                <Pressable py="3" flex={1} style={styles.footerTab}>
+                    <IconButton icon={<Icons.Plus size="xl" style={styles.footerIcon} color={useTheme('colors.textOnPrimary')} />} onPress={o.onAddMenu} />
+                </Pressable>
+                <Pressable py="3" flex={1} style={styles.footerTab}>                    
+                    <IconButton icon={<Icons.Chat size="xl" style={styles.footerIcon} color={useTheme('colors.textOnPrimary')} />} onPress={o.onMessengerMenu} />
+                    {o.bubbles['notifications-messenger'] > 0 && (<Badge num={o.bubbles['notifications-messenger']} />)}
+                </Pressable>
+                <Pressable py="3" flex={1} style={styles.footerTab}>
+                    <IconButton icon={<Icons.User size="xl" style={styles.footerIcon} color={useTheme('colors.textOnPrimary')} />} onPress={o.onProfileMenu} />
+                    {o.bubbles['account'] > 0 && (<Badge num={o.bubbles['account']} />)}
+                </Pressable>
+            </HStack>
     );
 }
 
 function UnaToolbar(o) {
+
     return (
-        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('barStyle')} barStyle={useTheme('barStyle')} style={styles.header}>
-            <Left>
-            {o.loading ? (
-                <ActivityIndicator size="small" color={useTheme('colors.activityIndicator')} style={styles.loadingIndicator} />
-            ):(
-                o.loggedin ? (
-                    (o.backButtonEnabled || Platform.OS === 'android') && 
-                        (<Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent disabled={!o.backButtonEnabled} onPress={o.onBackAndMainMenu}>
-                        <Icon name="arrow-back-outline" type="Ionicons" style={styles.headerIcon} />
-                        </Button>)
-                    
-                ) : (
-                    <Button style={Platform.OS === 'android' ? styles.buttonLeftTopAndroid : styles.buttonLeftTopIos} transparent onPress={o.onMainMenu}>
-                        <Icon name="menu-outline" type="Ionicons" style={styles.headerIcon} />
-                    </Button>
-                )
-            )}
-            </Left>
-            <Body>
+    <View style={{borderBottomColor: useTheme('colors.toolbarBorder'), borderBottomWidth:0.5}}>
+        <StatusBar bg={useTheme('colors.statusBar')} barStyle={useTheme('barStyle')} />
+        <Box safeAreaTop bg={useTheme('colors.statusBar')} />
+        <HStack bg={useTheme('colors.primary')} px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" style={styles.header}>
+            <HStack alignItems="center">
+
+                {o.loading ? (
+                    <ActivityIndicator size="small" color={useTheme('colors.activityIndicator')} style={styles.loadingIndicator} />
+                ):(
+                    o.loggedin ? (
+                        (<IconButton icon={<Icons.Back size="2xl" color={o.backButtonEnabled ? useTheme('colors.textOnPrimary') : useTheme('colors.textOnPrimaryDisabled')} style={styles.headerIcon} />} onPress={o.onBack} />)
+                    ) : (
+                        <IconButton icon={<Icons.Bars size="2xl" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onDrawerToggle} />
+                    )
+                )}
+
                 {!o.title || TITLE == o.title || o.loading ? (
-                    <Image style={styles.headerImage} source={require('./img/logo.png')} />
+                    <Image alt="Logo" style={styles.headerImage} source={require('./img/logo.png')} />
                 ) : (
-                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.headerTitle}>{o.title}</Text>
+                    <Text color={useTheme('colors.textOnPrimary')} numberOfLines={1} ellipsizeMode="tail" style={styles.headerTitle}>{o.title}</Text>
                 )}
-            </Body>
-            <Right>
-                {o.loggedin && (
-                    <Button transparent>
-                        <Icon name='search-outline' type="Ionicons" onPress={o.onSearchMenu} style={styles.headerIcon} />
-                    </Button>
-                )}
-            </Right>
-        </Header>
+            </HStack>
+            <HStack>
+                {o.loggedin && (<IconButton icon={<Icons.Search size="2xl" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onSearchMenu} />)}
+            </HStack>
+        </HStack>
+    </View>
     );
 }
 
 function UnaToolbarSearch(o) {
     return (
-        <Header androidStatusBarColor={useTheme('colors.statusBar')} transparent={false} iosBarStyle={useTheme('barStyle')} barStyle={useTheme('barStyle')} style={styles.header} searchBar rounded noShadow>
-          <Item style={styles.searchInputItem}>
-            <Input placeholder="Search..." onEndEditing={o.onSearchCancel} onSubmitEditing={o.onSearch} style={styles.searchInput} placeholderTextColor={useTheme('colors.searchInputPlaceholderText')} />
-          </Item>
-          <Button transparent onPress={o.onSearchCancel}>
-            <Icon name='close-outline' type="Ionicons" style={styles.headerIcon} />
-          </Button>
-        </Header>
+    <View style={{borderBottomColor: useTheme('colors.toolbarBorder'), borderBottomWidth:0.5}}>
+        <StatusBar bg={useTheme('colors.statusBar')} barStyle={useTheme('barStyle')} />
+        <Box safeAreaTop bg={useTheme('colors.statusBar')} />
+        <HStack bg={useTheme('colors.primary')} px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" style={styles.header}>
+            <HStack alignItems="center" style={styles.searchInputContainer}>
+                <Input placeholder="Search..." width="89%" borderRadius={'ios' === Platform.OS ? 'full' : 'md'} px="3" fontSize="14" bg={useTheme('searchInputBackground')} color={useTheme('colors.searchInputText')} borderColor={useTheme('colors.searchInputBorder')} onSubmitEditing={o.onSearch} />
+                <IconButton icon={<Icons.Cross size="sm" color={useTheme('colors.textOnPrimary')} />} onPress={o.onSearchCancel} />
+            </HStack>
+        </HStack>
+    </View>
     );
 }
 
 function UnaDrawer(o) {
+    const {StatusBarManager} = NativeModules;
+    const height = StatusBarManager.HEIGHT;
     return (
-        <Container style={styles.drawerContainer}>
-            <Content>
-                <View style={styles.drawerImageContainer}>
-                    <Image style={styles.drawerImage} source={require('./img/logo-drawer.png')} />
-                </View>
-                <Button style={styles.drawerButton} iconLeft transparent onPress={o.onLogin}>
-                    <Icon style={styles.drawerButtonIcon} name='key-outline' type="Ionicons" solid />
-                    <Text style={styles.drawerButtonText}>Login</Text>
-                </Button>
-                <Button style={styles.drawerButton} iconLeft transparent onPress={o.onJoin}>
-                    <Icon style={styles.drawerButtonIcon} name='add-circle-outline' type="Ionicons" solid />
-                    <Text style={styles.drawerButtonText}>Join</Text>
-                </Button>
-                <Button style={styles.drawerButton} iconLeft transparent onPress={o.onForotPassword}>
-                    <Icon style={styles.drawerButtonIcon} name='lock-closed-outline' type="Ionicons" solid />
-                    <Text style={styles.drawerButtonText}>Forgot Password</Text>
-                </Button>
-            </Content>
-        </Container>
+        <Box bg={useTheme('colors.drawerBackground')} borderColor={useTheme('colors.drawerBorder')} style={[styles.drawerContainer, {top:height + ('ios' === Platform.OS ? 50 : 25)}]} shadow={2}>
+            <VStack space={2}>
+                <Pressable style={styles.drawerButton} iconLeft transparent onPress={o.onLogin}>
+                    <HStack>
+                        <Icons.In size="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonIcon} />
+                        <Text fontSize="xl" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Login</Text>
+                    </HStack>
+                </Pressable>
+                <Pressable style={styles.drawerButton} iconLeft transparent onPress={o.onJoin}>
+                    <HStack>
+                        <Icons.PlusCircle size="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonIcon} />
+                        <Text fontSize="xl" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Join</Text>
+                    </HStack>
+                </Pressable>
+                <Pressable style={styles.drawerButton} iconLeft transparent onPress={o.onForotPassword}>
+                    <HStack>
+                        <Icons.Question size="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonIcon} />
+                        <Text fontSize="xl" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Forgot Password</Text>
+                    </HStack>
+                </Pressable>
+            </VStack>
+        </Box>
   );
 }
 
+function Badge(o) {
+    return (
+        <Box style={styles.badge}><Text style={styles.badgeText}>{o.num}</Text></Box>
+    );
+}
+
 const styles = new StyleSheet.create({
-    container: {
-        backgroundColor: useTheme('colors.background'),
-        flex: 1
-    },
     webview: {
         flex: 1,
         backgroundColor: 'transparent',
     },
     webviewFirstLoad: {
-        flex: 9999999999,
-        backgroundColor: useTheme('colors.background'),
-        justifyContent: 'center', 
+        flex: 9999999999,        
+        justifyContent: 'center',  
         alignItems: 'center',
     },
-    webviewFirstLoadIndicator: {
-    },
     header: {
-        backgroundColor: useTheme('colors.primary'),
-        height: 46, paddingTop:0, // tmp fix - https://github.com/GeekyAnts/NativeBase/issues/3095
-        borderBottomWidth: 0.5,
-        borderBottomColor: useTheme('colors.toolbarBorder'),
+        height: 50,
     },
     headerTitle: {
-        color: useTheme('colors.textOnPrimary'),
         fontSize: 18,
         fontWeight: 'bold',
     },
@@ -807,33 +807,20 @@ const styles = new StyleSheet.create({
         height: 28,
     },
     headerIcon: {
-        color: useTheme('colors.textOnPrimary'),
-        fontSize: 28,
+        top: 6,
+        left: 6,
     },
-    searchInputItem: {
-        borderColor: useTheme('colors.searchInputBorder'),
-        borderRightWidth: 1,
-        borderTopWidth: 1,
-        borderLeftWidth: 1,
-        borderBottomWidth: 1,
-        backgroundColor: useTheme('colors.searchInputBackground'),
+    searchInputContainer: {
+        paddingLeft:5,
     },
-    searchInput: {
-        color: useTheme('colors.searchInputText'), 
-        paddingLeft: 15, 
-        paddingRight: 15
+    searchInputItem: {        
+        borderWidth: 1,
     },
     footer: {
-        backgroundColor: useTheme('colors.primary'),
-        borderTopWidth: 0.5,
-        borderTopColor: useTheme('colors.toolbarBorder'),
+        borderTopWidth: 0.5,        
     },
     footerTab: {
-        backgroundColor: useTheme('colors.primary'),
-    },
-    footerIcon: {
-        color: useTheme('colors.textOnPrimary'),
-        fontSize: 28,
+
     },
 
     containerVideoCall: {
@@ -842,37 +829,49 @@ const styles = new StyleSheet.create({
     },
 
     loadingIndicator: {
-        marginLeft: 5,
-        marginTop: 5,
+        marginLeft: 0,
+        marginTop: 0,
+        width:52,
+        height:52,
     },
     buttonLeftTopAndroid: {
     },
     buttonLeftTopIos: {
     },
     drawerContainer: {
-        backgroundColor: useTheme('colors.drawerBackground'),
-    },
-    drawerImageContainer: {
-        height:100, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        backgroundColor: useTheme('colors.drawerBackground'),
-    },
-    drawerImage: {
-        height:35.3,
-        width:125,
+        position: 'absolute',
+        top:0,
+        left:0,
+        width:250,        
+        borderWidth: 0.5,
+        padding:20,
     },
     drawerButton: {
         justifyContent: 'flex-start',
     },
     drawerButtonIcon: {
-        width: 20,
-        fontSize: 20,
+        top:6,
+        marginRight:15,
         justifyContent: 'center',
         textAlign: 'center',
-        color: useTheme('colors.drawerText'),
     },
-    drawerButtonText: {
-        color: useTheme('colors.drawerText'),
+    drawerButtonText: {        
+        
+    },
+
+    badge: {
+        backgroundColor:'red', 
+        color:'white',
+        position:'absolute',
+        top:4,
+        right:11,
+        paddingLeft:4,
+        paddingRight:4,
+        borderRadius:3
+    },
+    badgeText: {
+        color:'white', 
+        fontSize: 11, 
+        fontWeight: 'bold',
     },
 });
