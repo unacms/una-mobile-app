@@ -247,7 +247,7 @@ export default class App extends Component<Props> {
     
     onNotificationsMenu() {
         this.endVideoCall();
-        this.injectJavaScript("bx_mobile_apps_show_notifications_menu()");
+        this.injectJavaScript(`document.location = "${BASE_URL}page.php?i=notifications-view"`);
         return true;
     }
     
@@ -715,9 +715,9 @@ function UnaToolbar(o) {
                     <ActivityIndicator size="small" color={useTheme('colors.activityIndicator')} style={styles.loadingIndicator} />
                 ):(
                     o.loggedin ? (
-                        (<IconButton icon={<Icons.Back size="2xl" color={o.backButtonEnabled ? useTheme('colors.textOnPrimary') : useTheme('colors.textOnPrimaryDisabled')} style={styles.headerIcon} />} onPress={o.onBack} />)
+                        (<IconButton icon={<Icons.Back size="lg" color={o.backButtonEnabled ? useTheme('colors.textOnPrimary') : useTheme('colors.textOnPrimaryDisabled')} style={styles.headerIcon} />} onPress={o.onBack} />)
                     ) : (
-                        <IconButton icon={<Icons.Bars size="2xl" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onDrawerToggle} />
+                        <IconButton icon={<Icons.Bars size="lg" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onDrawerToggle} />
                     )
                 )}
 
@@ -728,7 +728,7 @@ function UnaToolbar(o) {
                 )}
             </HStack>
             <HStack>
-                {o.loggedin && (<IconButton icon={<Icons.Search size="2xl" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onSearchMenu} />)}
+                {o.loggedin && (<IconButton icon={<Icons.Search size="lg" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onSearchMenu} />)}
             </HStack>
         </HStack>
     </View>
@@ -759,19 +759,19 @@ function UnaDrawer(o) {
                 <Pressable style={styles.drawerButton} iconLeft transparent onPress={o.onLogin}>
                     <HStack>
                         <Icons.In size="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonIcon} />
-                        <Text fontSize="xl" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Login</Text>
+                        <Text fontSize="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Login</Text>
                     </HStack>
                 </Pressable>
                 <Pressable style={styles.drawerButton} iconLeft transparent onPress={o.onJoin}>
                     <HStack>
                         <Icons.PlusCircle size="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonIcon} />
-                        <Text fontSize="xl" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Join</Text>
+                        <Text fontSize="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Join</Text>
                     </HStack>
                 </Pressable>
                 <Pressable style={styles.drawerButton} iconLeft transparent onPress={o.onForotPassword}>
                     <HStack>
                         <Icons.Question size="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonIcon} />
-                        <Text fontSize="xl" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Forgot Password</Text>
+                        <Text fontSize="md" color={useTheme('colors.drawerText')} style={styles.drawerButtonText}>Forgot Password</Text>
                     </HStack>
                 </Pressable>
             </VStack>
@@ -795,6 +795,7 @@ const styles = new StyleSheet.create({
         justifyContent: 'center',  
         alignItems: 'center',
     },
+
     header: {
         height: 50,
     },
@@ -806,21 +807,16 @@ const styles = new StyleSheet.create({
         width: 99,
         height: 28,
     },
-    headerIcon: {
-        top: 6,
-        left: 6,
-    },
+
     searchInputContainer: {
         paddingLeft:5,
     },
     searchInputItem: {        
         borderWidth: 1,
     },
+
     footer: {
         borderTopWidth: 0.5,        
-    },
-    footerTab: {
-
     },
 
     containerVideoCall: {
@@ -829,15 +825,10 @@ const styles = new StyleSheet.create({
     },
 
     loadingIndicator: {
-        marginLeft: 0,
-        marginTop: 0,
-        width:52,
-        height:52,
+        width:44,
+        height:44,
     },
-    buttonLeftTopAndroid: {
-    },
-    buttonLeftTopIos: {
-    },
+
     drawerContainer: {
         position: 'absolute',
         top:0,
@@ -850,13 +841,10 @@ const styles = new StyleSheet.create({
         justifyContent: 'flex-start',
     },
     drawerButtonIcon: {
-        top:6,
-        marginRight:15,
+        top:3,
+        marginRight:10,
         justifyContent: 'center',
         textAlign: 'center',
-    },
-    drawerButtonText: {        
-        
     },
 
     badge: {

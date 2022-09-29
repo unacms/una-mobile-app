@@ -5,19 +5,19 @@ const themeDark = {
     dark: true,
     barStyle: 'light-content',
     colors: {
-        primary: '#111827',
-        textOnPrimary: '#6B7280',
+        primary: '#1e293b',
+        textOnPrimary: '#e2e8f0',
         textOnPrimaryDisabled: '#111',
         background: '#000000',
-        toolbarBorder: '#1F2937',
+        toolbarBorder: '#475569',
         drawerBackground: '#F3F4F6',
         drawerText: '#1890ff',
-        drawerBorder: '#A3A4A5',
+        drawerBorder: '#475569',
         statusBar: '#000000',
-        activityIndicator: '#6B7280',
+        activityIndicator: '#e2e8f0',
         searchInputBackground: '#000000',
-        searchInputBorder: '#1F2937',
-        searchInputText: '#CFDBF3',
+        searchInputBorder: '#475569',
+        searchInputText: '#e2e8f0',
     }
 };
 const themeLight = {
@@ -25,18 +25,18 @@ const themeLight = {
     barStyle: 'dark-content',
     colors: {
         primary: '#fff',
-        textOnPrimary: '#6B7280',
+        textOnPrimary: '#334155',
         textOnPrimaryDisabled: '#eee',
         background: '#F3F4F6',
-        toolbarBorder: '#E4E9F2',
+        toolbarBorder: '#cbd5e1',
         drawerBackground: '#F3F4F6',
         drawerText: '#1890ff',
-        drawerBorder: '#A3A4A5',
+        drawerBorder: '#cbd5e1',
         statusBar: '#fff',
-        activityIndicator: '#6B7280',
+        activityIndicator: '#334155',
         searchInputBackground: '#F7F9FC',
-        searchInputBorder: '#E4E9F2',
-        searchInputText: '#6B7280',
+        searchInputBorder: '#cbd5e1',
+        searchInputText: '#334155',
     }
 };
 
