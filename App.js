@@ -68,7 +68,7 @@ type Props = {};
 const BASE_URL = 'https://una.io/'; // site URL
 const MIX_LIGHT = '0'; // template styles mix for light mode
 const MIX_DARK = '0'; // template styles mix for dark mode
-const TEMPLATE = 'protean'; // template name
+const TEMPLATE = 'artificer'; // template name
 const TITLE = 'UNA.IO | Community Management System'; // homepage title
 const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
 const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
@@ -645,10 +645,12 @@ export default class App extends Component<Props> {
 
         return (
             <NativeBaseProvider> 
+                <StatusBar animated={true} backgroundColor={useTheme('colors.statusBar')} barStyle={useTheme('barStyle')} />
+
                 {this.state.searchbar ? (
                     <UnaToolbarSearch onSearch={this.onSearch} onSearchCancel={this.onSearchCancelMenu} />
                 ) : (
-                    <UnaToolbar loading={this.state.loading} loggedin={this.state.data.loggedin} backButtonEnabled={this.state.backButtonEnabled} onMainMenu={this.onMainMenu} onHomeMenu={this.onHomeMenu} onSearchMenu={this.onSearchMenu} onBackAndMainMenu={this.onBackAndMainMenu} onBack={this.onBack} onDrawerToggle={this.onDrawerToggle} title={this.state.status} />
+                    <UnaToolbar drawerOpen={this.state.drawerOpen} loading={this.state.loading} loggedin={this.state.data.loggedin} backButtonEnabled={this.state.backButtonEnabled} onMainMenu={this.onMainMenu} onHomeMenu={this.onHomeMenu} onSearchMenu={this.onSearchMenu} onBackAndMainMenu={this.onBackAndMainMenu} onBack={this.onBack} onDrawerToggle={this.onDrawerToggle} title={this.state.status} />
                 ) }
 
                 {this.state.videoCall && this.state.videoCallUri ? (
@@ -706,7 +708,6 @@ function UnaToolbar(o) {
 
     return (
     <View style={{borderBottomColor: useTheme('colors.toolbarBorder'), borderBottomWidth:0.5}}>
-        <StatusBar bg={useTheme('colors.statusBar')} barStyle={useTheme('barStyle')} />
         <Box safeAreaTop bg={useTheme('colors.statusBar')} />
         <HStack bg={useTheme('colors.primary')} px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" style={styles.header}>
             <HStack alignItems="center">
@@ -715,21 +716,26 @@ function UnaToolbar(o) {
                     <ActivityIndicator size="small" color={useTheme('colors.activityIndicator')} style={styles.loadingIndicator} />
                 ):(
                     o.loggedin ? (
-                        (<IconButton icon={<Icons.Back size="lg" color={o.backButtonEnabled ? useTheme('colors.textOnPrimary') : useTheme('colors.textOnPrimaryDisabled')} style={styles.headerIcon} />} onPress={o.onBack} />)
-                    ) : (
-                        <IconButton icon={<Icons.Bars size="lg" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onDrawerToggle} />
+                        <IconButton icon={<Icons.Back size="lg" color={o.backButtonEnabled ? useTheme('colors.textOnPrimary') : useTheme('colors.textOnPrimaryDisabled')} style={styles.headerIcon} />} onPress={o.onBack} />
+                    ):(
+                        <IconButton icon={o.drawerOpen ? (<Icons.Cross size="lg" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />) : (<Icons.Bars size="lg" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />)} onPress={o.onDrawerToggle} />
                     )
                 )}
-
-                {!o.title || TITLE == o.title || o.loading ? (
-                    <Image alt="Logo" style={styles.headerImage} source={require('./img/logo.png')} />
-                ) : (
+                
+                {!o.title || TITLE == o.title || o.loading ? (<View>
+                    {/*<Image alt="Logo" style={styles.headerImage} source={require('./img/logo.png')} />*/}
+                    <Icons.Logo size={75} />
+                </View>) : (
                     <Text color={useTheme('colors.textOnPrimary')} numberOfLines={1} ellipsizeMode="tail" style={styles.headerTitle}>{o.title}</Text>
                 )}
+
+
             </HStack>
+
             <HStack>
                 {o.loggedin && (<IconButton icon={<Icons.Search size="lg" color={useTheme('colors.textOnPrimary')} style={styles.headerIcon} />} onPress={o.onSearchMenu} />)}
             </HStack>
+
         </HStack>
     </View>
     );

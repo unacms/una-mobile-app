@@ -510,10 +510,10 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
-  react-native-onesignal: a4a08bf22290f739df33acf1f45f7a7f9850273b
-  react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
+  react-native-onesignal: e1f82b98767a9014d2c46f395b083330cfa29cea
+  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
-  react-native-webview: a192040320142d8f10d652a745c46e4f43e37f8c
+  react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
   React-RCTAnimation: 6a2e76ab50c6f25b428d81b76a5a45351c4d77aa
