@@ -388,7 +388,7 @@ export default class App extends Component<Props> {
         if ('about:blank' === event.url)
             return false;
 
-        if (0 != event.url.indexOf('http') || (!bExceptionUrl && -1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS)))) {
+        if ((0 != event.url.indexOf('http') || (!bExceptionUrl && -1 == event.url.indexOf(`${BASE_URL}`) && ('android' === Platform.OS || ('click' == event.navigationType && 'ios' === Platform.OS)))) || -1 != event.url.indexOf('calendar_sync')) {
 
             Linking.canOpenURL(event.url).then(supported => {
                 if (supported) {
