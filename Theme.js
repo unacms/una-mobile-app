@@ -17,7 +17,9 @@ const themeDark = {
         activityIndicator: '#e2e8f0',
         searchInputBackground: '#000000',
         searchInputBorder: '#475569',
+        searchInputBorderActive: '#475569',
         searchInputText: '#e2e8f0',
+        searchInputTextPlaceholder: '#888',
     }
 };
 const themeLight = {
@@ -36,7 +38,9 @@ const themeLight = {
         activityIndicator: '#334155',
         searchInputBackground: '#F7F9FC',
         searchInputBorder: '#cbd5e1',
+        searchInputBorderActive: '#cbd5e1',
         searchInputText: '#334155',
+        searchInputTextPlaceholder: '#888',
     }
 };
 

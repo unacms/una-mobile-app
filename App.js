@@ -748,7 +748,7 @@ function UnaToolbarSearch(o) {
         <Box safeAreaTop bg={useTheme('colors.statusBar')} />
         <HStack bg={useTheme('colors.primary')} px="1" py="1" justifyContent="space-between" alignItems="center" w="100%" style={styles.header}>
             <HStack alignItems="center" style={styles.searchInputContainer}>
-                <Input placeholder="Search..." width="89%" borderRadius={'ios' === Platform.OS ? 'full' : 'md'} px="3" fontSize="14" bg={useTheme('searchInputBackground')} color={useTheme('colors.searchInputText')} borderColor={useTheme('colors.searchInputBorder')} onSubmitEditing={o.onSearch} />
+                <Input placeholder="Search..." width="89%" borderRadius={'ios' === Platform.OS ? 'full' : 'md'} px="3" fontSize="14" bg={useTheme('searchInputBackground')} color={useTheme('colors.searchInputText')} borderColor={useTheme('colors.searchInputBorder')} onSubmitEditing={o.onSearch} _focus={{ borderColor: useTheme('colors.searchInputBorderActive') }} placeholderTextColor={useTheme('colors.searchInputTextPlaceholder')} />
                 <IconButton icon={<Icons.Cross size="sm" color={useTheme('colors.textOnPrimary')} />} onPress={o.onSearchCancel} />
             </HStack>
         </HStack>
