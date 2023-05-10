@@ -27,7 +27,7 @@ ${SED} -r -i "s%target '([a-z0-9]+)Tests' do%target '${NAME}Tests' do%g" ./ios/P
 ${SED} -r -i "s%target '([a-z0-9]+)' do%target '${NAME}' do%g" ./ios/Podfile
 
 
-${SED} -r -i "s%moduleName:@\"([a-z0-9]+)\"%moduleName:@\"${NAME}\"%g" ./ios/una/AppDelegate.m
+${SED} -r -i "s%moduleName:@\"([a-z0-9]+)\"%moduleName:@\"${NAME}\"%g" ./ios/una/AppDelegate.mm
 
 
 ${SED} -r -i "s%<string name=\"app_name\">(.*?)</string>%<string name=\"app_name\">${TITLE}</string>%g" ./android/app/src/main/res/values/strings.xml
@@ -51,7 +51,7 @@ ${SED} -r -i "s%intent-filter android:label=\"(.*?)\"%intent-filter android:labe
 ${SED} -r -i "s%android:host=\"(.*?)\"%android:host=\"${DOMAIN}\"%g" ./android/app/src/main/AndroidManifest.xml
 
 
-${SED} -r -i "s%package = \"([a-z0-9\.]+)\"%package = \"${PACKAGE}\"%g" ./android/app/_BUCK
+# ${SED} -r -i "s%package = \"([a-z0-9\.]+)\"%package = \"${PACKAGE}\"%g" ./android/app/_BUCK
 
 
 ${SED} -r -i "s%applicationId \"([a-z0-9\.]+)\"%applicationId \"${PACKAGE}\"%g" ./android/app/build.gradle
