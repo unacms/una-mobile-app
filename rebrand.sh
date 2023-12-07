@@ -58,5 +58,9 @@ ${SED} -r -i "s%applicationId \"([a-z0-9\.]+)\"%applicationId \"${PACKAGE}\"%g" 
 ${SED} -r -i "s%namespace \"([a-z0-9\.]+)\"%namespace \"${PACKAGE}\"%g" ./android/app/build.gradle
 
 
+${SED} -r -i "s%namespace \"([a-z0-9\.]+)\"%namespace \"${PACKAGE}\"%g" ./android/app/src/release/java/com/una/ReactNativeFlipper.java
+${SED} -r -i "s%namespace \"([a-z0-9\.]+)\"%namespace \"${PACKAGE}\"%g" ./android/app/src/debug/java/com/una/ReactNativeFlipper.java
+
+
 echo "Basic rebranding has been completed, please proceed with manual changes in XCode and grpahics changing..."
 
