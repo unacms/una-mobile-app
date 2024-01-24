@@ -1,5 +1,5 @@
 /**
- * Copyright (c) UNA, Inc - https://una.io
+ * Copyright (c) UNA, Inc - https://unacms.com
  * MIT License - https://opensource.org/licenses/MIT
  *
  * @format
@@ -65,11 +65,11 @@ import { version } from './package.json';
 
 type Props = {};
 
-const BASE_URL = 'https://una.io/'; // site URL
+const BASE_URL = 'https://unacms.com/'; // site URL
 const MIX_LIGHT = '0'; // template styles mix for light mode
 const MIX_DARK = '0'; // template styles mix for dark mode
 const TEMPLATE = 'artificer'; // template name
-const TITLE = 'UNA.IO | Community Management System'; // homepage title
+const TITLE = 'UNA CMS | Community Management System'; // homepage title
 const ONESIGNALAPPID = ''; // you can obtain one from https://onesignal.com/
 const PAYMENTS_CALLBACK = ''; // empty string means payment functionality is disabled
 
@@ -615,6 +615,10 @@ export default class App extends Component<Props> {
     }
 
     render() {
+        var sUri = `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === this.state.colorScheme ? MIX_DARK : MIX_LIGHT}`;
+        // if (this.state.data.loggedin && this.state.data.user_info && 'system' == this.state.data.user_info.module) // conditional redirect after login
+        //    sUri = `${BASE_URL}create-persons-profile`;
+
         var sWebview = (
                 <WebView
                     useWebKit={true}
@@ -631,7 +635,7 @@ export default class App extends Component<Props> {
                     onShouldStartLoadWithRequest={this.onWebViewShouldStartLoadWithRequest.bind(this)}
                     onNavigationStateChange={this.onWebViewNavigationStateChange.bind(this)}
                     style={styles.webview}
-                    source={{uri: `${BASE_URL}?skin=${TEMPLATE}&mix=${'dark' === this.state.colorScheme ? MIX_DARK : MIX_LIGHT}` }}
+                    source={{uri: sUri}}
                     userAgent={"UNAMobileApp/Mobile (" + Platform.OS + ")"}
                     onMessage={this.onWebViewMessage.bind(this)}
                     allowFileAccess={true}
