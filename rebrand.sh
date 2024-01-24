@@ -27,7 +27,8 @@ ${SED} -r -i "s%target '([a-z0-9]+)Tests' do%target '${NAME}Tests' do%g" ./ios/P
 ${SED} -r -i "s%target '([a-z0-9]+)' do%target '${NAME}' do%g" ./ios/Podfile
 
 
-${SED} -r -i "s%moduleName:@\"([a-z0-9]+)\"%moduleName:@\"${NAME}\"%g" ./ios/una/AppDelegate.mm
+${SED} -r -i "s%moduleName:@\"([a-z0-9]+)\"%moduleName:@\"${NAME}\"%g" ./ios/una/AppDelegate.m
+${SED} -r -i "s%moduleName = @\"([a-z0-9]+)\"%moduleName = @\"${NAME}\"%g" ./ios/una/AppDelegate.mm
 
 
 ${SED} -r -i "s%<string name=\"app_name\">(.*?)</string>%<string name=\"app_name\">${TITLE}</string>%g" ./android/app/src/main/res/values/strings.xml
@@ -58,8 +59,8 @@ ${SED} -r -i "s%applicationId \"([a-z0-9\.]+)\"%applicationId \"${PACKAGE}\"%g" 
 ${SED} -r -i "s%namespace \"([a-z0-9\.]+)\"%namespace \"${PACKAGE}\"%g" ./android/app/build.gradle
 
 
-${SED} -r -i "s%namespace \"([a-z0-9\.]+)\"%namespace \"${PACKAGE}\"%g" ./android/app/src/release/java/com/una/ReactNativeFlipper.java
-${SED} -r -i "s%namespace \"([a-z0-9\.]+)\"%namespace \"${PACKAGE}\"%g" ./android/app/src/debug/java/com/una/ReactNativeFlipper.java
+${SED} -r -i "s%package ([a-z0-9\.]+)%package ${PACKAGE}%g" ./android/app/src/release/java/com/una/ReactNativeFlipper.java
+${SED} -r -i "s%package ([a-z0-9\.]+)%package ${PACKAGE}%g" ./android/app/src/debug/java/com/una/ReactNativeFlipper.java
 
 
 echo "Basic rebranding has been completed, please proceed with manual changes in XCode and grpahics changing..."
