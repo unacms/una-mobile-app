@@ -67,6 +67,7 @@ function askQuestion(query) {
 
       const appJsonData = await fs.readFile(appJsonPath, "utf8");
       const appJson = JSON.parse(appJsonData);
+      const scheme = name.toLowerCase.replace(/[^a-z0-9]/g, "");
       const slug = name
         .toLowerCase()
         .replace(/\s+/g, "-")          // spaces → hyphens
@@ -74,6 +75,7 @@ function askQuestion(query) {
 
       appJson.expo.name = name;
       appJson.expo.slug = slug;
+      appJson.expo.scheme = scheme;
 
       appJson.expo = appJson.expo || {};
       appJson.expo.android = appJson.expo.android || {};
