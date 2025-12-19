@@ -31,17 +31,14 @@ Mobile apps need to have [Nexus](https://unacms.com/view-product/nexus) UNA app 
 
 - Edit `constants/setings.ts` to specify your domain and other settings.  
 - Edit `constants/theme.ts` to specify custom colors.
-- Edit images in `assets/images` to change app icons and app name.
+- Edit images in `assets/images` to change app icons.
+- Edit `app.js` to change app bundle and app name.
 
-## Get a fresh project
-
-When you're ready, run:
+Automate some the of the above changes by running:
 
 ```bash
-npm run reset-project
+npm run rebrand
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ## Learn more
 
