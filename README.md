@@ -1,86 +1,50 @@
-# UNA Mobile Apps
+# Welcome to your Expo app 👋
 
-This is source code of UNA mobile apps for iOS and Android based on ReactNative.   
-Mobile apps need to have **Nexus** UNA app installed.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Run
+## Get started
 
-You need to have [Node.js](https://nodejs.org/), [Android SDK](https://developer.android.com/studio) for Android Apps and [XCode](https://developer.apple.com/xcode/) for iOS apps along withg [CocoaPods](https://cocoapods.org/) installed to build apps.
+1. Install dependencies
 
-After downloading source code, unpacking it, then run:
+   ```bash
+   npm install
+   ```
+
+2. Start the app
+
+   ```bash
+   npx expo start
+   ```
+
+In the output, you'll find options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Get a fresh project
+
+When you're ready, run:
+
 ```bash
-npm install 
-```
-Then you can already try to run Andoid app with the following commands (Android emulator must be already running):
-```bash
-export ANDROID_HOME=/path/to/android/sdk
-npx react-native run-android
-```
-or iOS app (on Mac OSX only):
-```
-cd ios; pod install; cd ..
-npx react-native run-ios
+npm run reset-project
 ```
 
-## Changing display name and bundle identifier
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-There is `rebrand.sh` script to help with below changes, just change variables in the beginning of the file and run it, or proceed with the manual actions below:
+## Learn more
 
-Lest assume that you want to rename app to **Kookaburra** and site name is **kookaburra.io**.   
-Then you need to change the following strings:
-```
-UNA.IO => Kookaburra
-com.una.android => com.kookaburra.android
-com.una.ios => com.kookaburra.ios
-una.io => kookaburra.io
-una => kookaburra
-```
+To learn more about developing your project with Expo, look at the following resources:
 
-In the following files and some files need to be renamed:
-```
-App.js
-app.json
-package.json
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-ios/Podfile
-ios/una/AppDelegate.m
+## Join the community
 
-android/app/src/main/res/values/strings.xml
-android/app/src/main/java/com/una/android/MainActivity.java => android/app/src/main/java/com/kookaburra/android/MainActivity.java
-android/app/src/main/java/com/una/android/MainApplication.java => android/app/src/main/java/com/kookaburra/android/MainApplication.java
-android/app/src/main/AndroidManifest.xml
-android/app/BUCK
-android/app/build.gradle
-```
+Join our community of developers creating universal apps.
 
-In XCode change the following (make sure to open `una.xcworkspace`):
-
-![](https://raw.githubusercontent.com/wiki/unaio/una/images/mobile-apps/change-name-ios.png)
-
-Then rename the following file:
-```
-ios/kookaburra.xcodeproj/xcshareddata/xcschemes/una.xcscheme => ios/kookaburra.xcodeproj/xcshareddata/xcschemes/kookaburra.xcscheme
-```
-
-## Change images to your own
-
-Change all images to your own in `/img/` folder, leaving the same images dimensions.  
-
-To change launcher and icons for iOS and Android apps it's recommended to use special script, it can be installed using the following command:
-```bash
-npm i -D @bam.tech/react-native-make
-```
-
-Then you can generate app icons and splash for Android using the following command:
-```bash
-npx react-native set-icon --platform android --path ./img/icon-android.png
-npx react-native set-splash --platform android --path ./img/background.png --resize contain
-```
-
-Before generating splash and app icon of iOS app rename `ios/una` folder to `ios/kookaburra`:
-```bash
-npx react-native set-icon --platform ios --path ./img/icon.png
-npx react-native set-splash --platform ios --path ./img/background.png --resize contain
-```
-After images are generated rename it back `ios/kookaburra` to `ios/una`.
-Then open `kookaburra.xcworkspace` in XCode and add `SplashScreen.storyboard` file to the project to use it as splash.
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
