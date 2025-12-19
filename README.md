@@ -33,6 +33,7 @@ Mobile apps need to have [Nexus](https://unacms.com/view-product/nexus) UNA app 
 - Edit `constants/theme.ts` to specify custom colors.
 - Edit images in `assets/images` to change app icons.
 - Edit `app.js` to change app bundle and app name.
+- Make sure to run `npx expo prebuild` after editing `app.js` file.
 
 Automate some the of the above changes by running:
 

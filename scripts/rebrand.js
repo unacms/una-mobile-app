@@ -7,6 +7,7 @@
 const fs = require("fs").promises;
 const path = require("path");
 const readline = require("readline");
+const { exec } = require("child_process");
 
 const root = process.cwd();
 const settingsPath = path.join(root, "constants", "settings.ts");
@@ -74,6 +75,59 @@ function askQuestion(query) {
 
       await fs.writeFile(appJsonPath, JSON.stringify(appJson, null, 2), "utf8");
       console.log(`✅ Bundle ID updated to: ${bundleId}`);
+
+    })();
+
+    // --------- recreate `ios` and `android` folders
+    await (async () => {
+      const answer = await askQuestion("Recreate native app folders (Y or N): ");
+      const userInput = answer.trim().toLowerCase();
+
+
+      if (userInput != 'y' && userInput != 'n' && userInput != '') {
+        console.log("❌ Answer Y or N.");
+        return;
+      }
+
+
+      if (userInput == 'y' || userInput == '') {
+        
+        // Delete android and ios folders if they exist
+        const androidPath = path.join(root, "android");
+        const iosPath = path.join(root, "ios");
+
+        try {
+          await fs.rm(androidPath, { recursive: true, force: true });
+          await fs.rm(iosPath, { recursive: true, force: true });
+          console.log("✅ Old native folders deleted");
+        } catch (err) {
+          console.error("❌ Failed to delete native folders:", err);
+        }
+
+        // Recreate native folders using expo prebuild
+        try {
+          await new Promise((resolve, reject) => {
+            console.log("Recreating...");
+            exec("npx expo prebuild", (err, stdout, stderr) => {
+              if (err) {
+                console.error("❌ Failed to run expo prebuild:", err);
+                reject(err);
+              } else {
+                console.log(stdout);
+                resolve(stdout);
+              }
+            });
+          });
+          console.log("✅ Native app folders were recreated");
+        } catch (err) {
+          console.error("❌ Error during prebuild:", err);
+        }
+        
+      }
+
+      if (userInput == 'n') {        
+        console.log("⚠️ You chose not to recreate native folders. Some changes may not take effect in native builds.");
+      }
 
     })();
 
