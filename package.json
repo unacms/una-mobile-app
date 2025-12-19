@@ -3,11 +3,12 @@
   "main": "expo-router/entry",
   "version": "3.0.0",
   "scripts": {
-    "start": "expo start",
-    "rebrand": "node ./scripts/rebrand.js",
+    "start": "expo start",    
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "rebrand": "node ./scripts/rebrand.js",
+    "clean": "echo 'Cleaning up...' && rm -rf node_modules ios android"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
