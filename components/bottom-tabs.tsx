@@ -1,8 +1,11 @@
+import { HapticTab } from "@/components/haptic-tab";
+import { ThemedView } from '@/components/themed-view';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { RefObject } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { WebView } from "react-native-webview";
 import { UNA_URL } from "../constants/settings";
-import { Bars, Bell, Chat, Plus, User } from "./icons";
+import { Bars, Bell, Chat, Plus, Search, User } from "./icons";
 
 type Props = {
   webViewRef: RefObject<WebView>;
@@ -10,6 +13,9 @@ type Props = {
 };
 
 export default function BottomTabs({ webViewRef, data }: Props) {
+  const iconColor = useThemeColor({}, 'icon');
+  const borderColor = useThemeColor({}, 'border');
+
   const runFuncJS = (js: string) => {
     webViewRef.current?.injectJavaScript(`
       if (window.${js}) {
@@ -36,31 +42,36 @@ export default function BottomTabs({ webViewRef, data }: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <Pressable onPress={() => runFuncJS("bx_mobile_apps_show_main_menu")}>
-        <Bars size={24} color="#111" />
-      </Pressable>
+    <ThemedView style={[{ borderColor }, styles.container]}>
 
-      <Pressable onPress={() => runJS(`document.location = "${UNA_URL}/page.php?i=notifications-view"`)}>
-        <Bell size={24} color="#111" />
+      <HapticTab onPress={() => runFuncJS("bx_mobile_apps_show_main_menu")}>
+        <Bars size={24} color={iconColor} />
+      </HapticTab>
+
+      <HapticTab onPress={() => runJS(`document.location = "${UNA_URL}/page.php?i=notifications-view"`)}>
+        <Bell size={24} color={iconColor} />
         {renderBadge(data.bubbles?.['notifications-preview'] ?? 0)}
-      </Pressable>
+      </HapticTab>
 
-      <Pressable onPress={() => runFuncJS("bx_mobile_apps_show_add_menu")}>
-        <Plus size={24} color="#111" />
-      </Pressable>
+      <HapticTab onPress={() => runFuncJS("bx_mobile_apps_show_add_menu")}>
+        <Plus size={24} color={iconColor} />
+      </HapticTab>
 
-      <Pressable onPress={() => runFuncJS("bx_mobile_apps_show_messenger_menu")}>
-        <Chat size={24} color="#111" />
+      <HapticTab onPress={() => runFuncJS("bx_mobile_apps_show_messenger_menu")}>
+        <Chat size={24} color={iconColor} />
         {renderBadge(data.bubbles?.['notifications-messenger'] ?? 0)}
-      </Pressable>
+      </HapticTab>
 
-      <Pressable onPress={() => runFuncJS("bx_mobile_apps_show_profile_menu")}>
-        <User size={24} color="#111" />
+      <HapticTab onPress={() => runJS(`document.location = "${UNA_URL}/searchKeyword.php"`)}>
+        <Search size={24} color={iconColor} />
+      </HapticTab>
+
+      <HapticTab onPress={() => runFuncJS("bx_mobile_apps_show_profile_menu")}>
+        <User size={24} color={iconColor} />
         {renderBadge(data.bubbles?.account ?? 0)}
-      </Pressable>
+      </HapticTab>
 
-    </View>
+    </ThemedView>
   );
 }
 
@@ -71,8 +82,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     borderTopWidth: 1,
+    /*
     borderColor: "#ddd",
     backgroundColor: "#fff",
+    */
   },
   tab: {
     justifyContent: "center",

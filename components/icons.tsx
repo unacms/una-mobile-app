@@ -1,11 +1,7 @@
 import React from "react";
 import Svg, {
-  Defs,
   G,
-  LinearGradient,
-  Path,
-  RadialGradient,
-  Stop,
+  Path
 } from "react-native-svg";
 
 export type IconProps = {
@@ -13,64 +9,6 @@ export type IconProps = {
   color?: string;
   style?: any;
 };
-
-/* ===================== LOGO ===================== */
-
-export function Logo({ size = 64, style }: IconProps) {
-  return (
-    <Svg
-      width={size}
-      height={(size * 1024) / 3264}
-      viewBox="0 0 3264 1024"
-      style={style}
-    >
-      <Path d="M840.961 925.025..." fill="url(#a)" />
-      <Path d="M181.2 100.447..." fill="url(#b)" />
-      <Path d="M512 992..." fill="url(#c)" />
-      <Path d="M709.38 302.273..." fill="url(#d)" />
-      <Path d="M1706.33 771.031..." fill="url(#e)" />
-      <Path d="M2123.11 242.93..." fill="url(#f)" />
-      <Path d="M3263.25 501.331..." fill="url(#g)" />
-
-      <Defs>
-        <RadialGradient id="a" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 260 -165.059 0 992 732)">
-          <Stop stopColor="#FB923C" />
-          <Stop offset={1} stopColor="#EF4444" />
-        </RadialGradient>
-
-        <RadialGradient id="b" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 -260 171.858 0 32 291.999)">
-          <Stop stopColor="#0EA5E9" />
-          <Stop offset={1} stopColor="#38BDF8" />
-        </RadialGradient>
-
-        <RadialGradient id="c" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 864 -719.971 0 632 128)">
-          <Stop stopColor="#38BDF8" />
-          <Stop offset={1} stopColor="#0284C7" />
-        </RadialGradient>
-
-        <RadialGradient id="d" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 864 -719.971 0 525.5 32)">
-          <Stop stopColor="#34D399" />
-          <Stop offset={1} stopColor="#059669" />
-        </RadialGradient>
-
-        <LinearGradient id="e" x1="1566" y1="203" x2="1566" y2="805">
-          <Stop stopColor="#F59E0B" />
-          <Stop offset={1} stopColor="#F97316" />
-        </LinearGradient>
-
-        <LinearGradient id="f" x1="2263" y1="208" x2="2263" y2="810">
-          <Stop stopColor="#F59E0B" />
-          <Stop offset={1} stopColor="#F97316" />
-        </LinearGradient>
-
-        <LinearGradient id="g" x1="2962" y1="208" x2="2962" y2="812">
-          <Stop stopColor="#F59E0B" />
-          <Stop offset={1} stopColor="#F97316" />
-        </LinearGradient>
-      </Defs>
-    </Svg>
-  );
-}
 
 /* ===================== ICON TEMPLATE ===================== */
 

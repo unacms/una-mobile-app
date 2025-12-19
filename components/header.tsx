@@ -1,4 +1,7 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import { useThemeColor } from '@/hooks/use-theme-color';
+import { ActivityIndicator, Pressable, StyleSheet } from "react-native";
 
 type Props = {
   title: string;
@@ -8,26 +11,27 @@ type Props = {
 };
 
 export default function Header({ title, loading, canGoBack, onBack }: Props) {
+  const borderColor = useThemeColor({}, 'border');
   return (
-    <View style={styles.container}>
+    <ThemedView style={[{ borderColor }, styles.container]}>
       <Pressable
         onPress={onBack}
         disabled={!canGoBack}
         style={styles.back}
       >
-        <Text style={[styles.backText, !canGoBack && styles.disabled]}>
+        <ThemedText style={[styles.backText, !canGoBack && styles.disabled]}>
           ←
-        </Text>
+        </ThemedText>
       </Pressable>
 
-      <Text numberOfLines={1} style={styles.title}>
+      <ThemedText numberOfLines={1} style={styles.title}>
         {title || " "}
-      </Text>
+      </ThemedText>
 
-      <View style={styles.right}>
+      <ThemedView style={styles.right}>
         {loading && <ActivityIndicator size="small" />}
-      </View>
-    </View>
+      </ThemedView>
+    </ThemedView>
   );
 }
 
@@ -37,9 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
+    borderBottomWidth: 1,    
   },
   back: {
     width: 40,

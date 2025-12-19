@@ -45,6 +45,6 @@ const WebViewContainer = forwardRef<WebView, WebViewHandlers>((handlers, ref) =>
 
 export default WebViewContainer;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
   container: { flex: 1 },
 });
