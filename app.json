@@ -11,14 +11,18 @@
     "ios": {
       "bundleIdentifier": "com.unacms.app",
       "infoPlist": {
-          "UIBackgroundModes": ["remote-notification"],
-          "NSAppTransportSecurity": {"NSAllowsArbitraryLoads": true}
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       },
       "entitlements": {
-          "aps-environment": "development",
-          "com.apple.security.application-groups": [
-              "group.${ios.bundleIdentifier}.onesignal"
-          ]
+        "aps-environment": "development",
+        "com.apple.security.application-groups": [
+          "group.${ios.bundleIdentifier}.onesignal"
+        ]
       },
       "supportsTablet": true
     },
@@ -40,10 +44,10 @@
     },
     "plugins": [
       [
-          "onesignal-expo-plugin",
-          {
-            "mode": "development"
-          }
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
       ],
       "expo-router",
       [

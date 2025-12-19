@@ -4,7 +4,7 @@
   "version": "3.0.0",
   "scripts": {
     "start": "expo start",
-    "rebrand": "node ./scripts/reset-project.js",
+    "rebrand": "node ./scripts/rebrand.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "lint": "expo lint"
