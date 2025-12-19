@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "UNACMS",
-    "slug": "unacms",
+    "name": "Sample App",
+    "slug": "sample-app",
     "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,7 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.unacms.app",
+      "bundleIdentifier": "com.example.app",
       "infoPlist": {
         "UIBackgroundModes": [
           "remote-notification"
@@ -27,7 +27,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.unacms.app",
+      "package": "com.example.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",

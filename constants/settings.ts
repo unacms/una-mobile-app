@@ -1,6 +1,6 @@
 
 // base URL for the UNA mobile app
-export const UNA_URL = "https://ci.una.io/test";
+export const UNA_URL = "https://example.com";
 
 // OneSignal App ID for push notifications
 export const ONESIGNAL_APP_ID = "";
