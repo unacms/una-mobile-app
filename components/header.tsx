@@ -2,6 +2,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { ActivityIndicator, Pressable, StyleSheet } from "react-native";
+import { Back } from "./icons";
 
 type Props = {
   title: string;
@@ -11,17 +12,21 @@ type Props = {
 };
 
 export default function Header({ title, loading, canGoBack, onBack }: Props) {
-  const borderColor = useThemeColor({}, 'border');
+  let iconColor = useThemeColor({}, 'icon');
+  let iconColorDisabled = useThemeColor({}, 'iconDisabled');
+  if (!canGoBack)
+     iconColor = iconColorDisabled;
+
   return (
-    <ThemedView style={[{ borderColor }, styles.container]}>
+    <ThemedView style={styles.container}>
       <Pressable
         onPress={onBack}
         disabled={!canGoBack}
         style={styles.back}
       >
-        <ThemedText style={[styles.backText, !canGoBack && styles.disabled]}>
-          ←
-        </ThemedText>
+        <ThemedView style={styles.backText}>
+          <Back size={24} color={iconColor} />
+        </ThemedView>
       </Pressable>
 
       <ThemedText numberOfLines={1} style={styles.title}>

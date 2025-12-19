@@ -14,7 +14,6 @@ type Props = {
 
 export default function BottomTabs({ webViewRef, data }: Props) {
   const iconColor = useThemeColor({}, 'icon');
-  const borderColor = useThemeColor({}, 'border');
 
   const runFuncJS = (js: string) => {
     webViewRef.current?.injectJavaScript(`
@@ -42,7 +41,7 @@ export default function BottomTabs({ webViewRef, data }: Props) {
   };
 
   return (
-    <ThemedView style={[{ borderColor }, styles.container]}>
+    <ThemedView style={styles.container}>
 
       <HapticTab onPress={() => runFuncJS("bx_mobile_apps_show_main_menu")}>
         <Bars size={24} color={iconColor} />
@@ -82,10 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     borderTopWidth: 1,
-    /*
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
-    */
   },
   tab: {
     justifyContent: "center",

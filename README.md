@@ -1,6 +1,7 @@
-# Welcome to your Expo app 👋
+# UNACMS Mobile Apps 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is source code of UNA mobile apps for iOS and Android based on [Expo](https://expo.dev).
+Mobile apps need to have [Nexus](https://unacms.com/view-product/nexus) UNA app installed.
 
 ## Get started
 
@@ -10,20 +11,27 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Create native iOS and Android project files
 
    ```bash
-   npx expo start
+   npx expo prebuild
    ```
 
-In the output, you'll find options to open the app in a
+3. Run iOS app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run ios
+   ```
+   or Android app
+   ```bash
+   npm run android
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Rebranding
+
+- Edit `constants/setings.ts` to specify your domain and other settings.  
+- Edit `constants/theme.ts` to specify custom colors.
+- Edit images in `assets/images` to change app icons and app name.
 
 ## Get a fresh project
 
@@ -37,14 +45,7 @@ This command will move the starter code to the **app-example** directory and cre
 
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+To learn more about extending this project with Expo, look at the following resources:
 
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

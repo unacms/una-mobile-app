@@ -9,9 +9,8 @@ export async function requestAndroidPermissions() {
     try {
         const permissions = [
             PermissionsAndroid.PERMISSIONS.CAMERA,
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
         ];
 
         const granted = await PermissionsAndroid.requestMultiple(permissions);
