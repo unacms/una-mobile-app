@@ -53,10 +53,12 @@ function askQuestion(query) {
 
     // --------- replace Bundle ID
     await (async () => {
-      const answer = await askQuestion("Your app bundle id or package name (for example: com.example.app): ");
-      const userInput = answer.trim().toLowerCase();
+      const answer1 = await askQuestion("Your app bundle id or package name (for example: com.example.app): ");
+      const bundleInput = answer1.trim().toLowerCase();
+      const nameInput = await askQuestion("Your app name: ");
 
-      const bundleId = userInput.trim();
+      const name = nameInput.trim();
+      const bundleId = bundleInput.trim();
       const bundlePattern = /^([a-zA-Z0-9]+\.)+[a-zA-Z0-9]+$/;
       if (!bundlePattern.test(bundleId)) {
         console.log("❌ Invalid bundle ID.");
@@ -65,6 +67,13 @@ function askQuestion(query) {
 
       const appJsonData = await fs.readFile(appJsonPath, "utf8");
       const appJson = JSON.parse(appJsonData);
+      const slug = name
+        .toLowerCase()
+        .replace(/\s+/g, "-")          // spaces → hyphens
+        .replace(/[^a-z0-9-]/g, "");   // remove invalid characters
+
+      appJson.expo.name = name;
+      appJson.expo.slug = slug;
 
       appJson.expo = appJson.expo || {};
       appJson.expo.android = appJson.expo.android || {};
