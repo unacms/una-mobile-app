@@ -16,7 +16,11 @@
         ],
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
-        }
+        },
+        "NSLocationWhenInUseUsageDescription": "The app uses your location so you can share your current location when posting content.",
+        "NSCameraUsageDescription": "The app takes picture to publish it on the site or use for video chat",
+        "NSPhotoLibraryAddUsageDescription": "The app can save photos to your photo gallery",
+        "NSMicrophoneUsageDescription": "The app records video to publish it on the site or use it for video/audio chat"
       },
       "entitlements": {
         "aps-environment": "development",
